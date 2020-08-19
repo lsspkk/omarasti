@@ -32,7 +32,29 @@ https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
 
 
 # zoom pan pinch
+https://react-leaflet.js.org/
 https://github.com/prc5/react-zoom-pan-pinch#readme
 https://walterebert.com/playground/wpo/google-maps/
 
 
+Toimiva ratkaisu oli asentaa qgis, ja ajaa maanmittauslaitoksen png karttapalalle komento
+    ./gdal_translate.exe -of GTiff -a_srs "EPSG:3857" /c/Users/Omistaja/Desktop/space/study/fullstackopen/part1/omarasti/data/M421.png /e/tampere/tampere2.tiff
+
+    qgis -ohjelmaan lisätään tif rasteritasoksi ja klikataan työkalupalkista auki työkalut, generate xyz tiles
+    gdal2tiles.py -skriptillä vois tehdä saman, mutta windows ja python3 asennus ja kirjastot... haastavaa...
+    
+
+## oma karttadata karttapalvelimeksi
+https://tilemill-project.github.io/tilemill/docs/win-install/
+
+### Ohjeet
+http://www.qgistutorials.com/en/docs/georeferencing_basics.html
+
+
+### Toiset Ohjeet 
+https://mapitgis.com/generating-mbtiles-from-an-image/
+https://www.qgis.org/en/site/
+http://maperitive.net/
+
+### kolmannet
+https://gis.stackexchange.com/questions/317910/convert-a-png-file-to-a-geotiff-while-knowing-the-boundings
