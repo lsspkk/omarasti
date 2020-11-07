@@ -10,8 +10,9 @@ const Header = () => {
     <header>
       <nav className='container mx-auto'>
         <Link href='/'>
-          <a className='logo'>
-            <img src='/logo.png' alt='omaRasti' />
+          <a className='2-10 w-20 mt-2 mb-2'>
+            <img src='/logo.svg' alt='omaRasti' />
+            <span style={{ position: 'absolute', top: '21px', marginLeft: '11px', fontWeight: 'bold', opacity: '0.6', fontSize: '20px', lineHeight: '25px' }}>OMA<br />RASTI</span>
           </a>
         </Link>
 
@@ -39,29 +40,10 @@ const Header = () => {
       </nav>
 
       <style jsx>{`
-        header {
-          border-bottom: 1px solid #ccc;
-        }
         nav {
           display: flex;
           justify-content: space-between;
           align-items: center;
-        }
-        .avatar {
-          border-radius: 2rem;
-          float: left;
-          height: 2.2rem;
-          width: 2.2rem;
-          background-color: white;
-          background-size: cover;
-          border: 2px solid #ddd;
-        }
-        .email {
-          margin-right: 1rem;
-          font-size: 0.8rem;
-          vertical-align: middle;
-          margin-left: 0.25rem;
-
         }
       `}
       </style>
