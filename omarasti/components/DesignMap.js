@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import { MapContainer, TileLayer, useMapEvents, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { RastiMarker } from './Icons'
 const TrackPoints = () => {
@@ -28,11 +28,11 @@ const DesignMap = () => {
     return null
   }
 
-  console.log(process.env, 'd')
+  // console.log(process.env, 'd')
   // const mapUrl = process.env.TAMPERE_MAP_URL
-  const mapUrl = 'http://localhost:5000/tampere/{z}/{x}/{y}.png'
-  // const mapUrl = 'https://xn--hyty-6qa.net/omarasti/{z}/{x}/{y}.png'
-  console.log(mapUrl)
+  // const mapUrl = 'http://localhost:5000/tampere/{z}/{x}/{y}.png'
+  const mapUrl = 'https://xn--hyty-6qa.net/omarasti/{z}/{x}/{y}.png'
+  // console.log(mapUrl)
   return (
     <MapContainer
       style={{ width: '100%', height: '80vh' }} center={[52.12076638441093, 2.982406743276816]} zoom={14.5}
