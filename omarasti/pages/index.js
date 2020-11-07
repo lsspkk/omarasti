@@ -2,15 +2,15 @@ import Head from 'next/head'
 import Layout from '../components/Layout'
 import { signin, useSession } from 'next-auth/client'
 
-export default function Home() {
+export default function Home () {
   const [session, loading] = useSession()
   return (
     <Layout>
-      <h3>Tervetuloa OMArastiin.</h3>
+      <h3 className='mt-8 mb-8 text-xl text-bold text-orange-900'>Tervetuloa OMArastiin.</h3>
 
-      { !session && (
+      {!session && (
         <div>
-          <button className="signInButton" onClick={() => signin('google')}>Kirjaudu</button>
+          <button className='signInButton' onClick={() => signin('google')}>Kirjaudu</button>
 
           <p>
             Kirjaudu Google-tunnuksella sisälle omaRastiin,
@@ -27,16 +27,14 @@ export default function Home() {
         </div>
       )}
 
-
-      <h1>Ole ratamestari</h1>
+      <h1 className='mt-4 mb-4 text-xl'>Ole ratamestari</h1>
 
       <ul>
         <li>Tee tampereen alueen kartalle oma suunnistusrata.</li>
         <li>Jaa linkki rataan kavereillesi, ja...</li>
       </ul>
 
-
-      <h1>Suunnista</h1>
+      <h1 className='mt-4 mb-4 text-xl'>Suunnista</h1>
 
       <ul>
         <li>Kun olet lähellä rastia, "näät" sen puhelimen ruudulla.</li>

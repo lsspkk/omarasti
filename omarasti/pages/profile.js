@@ -1,19 +1,19 @@
 // pages/profile.js
 
-import { useSession } from 'next-auth/client';
-import Layout from '../components/Layout';
+import { useSession } from 'next-auth/client'
+import Layout from '../components/Layout'
 
 const Profile = () => {
-  const [session, loading] = useSession();
+  const [session, loading] = useSession()
 
-  if (loading) return <div>loading...</div>;
-  if (!session) return <div>no session</div>;
+  if (loading) return <div>loading...</div>
+  if (!session) return <div>no session</div>
 
   return (
     <Layout>
       {session && (
         <>
-          <img src={session.user.image} className="avatar" />
+          <img src={session.user.image} className='avatar' />
           <h1>{session.user.email}</h1>
         </>
       )}
@@ -23,10 +23,11 @@ const Profile = () => {
           width: 120px;
           border-radius: 20px;
         }
-      `}</style>
+      `}
+      </style>
       Et ole kirjautunut sisään
     </Layout>
-  );
+  )
 };
 
-export default Profile;
+export default Profile

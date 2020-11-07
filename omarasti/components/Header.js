@@ -1,29 +1,38 @@
 // components/header.js
 
-import Link from 'next/link';
-import { signin, signout, useSession } from 'next-auth/client';
+import Link from 'next/link'
+import { signin, signout, useSession } from 'next-auth/client'
+import { SignInButton } from './SignInButton'
 
 const Header = () => {
-  const [session, loading] = useSession();
+  const [session, loading] = useSession()
   return (
     <header>
-      <nav>
-        <Link href="/">
-          <a className="logo">
-           <img src="/logo.png" alt="omaRasti"/>
+      <nav className='container mx-auto'>
+        <Link href='/'>
+          <a className='logo'>
+            <img src='/logo.png' alt='omaRasti' />
           </a>
         </Link>
 
+        {session &&
+          <Link
+            href='/design'
+            className='m-2 text-sm text-blue:500 hover:text-blue:800'
+          >
+            Tee rata
+          </Link>}
+
         <p>
-        {!session && (          
-             <button className="signInButton" onClick={() => signin('google')}>Kirjaudu</button>
+          {!session && (
+            <SignInButton onClick={() => signin('google')}>Kirjaudu</SignInButton>
           )}
           {session && (
             <>
-              <Link href="/profile">
-              <span className="email">{session.user.email}</span>
+              <Link href='/profile'>
+                <span className='m-2 text-sm'>{session.user.email}</span>
               </Link>
-              <button  className="signInButton" onClick={signout}>Kirjaudu ulos</button>
+              <SignInButton onClick={signout}>Kirjaudu ulos</SignInButton>
             </>
           )}
         </p>
@@ -37,12 +46,6 @@ const Header = () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          max-width: 42rem;
-          margin: 0 auto;
-          padding: 0.2rem 1.25rem;
-        }
-        .logo {
-          max-height: 2rem;
         }
         .avatar {
           border-radius: 2rem;
@@ -60,25 +63,10 @@ const Header = () => {
           margin-left: 0.25rem;
 
         }
-        .signInButton {
-          color: #fff;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 0.8rem;
-          padding: 0.5rem 1rem;
-        }
-        .signInButton {
-          background-color: #1eb1fc;
-        }
-        .signInButton:hover {
-          background-color: #1b9fe2;
-        }
-      `}</style>
+      `}
+      </style>
     </header>
-  );
-};
+  )
+}
 
-
-
-export default Header;
+export default Header
