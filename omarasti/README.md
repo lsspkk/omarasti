@@ -4,7 +4,7 @@ Käytössä kirjastot
 
 - Next-auth - https://www.npmjs.com/package/next-auth
 - Tailwind - https://tailwindcss.com/components
-
+- Recoil - https://recoiljs.org/docs/
 
 
 
