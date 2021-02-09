@@ -1,11 +1,16 @@
 // components/header.js
 
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { signin, signout, useSession } from 'next-auth/client'
 import { SignInButton } from './SignInButton'
+import { DesignMenu } from './DesignMenu'
 
 const Header = () => {
   const [session, loading] = useSession()
+  const { asPath } = useRouter()
+
+
   return (
     <header>
       <nav className='container mx-auto'>
@@ -16,13 +21,20 @@ const Header = () => {
           </a>
         </Link>
 
-        {session &&
+        {session && asPath === '/' &&
           <Link
             href='/design'
             className='m-2 text-sm text-blue:500 hover:text-blue:800'
           >
             Tee rata
-          </Link>}
+          </Link>          
+        }
+        {session && asPath === '/design' &&
+          <div className="flex-20">
+          <DesignMenu/>
+          </div>
+        }
+
 
         <p>
           {!session && (

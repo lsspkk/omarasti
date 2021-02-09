@@ -1,26 +1,99 @@
 
-import { useState } from 'react'
-import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
+import { useEffect, useState } from 'react'
+import { MapContainer, TileLayer, useMapEvents, Polyline } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { RastiMarker } from './Icons'
+import { MARKER_SIZE, RastiMarker } from './Icons'
+import L from 'leaflet'
+import { positionsState, designModeState } from './DesignMenu'
+import { atom, useRecoilState, } from 'recoil'
+
+
+
 const TrackPoints = () => {
-  const [positions, setPositions] = useState([])
+  const [positions, setPositions] = useRecoilState(positionsState)
+  const [mode, setMode] = useRecoilState(designModeState)
+  const [lines, setLines] = useState([])
+
+
   const map = useMapEvents({
-    click (e) {
-      console.log(e)
-      setPositions([...positions, e.latlng])
+    click(e) {
+      // const newPosition = {
+      //   latlng : {...e.latlng},
+      //   index: positions.length
+      // }
+      // console.log(newPosition, positions)
+      if (mode === 'add') {
+        setPositions([...positions, e.latlng])
+      }
       map.locate()
     },
-    locationfound (e) {
+    locationfound(e) {
+      if (mode === 'remove') {
+        const newPositions = positions.filter(p => !e.latlng.equals(p))
+        console.log(newPositions)
+        setPositions(newPositions)
+      }
       // use another marker for current location
       map.flyTo(e.latlng, map.getZoom())
+    },
+    zoomend: () => {
+      // recalculate map circle-polylines when zoom ends
+      setPositions([...positions])
     }
   })
+
+  useEffect(() => { 
+    console.log('useEffect')
+    setLines(makeLines(positions, map))
+    }, [positions])
+
+
+  console.log(lines)
   return (
     <>
-      {positions.map((position) => <RastiMarker position={position} />)}
+      {positions.map((position) =>
+        <RastiMarker
+          key={'rm-' + JSON.stringify(position)}
+          position={position}
+        />
+      )}
+      {lines.map((linePositions) =>
+        <Polyline
+          key={'lp' + JSON.stringify(linePositions)}
+          positions={linePositions}
+          color='#FA923B'
+        />)}
     </>
   )
+}
+
+// calculate map markers in points, then return polyline endpoints as latlng
+const makeLines = (positions, map) => {
+  const lines = []
+  positions.forEach((latlng, i) => {
+    const start = map.latLngToLayerPoint(latlng)
+    if ((i + 2) > positions.length) {
+      return
+    }
+    const end = map.latLngToLayerPoint(positions[i + 1])
+
+    const distance = L.point(start).distanceTo(L.point(end))
+    if (distance < MARKER_SIZE) {
+      return
+    }
+    const lineStart = [
+      start.x + (MARKER_SIZE / 2 / distance * (end.x - start.x)),
+      start.y + (MARKER_SIZE / 2 / distance * (end.y - start.y)),
+    ]
+    const lineEnd = [
+      end.x + (MARKER_SIZE / 2 / distance * (start.x - end.x)),
+      end.y + (MARKER_SIZE / 2 / distance * (start.y - end.y)),
+    ]
+    const s = map.layerPointToLatLng(lineStart)
+    const e = map.layerPointToLatLng(lineEnd)
+    lines.push([[s.lat, s.lng], [e.lat, e.lng]])
+  })
+  return lines
 }
 
 const DesignMap = () => {
@@ -30,7 +103,7 @@ const DesignMap = () => {
 
   // console.log(process.env, 'd')
   // const mapUrl = process.env.TAMPERE_MAP_URL
-  // const mapUrl = 'http://localhost:5000/tampere/{z}/{x}/{y}.png'
+  //const mapUrl = 'http://localhost:8888/tampere/{z}/{x}/{y}.png'
   const mapUrl = 'https://xn--hyty-6qa.net/omarasti/{z}/{x}/{y}.png'
   // console.log(mapUrl)
   return (

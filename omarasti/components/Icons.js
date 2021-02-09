@@ -1,6 +1,8 @@
 import { Marker, Popup } from 'react-leaflet'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { divIcon } from 'leaflet'
+import { positionsState, designModeState } from './DesignMenu'
+import { useRecoilState, } from 'recoil'
 
 export const MARKER_SIZE = 50
 
@@ -16,16 +18,36 @@ const CustomRastiMarker = () => {
 }
 
 export const RastiMarker = ({ position }) => {
+  const [mode] = useRecoilState(designModeState)
+  const [positions, setPositions] = useRecoilState(positionsState)
   const iconMarkup = renderToStaticMarkup(<CustomRastiMarker />)
   const customMarkerIcon = divIcon({
     html: iconMarkup
   })
+
+  const onClick = () => {
+    console.log(mode)
+    mode === 'remove' && setPositions(positions.filter(p => !p.equals(position)))
+  }
+
+  const onDragend = (e) => {
+    const i = positions.indexOf(position)
+    console.log(position, e.target._latlng)
+
+    const newPositions = [...positions.slice(0,i), e.target._latlng, ...positions.slice(i+1)]
+    setPositions(newPositions)
+  }
+
   return (
     <Marker
       position={position}
       icon={customMarkerIcon}
+      draggable={mode === 'move' ? true : false}
+      eventHandlers={{click: onClick, dragend: onDragend}}
     >
-      <Popup>lat: {position.lat},<br />lng: {position.lng}</Popup>
+      { mode === 'add' &&
+         <Popup>lat: {position.lat},<br />lng: {position.lng}</Popup>
+      }
     </Marker>
   )
 }

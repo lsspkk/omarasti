@@ -1,0 +1,10 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: omarasti_data
+    volumes:
+    - ./html:/usr/share/nginx/html:ro 
+    ports:
+    - 8888:80
+    - 443:443
