@@ -1,11 +1,18 @@
-import Head from 'next/head'
 import Layout from '../components/Layout'
 import { signin, useSession } from 'next-auth/client'
+import Link from 'next/link'
+import { Button } from "../components/Buttons"
+
+const Menu = () => {
+  return <>
+    <Link href="/tracks"><Button>Radat</Button></Link>
+  </>
+}
 
 export default function Home () {
   const [session, loading] = useSession()
   return (
-    <Layout>
+    <Layout menu={<Menu/>}>
       <h3 className='mt-8 mb-8 text-xl text-bold text-orange-900'>Tervetuloa OMArastiin.</h3>
 
       {!session && (

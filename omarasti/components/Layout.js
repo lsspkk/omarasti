@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from './Header'
 
-const Layout = ({ children }) => (
+const Layout = ({ menu, children }) => (
   <>
     <Head>
       <title>OMArasti</title>
@@ -19,7 +19,7 @@ const Layout = ({ children }) => (
 
     </Head>
 
-    <Header />
+    <Header menu={menu}/>
 
     <main className='container mx-auto'>{children}</main>
   </>
