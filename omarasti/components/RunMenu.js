@@ -5,7 +5,7 @@ import { runState } from '../pages/tracks/run/start'
 import { useRecoilState, } from 'recoil'
 
 const RunMenu = (props) => {
-  const [run, setRun] = useRecoilState(runState)
+  const [run] = useRecoilState(runState)
   const [myInterval, setMyInterval] = useState(-1)
   const [timer, setTimer] = useState('')
   const router = useRouter()

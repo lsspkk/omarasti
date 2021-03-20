@@ -36,7 +36,6 @@ function fakeLocation(targetLatLng, previousLatLng) {
     const lon1 = targetLatLng.lng
     const lat2 = previousLatLng.lat
     const lon2 = previousLatLng.lng
-    const halfway = { lat: lat1+(lat2-lat1)/1, lng: lon1+(lon2-lon1)/2}
 
     const d = distanceInMeters(lat1, lon1, lat2, lon2)
 
