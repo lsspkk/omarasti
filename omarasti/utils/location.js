@@ -1,3 +1,6 @@
+import { L } from 'leaflet'
+
+
 var options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -25,7 +28,7 @@ async function getLocation(targetLatLng, previousLatLng) {
 }
 
 
-// fake halfway towards targetLatLng
+// fake 10 meters towards target
 function fakeLocation(targetLatLng, previousLatLng) {
     if (!previousLatLng) return targetLatLng
 
@@ -37,9 +40,25 @@ function fakeLocation(targetLatLng, previousLatLng) {
 
     const d = distanceInMeters(lat1, lon1, lat2, lon2)
 
-    return d < 50 ? targetLatLng : halfway
+    const a = angle(lat1, lon1, lat2, lon2)
+
+    return d < 10 ? targetLatLng : moveTowardsMeters(previousLatLng, a, 10)
 }
 
+
+function angle(lat1, lon1, lat2, lon2) {
+    var dy = lon1 - lon2;
+    var dx = lat2 - lat1;
+    if (dx === 0) return dy > 0 ? 90 : 270
+    var theta = Math.atan2(dy, dx); // range (-PI, PI]
+    theta *= 180 / Math.PI; // to degrees
+    if (theta < 0) theta = 360 + theta; // range [0, 360)
+    return theta;
+}
+
+function moveAngleMeters(latLng, angleInDegrees, meters) {
+    return L.GeometryUtil.destination(latLng, angleInDegrees, meters)
+}
 
 
 function distanceInMeters(lat1, lon1, lat2, lon2) {
