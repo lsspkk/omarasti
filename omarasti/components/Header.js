@@ -1,17 +1,14 @@
 // components/header.js
 
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { signin, signout, useSession } from 'next-auth/client'
-import { SignInButton, Button } from './Buttons'
-import { DesignMenu } from './DesignMenu'
+import { SignInButton } from './Buttons'
 import { userState } from '../pages/profile'
-import { atom, useRecoilState, } from 'recoil'
+import { useRecoilState, } from 'recoil'
 import { useEffect } from 'react'
 
 const Header = ({ menu }) => {
-  const [session, loading] = useSession()
-  const { asPath } = useRouter()
+  const [session] = useSession()
   const [user, setUser] = useRecoilState(userState)
 
   useEffect(async () => {
@@ -46,8 +43,6 @@ const Header = ({ menu }) => {
             { ...menu }
           }
         </div>
-
-
 
         <div className='flex-end flex-3 flex text-sm'>
           {!session && (

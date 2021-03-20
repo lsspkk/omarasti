@@ -4,14 +4,11 @@ import { SignInButton } from './Buttons'
 import { runState } from '../pages/tracks/run/start'
 import { useRecoilState, } from 'recoil'
 
-
 const RunMenu = (props) => {
   const [run, setRun] = useRecoilState(runState)
   const [myInterval, setMyInterval] = useState(-1)
   const [timer, setTimer] = useState('')
   const router = useRouter()
-
-
 
   function updateTimer() {
     const time = (new Date().getTime()) - run.start.getTime()
