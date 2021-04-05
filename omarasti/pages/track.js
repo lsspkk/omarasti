@@ -6,6 +6,7 @@ import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../components/Buttons'
 import { atom, useRecoilState } from 'recoil'
+import { totalDistance } from '../utils/location'
 const trackState = atom({ key: 'trackState', default: undefined })
 
 const TrackMenu = () => {
@@ -36,8 +37,8 @@ const OneTrack = () => {
 
   const save = async ({ published }) => {
     const newTrack = { ...track, published, name, location, modified: new Date() }
-    const url = `/api/tracks${(track._id) && `/${track._id}`}`
-
+    const urlEnd = track._id !== undefined ? ('/' + $track._id) : ''
+    const url = `/api/tracks${urlEnd}`
     const res = await fetch(url, { 
       method: track._id ? 'PUT' : 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -50,7 +51,7 @@ const OneTrack = () => {
     setMessage(res.ok ? 'Tallennettu' : 'Tallennus epäonnistui')
     setTimeout(() => setMessage(''), 2000)
   }
-
+  const length = totalDistance(track.markers)
 
   return (
     <Layout menu={<TrackMenu/>}>
@@ -73,7 +74,7 @@ const OneTrack = () => {
 
         <div className="flex my-5">
           <label className="w-20">Pituus:</label>
-          <div className="w-40">{track.length}</div>
+          <div className="w-40">{length}</div>
         </div>
         </div>
         {!track.published &&

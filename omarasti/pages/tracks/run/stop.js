@@ -69,7 +69,7 @@ const StopRun = () => {
         <div>
           <h1 className="py-10">Rastiajat</h1>
           <div>
-            {run && run.markers.map((marker, i) => <MarkerResult i={i} marker={marker} run={run} />)}
+            {run && run.markers && run.markers.map((marker, i) => <MarkerResult i={i} marker={marker} run={run} />)}
           </div>
         </div>
       </div>

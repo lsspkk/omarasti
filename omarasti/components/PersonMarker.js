@@ -17,6 +17,7 @@ const PersonSvg = () => {
 export const PersonMarker = ({ latlng }) => {
   const iconMarkup = renderToStaticMarkup(<PersonSvg />)
   const customMarkerIcon = divIcon({ html: iconMarkup })
-
+  
+  if( !latlng ) return (<></>)
   return (<Marker position={latlng} icon={customMarkerIcon} />)
 }

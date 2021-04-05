@@ -40,7 +40,7 @@ const TrackList = ({ tracks }) => {
               >Poista</Button>
 
               <Button className=""
-                onClick={() => toUrl(track, '/tracks/design', 'move')}
+                onClick={() => toUrl(track, '/tracks/edit', 'move')}
               >Muokkaa</Button>
             </div>
           </div>

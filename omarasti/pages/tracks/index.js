@@ -36,7 +36,7 @@ const Tracks = ({tracks}) => {
     }
     setMode('add')
     setTrack(newTrack)
-    router.push('/tracks/design')
+    router.push('/tracks/edit')
   }
 
   //console.log("tracks", tracks)
