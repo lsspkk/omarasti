@@ -1,5 +1,3 @@
-import { L } from 'leaflet'
-
 
 var options = {
     enableHighAccuracy: true,
@@ -13,61 +11,56 @@ function getCoordinates() {
     })
 }
 
-// real geolocation, or fake some value
+// real geolocation, or simulated: 100 meters towards target
 async function getLocation(targetLatLng, previousLatLng) {
     
     try {
         const position = await getCoordinates()
         return { lat: position.coords.latitude, lng: position.coords.longitude }
     } catch (error) {
-        console.log('No location:', error)      
+        // console.log('No location:', error)      
     }
-    const fake = fakeLocation(targetLatLng, previousLatLng)
-    console.log('fakelocation:', fake)
-    return fake
+    const simulated = simulateGetLocation(targetLatLng, previousLatLng)
+    // console.log(targetLatLng, previousLatLng, 'simulateGetLocation:', simulated)
+    return simulated
 }
 
-
-// fake 10 meters towards target
-function fakeLocation(targetLatLng, previousLatLng) {
+function simulateGetLocation(targetLatLng, previousLatLng) {
     if (!previousLatLng) return targetLatLng
 
     const lat1 = targetLatLng.lat
-    const lon1 = targetLatLng.lng
+    const lng1 = targetLatLng.lng
     const lat2 = previousLatLng.lat
-    const lon2 = previousLatLng.lng
+    const lng2 = previousLatLng.lng
 
-    const d = distanceInMeters(lat1, lon1, lat2, lon2)
-
-    const a = angle(lat1, lon1, lat2, lon2)
-
-    return d < 10 ? targetLatLng : moveTowardsMeters(previousLatLng, a, 10)
+    const dlat = lat1-lat2
+    const dlng = lng1-lng2
+    const distance = Math.sqrt(dlat * dlat + dlng * dlng)
+    if ( distance < 0.0005 ) { // about 100m
+      return targetLatLng
+    }
+    const angle = Math.atan2(dlat, dlng)
+    const newLat = lat2+ Math.sin(angle) * 0.0001
+    const newLon = lng2 +Math.cos(angle) * 0.0001
+    return { lat: newLat, lng: newLon }
 }
 
-
-function angle(lat1, lon1, lat2, lon2) {
-    var dy = lon1 - lon2;
-    var dx = lat2 - lat1;
-    if (dx === 0) return dy > 0 ? 90 : 270
-    var theta = Math.atan2(dy, dx); // range (-PI, PI]
-    theta *= 180 / Math.PI; // to degrees
-    if (theta < 0) theta = 360 + theta; // range [0, 360)
-    return theta;
+function distance(latlng1, latlng2) {
+  const lat1 = latlng1.lat
+  const lng1 = latlng1.lng
+  const lat2 = latlng2.lat
+  const lng2 = latlng2.lng
+  return distanceInMeters(lat1, lng1, lat2, lng2)
 }
 
-function moveAngleMeters(latLng, angleInDegrees, meters) {
-    return L.GeometryUtil.destination(latLng, angleInDegrees, meters)
-}
-
-
-function distanceInMeters(lat1, lon1, lat2, lon2) {
-	if ((lat1 == lat2) && (lon1 == lon2)) {
+function distanceInMeters(lat1, lng1, lat2, lng2) {
+	if ((lat1 == lat2) && (lng1 == lng2)) {
 		return 0;
 	}
 	else {
 		var radlat1 = Math.PI * lat1/180;
 		var radlat2 = Math.PI * lat2/180;
-		var theta = lon1-lon2;
+		var theta = lng1-lng2;
 		var radtheta = Math.PI * theta/180;
 		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
 		if (dist > 1) {
@@ -80,4 +73,26 @@ function distanceInMeters(lat1, lon1, lat2, lon2) {
 	}
 }
 
-export { getLocation }
+function totalDistance(markers) {
+  const latLngs = !markers ? [] : markers.map(m => m.latlng)
+  let dist = 0
+  for(let i=0; i+1 < latLngs.length; i++) {
+    dist += distance(latLngs[i], latLngs[i+1])
+  }
+  return Math.trunc(dist)
+}
+
+function angleInDegrees(latlng1, latlng2) {
+  const dlat = latlng2.lat-latlng1.lat
+  const dlng = latlng2.lng-latlng1.lng
+
+  if (dlat === 0) return dlng > 0 ? 90 : 270
+  var theta = Math.atan2(dlat, dlng); // range (-PI, PI]
+  theta = theta * 180 / Math.PI; // to degrees
+  theta = -1 * theta + 90 // North is Zero, bearing to counterclockwise
+  if (theta < 0) theta = 360 + theta; // range [0, 360)
+  return theta;
+}
+
+
+export { angleInDegrees, distance, getLocation, totalDistance }

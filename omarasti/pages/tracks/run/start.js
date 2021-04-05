@@ -1,5 +1,4 @@
 
-import { useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 import Layout from '../../../components/Layout'
 import { useRouter } from 'next/router'
@@ -7,10 +6,22 @@ import { useRecoilState } from 'recoil'
 import { Button } from '../../../components/Buttons'
 import { ViewMenu } from '../../../components/ViewMenu'
 import { trackState } from '../../track'
-import { getLocation } from '../../../utils/location'
+import { totalDistance } from '../../../utils/location'
 import { atom } from 'recoil'
 
 const runState = atom({ key: 'runState', default: undefined })
+
+
+const emptyRun = { 
+  totalTime: -1,
+  start: undefined, 
+  end: undefined, 
+  route: [], 
+  markerTimes: [], 
+  targetMarker: -1, 
+  trackId: undefined,
+  currentLatlng: undefined
+ }
 
 const StartRun = () => {
   const [session, loading] = useSession()
@@ -20,20 +31,14 @@ const StartRun = () => {
   if (loading) return <div>loading...</div>
   if (!session || !track) router.push('/')
 
-  useEffect(() => {
-    if (track !== undefined) {
-      console.log('lataa radan pituus näkyviin')
-    }
-  }, [track])
-
-
   async function start() {
-    let latlng = await getLocation(track.markers[0].latlng)
-    setRun({ start: new Date(), end: undefined, currentLatlng: latlng, route: [], markers: [], currentMarker: 0, trackId: track._id })
+    setRun({...emptyRun, trackId: track._id, start: new Date(), targetMarker: 1, currentLatlng: track.markers[0].latlng})
     router.push('/tracks/view')
   }
 
-  // TODO check if on marker one
+  const length = totalDistance(track?.markers)
+
+  // TODO check distance from start marker and guide to it
   return (
     <Layout menu={<ViewMenu />}>
       <div className="container flex flex-col justify-between">
@@ -45,7 +50,7 @@ const StartRun = () => {
 
           <div className="flex my-5">
             <label className="w-20">Pituus:</label>
-            <div className="w-40">{track?.length}</div>
+            <div className="w-40">{length}</div>
           </div>
         </div>
       </div>
