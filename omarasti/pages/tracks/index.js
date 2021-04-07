@@ -9,7 +9,7 @@ import { trackState } from '../track'
 import { useRecoilState } from 'recoil'
 import { getTracks } from '../api/tracks'
 import { designModeState } from '../../components/DesignMenu'
-import dbConnect from '../../../utils/dbConnect'
+import dbConnect from '../../utils/dbConnect'
 
 const TracksMenu = () => {
   return <>
