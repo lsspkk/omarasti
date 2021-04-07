@@ -9,6 +9,7 @@ import { trackState } from '../track'
 import { useRecoilState } from 'recoil'
 import { getTracks } from '../api/tracks'
 import { designModeState } from '../../components/DesignMenu'
+import dbConnect from '../../../utils/dbConnect'
 
 const TracksMenu = () => {
   return <>
@@ -52,8 +53,10 @@ const Tracks = ({tracks}) => {
 
 
 export async function getServerSideProps({req}) {
+  let connection = await dbConnect()
   const result = await getTracks(req)
   const tracks = JSON.parse(JSON.stringify(result.data))
+  connection.disconnect();
   return { props: { tracks } }
 }
 

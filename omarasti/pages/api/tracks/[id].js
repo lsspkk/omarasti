@@ -29,12 +29,13 @@ export default async function handler(req, res) {
     return
   }
 
-  await dbConnect()
+  let connection = await dbConnect()
 
   const track = await Track.findById(req.query.id).populate('owner')
   if (track.owner.email !== session.user.email) {
     // not the track owner
     res.status(401).json({})
+    connection.disconnect()
     return
   }
 
@@ -53,7 +54,7 @@ export default async function handler(req, res) {
       res.status(400).json({ success: false })
     }
   }
-
+  connection.disconnect()
 }
 
 export const config = {
