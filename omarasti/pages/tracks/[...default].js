@@ -51,7 +51,7 @@ const Design = ({ mapUrl }) => {
     }
     setRun({ ...run, route: [...run.route, latlng], currentLatlng: latlng })
     const d = distance(latlng, track.markers[run.targetMarker].latlng)
-    setLocation({latlng, canSeeMarker: d < 1000, canTouchMarker: d < 25, distance: d})    
+    setLocation({latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d})    
   }
 
 
