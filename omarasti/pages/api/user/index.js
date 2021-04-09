@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     res.status(401).json({})
     return
   }
-  let connection = await dbConnect()
+  await dbConnect()
 
   try {
     const users = await User.find({email: session.user.email})
@@ -33,7 +33,6 @@ export default async function handler(req, res) {
     }
 
     if (!user) {
-      connection.disconnect()
       return res.status(400).json({ success: false })
     }
     // no email
@@ -43,5 +42,4 @@ export default async function handler(req, res) {
     console.log(error)
     res.status(400).json({ success: false })
   }
-  connection.disconnect()
 }

@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     return
   }
 
-  let connection = await dbConnect()
+  await dbConnect()
 
   if (method === 'GET') {
     const response = getTracks(req)
@@ -48,7 +48,6 @@ export default async function handler(req, res) {
       res.status(400).json({ success: false })
     }
   }
-  connection.disconnect()
 }
 
 export const config = {

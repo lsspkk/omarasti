@@ -10,7 +10,7 @@ import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
 import { trackState } from '../track'
 import { distance, getLocation } from '../../utils/location'
-import { SeeMarkerPanel, TouchMarkerPanel } from '../../components/Panels'
+import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel } from '../../components/Panels'
 
 const DesignMap = dynamic(() => {
   return import('../../components/DesignMap')
@@ -51,7 +51,7 @@ const Design = ({ mapUrl }) => {
     }
     setRun({ ...run, route: [...run.route, latlng], currentLatlng: latlng })
     const d = distance(latlng, track.markers[run.targetMarker].latlng)
-    setLocation({latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d})    
+    setLocation({latlng, canSeeMarker: d < 1000, canTouchMarker: d < 25, distance: d})    
   }
 
 
@@ -102,13 +102,15 @@ const Design = ({ mapUrl }) => {
     <Layout menu={menu}>
 
       { !location.canSeeMarker && <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> }
-      { run !== undefined && location.canTouchMarker && 
-        <TouchMarkerPanel touchMarker={touchMarker} marker={track.markers[run.targetMarker]} isLastMarker={isLastMarker} markerNumber={run.targetMarker}/>
-      }
-      { run !== undefined && !location.canTouchMarker && location.canSeeMarker && 
-        <>
-        { isLastMarker && <SeeFinishPanel finishRun={finishRun}/> }
-        { !isLastMarker && <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/> }
+      { run !== undefined && <>
+        {
+          !isLastMarker && location.canTouchMarker && 
+          <TouchMarkerPanel touchMarker={touchMarker} marker={track.markers[run.targetMarker]} isLastMarker={isLastMarker} markerNumber={run.targetMarker}/>
+        }
+        { !isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
+          <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/>
+        }
+        { isLastMarker && location.canSeeMarker && <SeeFinishPanel finishRun={finishRun}/> }
         </>
       }
 

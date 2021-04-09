@@ -18,7 +18,7 @@ const Header = ({ menu }) => {
       if (res.ok) {
         const { data } = await res.json()
         if (data) {
-          console.log(data)
+          //console.log(data)
           setUser(data)
         }
       }

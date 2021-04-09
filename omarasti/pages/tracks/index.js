@@ -53,10 +53,9 @@ const Tracks = ({tracks}) => {
 
 
 export async function getServerSideProps({req}) {
-  let connection = await dbConnect()
+  await dbConnect()
   const result = await getTracks(req)
   const tracks = JSON.parse(JSON.stringify(result.data))
-  connection.disconnect();
   return { props: { tracks } }
 }
 
