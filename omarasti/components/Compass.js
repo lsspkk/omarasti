@@ -1,7 +1,7 @@
 
 const Compass = ({angle}) => {
     return (
-        <svg viewbox="0 0 744 744" width="auto" height="auto" version="1.0" >
+        <svg viewbox="0 0 744 744" width="744" height="744" version="1.0" >
             <g transform="translate(2232.4 1830.4)">
                 <g transform="matrix(.74466 0 0 .74466 -570.03 -276.86)">
                     <path d="m-1732.9-1586.6h-497.1c0-273.8 223.4-497.3 497.1-497.3 273.8 0 497.2 223.5 497.2 497.3h-497.2z" stroke='#000000' strokeWidth='2.3573' className='fil0 stro0' />
