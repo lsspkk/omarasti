@@ -28,11 +28,12 @@ const Header = ({ menu }) => {
     }
   }, [session, user])
 
+
   return (
     <header>
-      <nav className='container mx-auto flex self-center'>
+      <nav className='md:container mx-auto flex self-center'>
         <Link href='/' >
-          <div className='2-10 flex-none w-30 mr-8'>
+          <div className='2-10 flex-none w-30 md:mr-8 '>
             <img src='/logo.svg' alt='omaRasti' className='w-20 mt-2 mb-2' />
             <span style={{ position: 'absolute', top: '21px', marginLeft: '11px', fontWeight: 'bold', opacity: '0.6', fontSize: '20px', lineHeight: '25px' }}>OMA<br />RASTI</span>
           </div>
@@ -51,7 +52,7 @@ const Header = ({ menu }) => {
           {session && (
             <>
 
-              <Link href="/profile"><span className='m-2 self-center'>{session.user.email}</span></Link>
+              <Link href="/profile"><span className='m-2 self-center hidden md:inline'>{session.user.email}</span></Link>
               <SignInButton onClick={signout}>Kirjaudu ulos</SignInButton>
             </>
           )}

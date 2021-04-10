@@ -18,10 +18,12 @@ const Layout = ({ menu, children }) => (
        />
 
     </Head>
-
+    <div className="flex flex-col">
+      <div className="flex-none">
     <Header menu={menu}/>
-
-    <main className='container mx-auto'>{children}</main>
+    </div>
+    <main className="flex-grow">{children}</main>
+    </div>
   </>
 )
 
