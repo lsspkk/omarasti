@@ -11,6 +11,7 @@ import { useRecoilState, } from 'recoil'
 import { trackState } from '../track'
 import { distance, getLocation } from '../../utils/location'
 import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel } from '../../components/Panels'
+import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
 const DesignMap = dynamic(() => {
   return import('../../components/DesignMap')
@@ -30,10 +31,12 @@ const Design = ({ mapUrl }) => {
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
+  const [accurrateLocation, accurracy, locationError] = useAccurrateLocation(10, 2) // 10m, 2s
 
   const router = useRouter()
   if (loading) return <div>loading...</div>
   if (!session) router.push('/')
+
 
 
   async function updateRun() {
@@ -45,7 +48,14 @@ const Design = ({ mapUrl }) => {
 
     // location
     const previousLatlng = location.latlng.lat === -1 ? track.markers[0].latlng : location.latlng
-    const latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
+    let latlng = undefined
+    if (locationError === '') {
+      latlng = {...accurrateLocation } 
+    }
+    else {
+      latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
+    }
+
     if (latlng.lat === previousLatlng.lat && latlng.lng === previousLatlng.lng) {
       return
     }
@@ -56,8 +66,6 @@ const Design = ({ mapUrl }) => {
 
 
 
-  // TODO add another interval for updating person latlng with getLocation
-  // show some button on map, when close to the next marker
   useEffect(() => {
     if (run && !run.end) {
       const timeout = window.setTimeout(() => updateRun(), 1000)
@@ -103,6 +111,7 @@ const Design = ({ mapUrl }) => {
 
       { !location.canSeeMarker && <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> }
       { run !== undefined && <>
+
         {
           !isLastMarker && location.canTouchMarker && 
           <TouchMarkerPanel touchMarker={touchMarker} marker={track.markers[run.targetMarker]} isLastMarker={isLastMarker} markerNumber={run.targetMarker}/>
@@ -110,7 +119,14 @@ const Design = ({ mapUrl }) => {
         { !isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
           <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/>
         }
-        { isLastMarker && location.canSeeMarker && <SeeFinishPanel finishRun={finishRun}/> }
+        { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
+          <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]} /> 
+        }
+        { isLastMarker && location.canTouchMarker && 
+          <InFinishPanel finishRun={finishRun}/> 
+        }
+
+        <div className="p-5 text-xs">GPS tarkkuus: { accurracy !== undefined ? accurracy : '-' }</div>
         </>
       }
 

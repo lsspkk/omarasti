@@ -15,7 +15,17 @@ const TrackList = ({ tracks }) => {
     router.push(url)
   }
   const remove = async (id) => {
-    // reloads tracks because path starting with /
+    const url = `/api/tracks${urlEnd}`
+    const res = await fetch(url, {
+      method: track._id ? 'PUT' : 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(newTrack),
+    })
+
+    if (res.ok) {
+      setTrack(newTrack)
+    }
+    setMessage(res.ok ? 'Tallennettu' : 'Tallennus epäonnistui')
     router.push('/tracks')
   }
 
@@ -25,23 +35,32 @@ const TrackList = ({ tracks }) => {
       {tracks.map((track) => (
         <div key={track._id}>
           <div className="border p-5 w-100">
-            <div className="flex justify-between content-end m-2">
-              <h5 className="text-orange-900 bold text-2xl">{track.name}</h5>
-              <p className="track-name ">Sijainti: {track.location}</p>
+            <div className="flex justify-between content-end">
+              <div>
+                <div className="inline-block text-orange-900 bold text-2xl">{track.name}</div>
+              </div>
+
               <p className="owner">Ratamestari: {track.owner === undefined ? '' : track.owner.name}</p>
             </div>
             <div className="flex justify-between">
-              <Button className=""
-                onClick={() => toUrl(track, '/tracks/view', 'view')}
-              >Näytä</Button>
+              <div>
+              <div className="track-name ">{ track.location !== '' && <> Sijainti: {track.location} </> }
+              </div>
+              <Button className="w-14" onClick={() => toUrl(track, '/tracks/view', 'view')}>Näytä</Button>
+              </div>
 
-              <Button className="bg-gray-200"
+              <div className="flex">
+
+              {!track.published &&
+                <Button className="self-end"
+                  onClick={() => toUrl(track, '/tracks/edit', 'move')}
+                >Muokkaa</Button>
+              }
+
+              <Button className="self-end bg-red-200"
                 onClick={() => remove(track._id)}
               >Poista</Button>
-
-              <Button className=""
-                onClick={() => toUrl(track, '/tracks/edit', 'move')}
-              >Muokkaa</Button>
+              </div>
             </div>
           </div>
         </div>

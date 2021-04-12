@@ -9,7 +9,7 @@ const SignInButton = (props) => {
   )
 }
 const Button = (props) => {
-  const cName = "sm:m-1 md:m-2 text-sm rounded bg-orange-300 p-2 text-orange-900 hover:text-blue-700 "+props?.className 
+  const cName = props?.className +" sm:m-1 md:m-2 text-sm rounded bg-orange-300 p-2 text-orange-900 hover:text-blue-700"
   return (
     <div
       {...props}

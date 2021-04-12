@@ -6,10 +6,12 @@ import { SignInButton } from './Buttons'
 import { userState } from '../pages/profile'
 import { useRecoilState, } from 'recoil'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const Header = ({ menu }) => {
   const [session] = useSession()
   const [user, setUser] = useRecoilState(userState)
+  const router = useRouter()
 
   useEffect(async () => {
     // load/create additional user account to mongodb
@@ -27,6 +29,9 @@ const Header = ({ menu }) => {
       setUser({})
     }
   }, [session, user])
+
+
+  const showSignOut = ['/', '/profile', '/tracks'].includes(router.asPath)
 
 
   return (
@@ -49,10 +54,10 @@ const Header = ({ menu }) => {
           {!session && (
             <SignInButton onClick={async () => signin('google')}>Kirjaudu</SignInButton>
           )}
-          {session && (
+          {session && showSignOut && (
             <>
 
-              <Link href="/profile"><span className='m-2 self-center hidden md:inline'>{session.user.email}</span></Link>
+              <Link href="/profile"><span className={`m-2 self-center inline`}>{session.user.email}</span></Link>
               <SignInButton onClick={signout}>Kirjaudu ulos</SignInButton>
             </>
           )}

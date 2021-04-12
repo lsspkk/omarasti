@@ -22,7 +22,7 @@ const Layout = ({ menu, children }) => (
       <div className="flex-none">
     <Header menu={menu}/>
     </div>
-    <main className="flex-grow">{children}</main>
+    <main className="flex-grow md:container md:mx-auto">{children}</main>
     </div>
   </>
 )
