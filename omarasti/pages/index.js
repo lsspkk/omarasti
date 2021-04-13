@@ -3,6 +3,7 @@ import { signin, useSession } from 'next-auth/client'
 import Link from 'next/link'
 import { Button } from "../components/Buttons"
 import { Compass } from "../components/Compass"
+import { useEffect, useState } from 'react'
 const Menu = () => {
   return <>
     <Link href="/tracks"><Button>Radat</Button></Link>
@@ -47,9 +48,6 @@ export default function Home () {
         <li>Kun olet lähellä rastia, "näät" sen puhelimen ruudulla.</li>
         <li>Kun olet aivan rastin vieressä, voit "leimata" puhelimella.</li>
       </ul>
-      <div className="w-1/2">
-      <Compass ></Compass>
-      </div>
 
     </Layout>
   )

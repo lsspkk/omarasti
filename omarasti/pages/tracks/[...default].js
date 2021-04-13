@@ -126,7 +126,7 @@ const Design = ({ mapUrl }) => {
           <InFinishPanel finishRun={finishRun}/> 
         }
 
-        <div className="p-5 text-xs">GPS tarkkuus: { accurracy !== undefined ? accurracy : '-' }</div>
+        <div className="absolute bottom-0 left-0 p-5 text-xs z-10">GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }</div>
         </>
       }
 

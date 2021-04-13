@@ -38,6 +38,8 @@ export default async function handler(req, res) {
     return
   }
 
+
+  console.log(req.query)
   if (method === 'PUT') {
     await Track.findByIdAndUpdate(req.query.id, req.body, {
       new: true,
@@ -48,7 +50,7 @@ export default async function handler(req, res) {
   else if (method === 'DELETE') {
     try {
       await Track.findByIdAndDelete(req.query.id)
-      res.status(400).json({ success: true })
+      res.status(200).json({ success: true })
     } catch (error) {
       res.status(400).json({ success: false })
     }

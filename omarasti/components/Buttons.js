@@ -9,7 +9,11 @@ const SignInButton = (props) => {
   )
 }
 const Button = (props) => {
-  const cName = props?.className +" sm:m-1 md:m-2 text-sm rounded bg-orange-300 p-2 text-orange-900 hover:text-blue-700"
+
+  const add = props?.className? props?.className : '' 
+  const margins = add && add.includes(' m-') ? '' : ' m-1 md:m-2'
+  const paddings = add && add.includes(' p-') ?  '' : ' p-1 md:p-2'
+  const cName = "text-sm rounded bg-orange-300 text-orange-900 hover:text-blue-700 " + add + margins + paddings  
   return (
     <div
       {...props}

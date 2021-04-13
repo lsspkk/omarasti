@@ -38,9 +38,9 @@ const Header = ({ menu }) => {
     <header>
       <nav className='md:container mx-auto flex self-center'>
         <Link href='/' >
-          <div className='2-10 flex-none w-30 md:mr-8 '>
-            <img src='/logo.svg' alt='omaRasti' className='w-20 mt-2 mb-2' />
-            <span style={{ position: 'absolute', top: '21px', marginLeft: '11px', fontWeight: 'bold', opacity: '0.6', fontSize: '20px', lineHeight: '25px' }}>OMA<br />RASTI</span>
+          <div className='2-10 flex-none w-16 sm:w-30 md:mr-8 '>
+            <img src='/logo.svg' alt='omaRasti' className='w-13 sm:w-20 sm:mt-2 sm:mb-2' />
+            <span className='absolute top-0 mt-2 sm:mt-4 ml-2 bold opacity-5'>OMA<br />RASTI</span>
           </div>
         </Link>
 
