@@ -1,23 +1,32 @@
 
 import { useSession } from 'next-auth/client'
 import Layout from '../../../components/Layout'
-import { TrackLength} from '../../../components/TrackLength'
+import { TrackLength } from '../../../components/TrackLength'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { Button } from '../../../components/Buttons'
 import { ViewMenu } from '../../../components/ViewMenu'
 import { runState, emptyRun, trackState } from '../../../models/state'
+import { useState } from 'react'
 
 const StartRun = () => {
   const [session, loading] = useSession()
   const [, setRun] = useRecoilState(runState)
   const [track] = useRecoilState(trackState)
+  const [showPersonMarker, setShowPersonMarker] = useState(false)
   const router = useRouter()
   if (loading) return <div>loading...</div>
-  if (!session || !track) { router.push('/');return <div></div> }
+  if (!session || !track) { router.push('/'); return <div></div> }
 
   async function start() {
-    setRun({...emptyRun, trackId: track._id, start: new Date(), targetMarker: 1, currentLatlng: track.markers[0].latlng})
+    setRun({
+      ...emptyRun,
+      trackId: track._id,
+      start: new Date(),
+      targetMarker: 1,
+      currentLatlng: track.markers[0].latlng,
+      showPersonMarker
+    })
     router.push('/tracks/view')
   }
 
@@ -29,12 +38,22 @@ const StartRun = () => {
         <div className="m-5">
           <h1 className="py-10">Aloita suunnistus</h1>
           <p>
-            Mene lähelle ensimmäistä rastipistettä, klikkaa aloita.<br/>
+            Mene lähelle ensimmäistä rastipistettä, klikkaa aloita.<br />
             Ajanotto ja reitin seuranta käynnistyy.</p>
 
           <div className="flex my-5">
             <TrackLength markers={track?.markers} />
           </div>
+          <div className="flex my-5">
+            <input type='checkbox'
+              defaultChecked={showPersonMarker}
+              onChange={() => setShowPersonMarker(!showPersonMarker)}
+              className='checked:bg-blue-600 checked:border-transparent'
+            />
+            <label>Näytä sijainti</label>
+
+          </div>
+
         </div>
       </div>
       <div className="container flex justify-center">

@@ -63,7 +63,7 @@ const TrackPoints = () => {
         />
       )}
 
-      { run && <PersonMarker latlng={run.currentLatlng} />}
+      { run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
     </>
   )
 }

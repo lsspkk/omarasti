@@ -9,12 +9,12 @@ export const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
 
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
-    <div className="w-full p-10 flex justify-between">
+    <div className="w-full p-10 flex flex-col md:flex-row justify-between">
       <div>
         <Compass angle={direction} />
       </div>
 
-      <div className="flex flex-col mr-20 justify-start">
+      <div className="flex flex-col mr-20 justify-start mt-20 md:mt-0">
         <h1 className="w-200">Rasti näkyy</h1>
         {marker.description !== '' && <>
           <h3 className="w-200">Rastikuvaus:</h3>
@@ -32,13 +32,13 @@ export const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
 export const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
   const marker = track.markers[markerNumber - 1]
   return (
-    <div className="w-full p-10 flex justify-between">
+    <div className="w-full p-10 flex flex-col md:flex-row justify-between">
 
       <div className='w-80 mr-10'>
         <img src='/logo.svg' alt='RastiLippu' className='w-80' />
-        <div className='relative  mt-2 bold opacity-5 w-80'
-          style={{ top: '-160px', right: '20px', textAlign: 'right' }}>
-          <span className='text-sm'>{track.name}<br /> </span>
+        <div className='relative  mt-2 bold opacity-5 '
+          style={{ top: '-160px', right: '20px', textAlign: 'right', width: '200px' }}>
+          <span className='text-sm mr-3 inline-block'>{track.name}<br /> </span>
           <br /> <span className='text-6xl'>{markerNumber}</span></div>
       </div>
       <div className="flex flex-col mr-20 justify-start">
@@ -58,7 +58,7 @@ export const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
 export const SeeFinishPanel = ({ location, marker }) => {
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
-    <div className="w-full p-10 flex justify-between">
+    <div className="w-full p-10 flex flex-col md:flex-row justify-between">
       <div>
         <Compass angle={direction} />
       </div>

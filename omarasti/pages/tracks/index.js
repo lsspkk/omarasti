@@ -13,8 +13,6 @@ import dbConnect from '../../utils/dbConnect'
 
 const TracksMenu = () => {
   return <>
-    <Link href="track"><Button>Rata</Button></Link>
-    <Link href="design"><Button>Rastit</Button></Link>
   </>
 }
 

@@ -55,7 +55,7 @@ const StopRun = () => {
 
   return (
     <Layout menu={<div />}>
-      <div className="container m-10 flex flex-col justify-between w-5/6">
+      <div className="container m-5 md:m-10 flex flex-col justify-between w-5/6">
 
         <div className="flex my-2">
           <h1>Rata:</h1>
@@ -73,7 +73,7 @@ const StopRun = () => {
 
         {run && run?.markerTimes?.length > 0 &&
           <div>
-            <table className="w-1/2 ml-20 mr-30">
+            <table className="w-full md:w-1/2 ml-5 md:ml-20 mr-30">
               <tr>
                 <th className='text-left w-1/4'>Rasti</th>
                 <th className='text-left w-1/4'>Aika</th>

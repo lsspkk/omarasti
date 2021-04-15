@@ -23,6 +23,7 @@ const emptyLocationState = {
   distance : -1
 }
 
+
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
   const [session, loading] = useSession()
@@ -130,7 +131,9 @@ const Design = ({ mapUrl }) => {
           <InFinishPanel finishRun={finishRun}/> 
         }
 
-        <div className="absolute bottom-0 left-0 m-5 text-xs z-10 bg-white">
+        <div className="fixed bottom-0 left-0 p-1 text-xs bg-white xs:ml-10 md:ml-20"
+         style={{zIndex: '1000'}}
+        >
           GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }</div>
         </>
       }

@@ -10,7 +10,8 @@ const emptyRun = {
   markerTimes: [], 
   targetMarker: -1, 
   trackId: undefined,
-  currentLatlng: undefined
+  currentLatlng: undefined,
+  showPersonMarker: false
  }
 
 

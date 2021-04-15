@@ -20,6 +20,7 @@ const useAccurrateLocation = (accurracyWanted, accurracyWaitTime) => {
           setAccuracy(position.coords.accuracy)
 
           if (accurracyWanted == null || position.coords.accuracy < accurracyWanted) {
+            setError('')
             setLocation({ lat, lng })
           }
         },
