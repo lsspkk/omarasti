@@ -4,9 +4,9 @@ import Layout from '../../../components/Layout'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { Button } from '../../../components/Buttons'
-import { trackState } from '../../track'
-import { runState } from './start'
+import { runState, trackState } from '../../../models/state'
 import { totalDistance } from '../../../utils/location'
+import { TrackLength } from '../../../components/TrackLength'
 
 function showTime(start, end) {
   if (!start || !end) return ''
@@ -19,23 +19,15 @@ function showTime(start, end) {
 
 const MarkerResult = ({ i, markerTime, run }) => {
   const [track] = useRecoilState(trackState)
-  const markers=track.markers.slice(0, i+2)
+  const markers = track.markers.slice(0, i + 2)
   const distance = totalDistance(markers)
 
   return (
-    <div className="flex w-full justify-between">
-      <div className="text-3l">
-        Rasti: {i + 1}
-      </div>
-      <div>
-        Aika: {showTime(run.start, markerTime)}
-      </div>
-      <div>
-        Matka: {distance}
-      </div>
-      <div>
-      </div>
-    </div>
+    <tr>
+      <td className='text-left'>{i + 1}</td>
+      <td className='text-left'>{showTime(run.start, markerTime)}</td>
+      <td className='text-left'>{distance} m</td>
+    </tr>
   )
 }
 
@@ -46,7 +38,7 @@ const StopRun = () => {
   const [track] = useRecoilState(trackState)
   const router = useRouter()
   if (loading) return <div>loading...</div>
-  if (!session || !track) router.push('/')
+  if (!session || !track) { router.push('/'); return <div /> }
 
   useEffect(() => {
     if (run && !run.end) {
@@ -63,20 +55,37 @@ const StopRun = () => {
 
   return (
     <Layout menu={<div />}>
-      <div className="container flex flex-col justify-between w-5/6">
-          <h1 className="py-10">Aika {run && showTime(run.start, run.end)}</h1>
-          <div className="flex">
-            <label className="w-20">Pituus:</label>
-            <div className="w-40">{totalDistance(track !== undefined ? track.markers : [])}</div>
-          </div>
-        <div>
-          <h1 className="py-10">Rastiajat</h1>
-          <div>
-            {run && run.markerTimes && run.markerTimes.map((time, i) => <MarkerResult i={i} markerTime={time} run={run} />)}
-          </div>
+      <div className="container m-10 flex flex-col justify-between w-5/6">
+
+        <div className="flex my-2">
+          <h1>Rata:</h1>
+          <h1 className="ml-5">{track.name}</h1>
         </div>
+        <div className="flex my-5">
+          <TrackLength markers={track.markers} />
+        </div>
+
+
+        <div className="flex my-2">
+          <h1 className="py-10">Aika: {run && showTime(run.start, run.end)}</h1>
+        </div>
+
+
+        {run && run?.markerTimes?.length > 0 &&
+          <div>
+            <table className="w-1/2 ml-20 mr-30">
+              <tr>
+                <th className='text-left w-1/4'>Rasti</th>
+                <th className='text-left w-1/4'>Aika</th>
+                <th className='text-left w-1/4'>Matka</th>
+              </tr>
+              {run.markerTimes.map((time, i) => <MarkerResult i={i} markerTime={time} run={run} />)}
+            </table>
+          </div>
+
+        }
       </div>
-      <div className="container flex justify-center w-5/6">
+      <div className="container flex justify-end pr-20 w-full">
         <Button className="m-8" onClick={() => clear()}>Takaisin</Button>
       </div>
     </Layout>

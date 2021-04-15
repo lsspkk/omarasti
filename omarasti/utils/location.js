@@ -14,14 +14,13 @@ function getCoordinates() {
 // real geolocation, or simulated: 100 meters towards target
 async function getLocation(targetLatLng, previousLatLng) {
   
-  try {
-      const position = await getCoordinates()
-      return { lat: position.coords.latitude, lng: position.coords.longitude }
-  } catch (error) {
-      // console.log('No location:', error)      
-  }
+  // try {
+  //     const position = await getCoordinates()
+  //     return { lat: position.coords.latitude, lng: position.coords.longitude }
+  // } catch (error) {
+  //     // console.log('No location:', error)      
+  // }
   const simulated = simulateGetLocation(targetLatLng, previousLatLng)
-  // console.log(targetLatLng, previousLatLng, 'simulateGetLocation:', simulated)
   return simulated
 }
 

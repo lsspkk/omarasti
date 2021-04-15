@@ -1,3 +1,4 @@
+import { trackState } from '../models/state'
 import { angleInDegrees } from '../utils/location'
 import { Button } from './Buttons'
 import { Compass } from "./Compass"
@@ -8,31 +9,48 @@ export const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
 
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
-    <div className="p-10 ">
-
-      <h1 className="w-200">Rasti näkyy</h1>
-      <div className="w-100">Etäisyys: {Math.trunc(location.distance)}m</div>
-      <div className="w-100">Suunta: {direction} astetta</div>
-      { marker.description !== '' && <>
-        <h1 className="w-200">Rastikuvaus:</h1>
-        <div className="w-200">{marker.description}</div>
-      </>
-      }
-      <div style={{ transform: 'scale(0.8)', transformOrigin: 'top left' }}>
+    <div className="w-full p-10 flex justify-between">
+      <div>
         <Compass angle={direction} />
+      </div>
+
+      <div className="flex flex-col mr-20 justify-start">
+        <h1 className="w-200">Rasti näkyy</h1>
+        {marker.description !== '' && <>
+          <h3 className="w-200">Rastikuvaus:</h3>
+          <div className="w-200">{marker.description}</div>
+        </>
+
+        }
+        <div className="w-100">Suunta: {direction} astetta</div>
+        <div className="w-100">Etäisyys: {Math.trunc(location.distance)}m</div>
       </div>
     </div>
   )
 }
 
-export const TouchMarkerPanel = ({ touchMarker, marker, markerNumber }) => {
+export const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
+  const marker = track.markers[markerNumber - 1]
   return (
-    <div className="w-200 h-200 p-10 flex flex-col">
+    <div className="w-full p-10 flex justify-between">
 
-      <h1 className="w-200">Olet rastilla {markerNumber}</h1>
-      <h1 className="w-200">Rastikuvaus:</h1>
-      <div className="w-200">{marker.description === '' ? '-' : marker.description}</div>
-      <div className="w-200"><Button onClick={() => touchMarker()}>Leimaa rasti</Button></div>
+      <div className='w-80 mr-10'>
+        <img src='/logo.svg' alt='RastiLippu' className='w-80' />
+        <div className='relative  mt-2 bold opacity-5 w-80'
+          style={{ top: '-160px', right: '20px', textAlign: 'right' }}>
+          <span className='text-sm'>{track.name}<br /> </span>
+          <br /> <span className='text-6xl'>{markerNumber}</span></div>
+      </div>
+      <div className="flex flex-col mr-20 justify-start">
+        {marker.description !== '' && <>
+          <h1 className="w-200">Rastikuvaus:</h1>
+          <div className="w-200">{marker.description}</div>
+        </>
+        }
+        <h1>Olet rastilla</h1>
+        <div className="flex justify-end">
+          <Button className="w-30 p-3 mt-10" onClick={() => touchMarker()}>Leimaa</Button></div>
+      </div>
     </div>
   )
 }
@@ -40,13 +58,14 @@ export const TouchMarkerPanel = ({ touchMarker, marker, markerNumber }) => {
 export const SeeFinishPanel = ({ location, marker }) => {
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
-    <div className="p-10 ">
-
-      <h1 className="w-200">Maali näkyy</h1>
-      <div className="w-100">Etäisyys: {Math.trunc(location.distance)}m</div>
-      <div className="w-100">Suunta: {direction} astetta</div>
-      <div style={{ transform: 'scale(0.8)', transformOrigin: 'top left' }}>
+    <div className="w-full p-10 flex justify-between">
+      <div>
         <Compass angle={direction} />
+      </div>
+      <div className="flex flex-col mr-20 justify-start">
+        <h1 className="w-200">Maali näkyy</h1>
+        <div className="w-100">Etäisyys: {Math.trunc(location.distance)}m</div>
+        <div className="w-100">Suunta: {direction} astetta</div>
       </div>
     </div>
   )

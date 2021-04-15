@@ -7,8 +7,10 @@ import { userState } from '../pages/profile'
 import { useRecoilState, } from 'recoil'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { runState } from '../models/state'
 
 const Header = ({ menu }) => {
+  const [run] = useRecoilState(runState)
   const [session] = useSession()
   const [user, setUser] = useRecoilState(userState)
   const router = useRouter()
@@ -31,18 +33,22 @@ const Header = ({ menu }) => {
   }, [session, user])
 
 
-  const showSignOut = ['/', '/profile', '/tracks'].includes(router.asPath)
 
+  const showSignOut = ['/', '/profile', '/tracks'].includes(router.asPath)
+  // jos juoksu käynnissä, älä näytä rasti-ikonia
+  const showLogo = run === undefined || run?.start === undefined || run?.end !== undefined
 
   return (
     <header>
       <nav className='md:container mx-auto flex self-center'>
+        {showLogo &&
         <Link href='/' >
           <div className='2-10 flex-none w-16 sm:w-30 md:mr-8 '>
             <img src='/logo.svg' alt='omaRasti' className='w-13 sm:w-20 sm:mt-2 sm:mb-2' />
             <span className='absolute top-0 mt-2 sm:mt-4 ml-2 bold opacity-5'>OMA<br />RASTI</span>
           </div>
         </Link>
+        }
 
         <div className='container flex justify-start'>
           {session &&

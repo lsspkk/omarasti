@@ -1,18 +1,19 @@
 import { SignInButton } from './Buttons'
-import { runState } from '../pages/tracks/run/start'
+import { runState } from '../models/state'
 import { useRecoilState, } from 'recoil'
 
 const RunMenu = ({stopRun, timer}) => {
   const [run] = useRecoilState(runState)
 
-  // TODO say when next is the goal
-  const target = `rasti ${run.targetMarker}`
+  const isLastMarker = run?.targetMarker === (run?.markers?.length -1)
+  const target = isLastMarker ? 'maali' : `rasti ${run.targetMarker}`
+
   return (
-    <div className="flex justify-between text-sm align-center">
-      <div className="w-40">
+    <div className="flex justify-between text-sm align-center w-full">
+      <div className="w-1/2">
         <div className="flex">
-          <div>Suunnistus:</div>
-          <div className="text-2l">
+          <div>Suunnistusaika: </div>
+          <div className="text-2l ml-1">
             {timer}
           </div>
         </div>

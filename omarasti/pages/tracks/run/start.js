@@ -1,27 +1,12 @@
 
 import { useSession } from 'next-auth/client'
 import Layout from '../../../components/Layout'
+import { TrackLength} from '../../../components/TrackLength'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { Button } from '../../../components/Buttons'
 import { ViewMenu } from '../../../components/ViewMenu'
-import { trackState } from '../../track'
-import { totalDistance } from '../../../utils/location'
-import { atom } from 'recoil'
-
-const runState = atom({ key: 'runState', default: undefined })
-
-
-const emptyRun = { 
-  totalTime: -1,
-  start: undefined, 
-  end: undefined, 
-  route: [], 
-  markerTimes: [], 
-  targetMarker: -1, 
-  trackId: undefined,
-  currentLatlng: undefined
- }
+import { runState, emptyRun, trackState } from '../../../models/state'
 
 const StartRun = () => {
   const [session, loading] = useSession()
@@ -29,14 +14,13 @@ const StartRun = () => {
   const [track] = useRecoilState(trackState)
   const router = useRouter()
   if (loading) return <div>loading...</div>
-  if (!session || !track) router.push('/')
+  if (!session || !track) { router.push('/');return <div></div> }
 
   async function start() {
     setRun({...emptyRun, trackId: track._id, start: new Date(), targetMarker: 1, currentLatlng: track.markers[0].latlng})
     router.push('/tracks/view')
   }
 
-  const length = totalDistance(track?.markers)
 
   // TODO check distance from start marker and guide to it
   return (
@@ -45,12 +29,11 @@ const StartRun = () => {
         <div className="m-5">
           <h1 className="py-10">Aloita suunnistus</h1>
           <p>
-            Mene lähelle ensimmäistä rastipistettä, klikkaa aloita.
+            Mene lähelle ensimmäistä rastipistettä, klikkaa aloita.<br/>
             Ajanotto ja reitin seuranta käynnistyy.</p>
 
           <div className="flex my-5">
-            <label className="w-20">Pituus:</label>
-            <div className="w-40">{length}</div>
+            <TrackLength markers={track?.markers} />
           </div>
         </div>
       </div>
@@ -63,4 +46,3 @@ const StartRun = () => {
 }
 
 export default StartRun
-export { runState }

@@ -4,13 +4,12 @@ import Layout from '../../components/Layout'
 import { DesignMenu } from '../../components/DesignMenu'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import { runState } from './run/start'
 import { ViewMenu } from '../../components/ViewMenu'
 import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
-import { trackState } from '../track'
+import { runState, trackState } from '../../models/state'
 import { distance, getLocation } from '../../utils/location'
-import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel } from '../../components/Panels'
+import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
 const DesignMap = dynamic(() => {
@@ -35,7 +34,7 @@ const Design = ({ mapUrl }) => {
 
   const router = useRouter()
   if (loading) return <div>loading...</div>
-  if (!session) router.push('/')
+  if (!session || !track) { router.push('/'); return <div/> }
 
 
 
@@ -49,7 +48,7 @@ const Design = ({ mapUrl }) => {
     // location
     const previousLatlng = location.latlng.lat === -1 ? track.markers[0].latlng : location.latlng
     let latlng = undefined
-    if (locationError === '') {
+    if (locationError === '' && accurrateLocation.lat !== 0) {
       latlng = {...accurrateLocation } 
     }
     else {
@@ -82,6 +81,7 @@ const Design = ({ mapUrl }) => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
     setMyTimeout(-1)
     setTimer('')
+    setLocation(emptyLocationState)
     router.push('/tracks/run/stop')
   }
 
@@ -95,7 +95,9 @@ const Design = ({ mapUrl }) => {
   }
 
   const finishRun = () => {
+    setLocation(emptyLocationState)
     const end = new Date()
+    setTimer('')
     setRun({...run, markerTimes: [...run.markerTimes, end], end, totalTime: (end.getTime() - run.start.getTime())})
     router.push('/tracks/run/stop')
   }
@@ -104,7 +106,9 @@ const Design = ({ mapUrl }) => {
   const menu = router.asPath === "/tracks/edit" ? <DesignMenu /> : (run !== undefined ? <RunMenu stopRun={stopRun} timer={timer} /> : <ViewMenu />)
 
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
-  const mapCenter = run?.targetMarker > 0 ? track?.markers[run?.targetMarker-1].latlng : [61.504721, 23.825561]
+  let mapCenter = [61.504721, 23.825561]
+  if (run !== undefined) mapCenter = track?.markers[run?.targetMarker-1].latlng
+  else if (track !== undefined) mapCenter = track.markers[0].latlng
 
   return (
     <Layout menu={menu}>
@@ -114,7 +118,7 @@ const Design = ({ mapUrl }) => {
 
         {
           !isLastMarker && location.canTouchMarker && 
-          <TouchMarkerPanel touchMarker={touchMarker} marker={track.markers[run.targetMarker]} isLastMarker={isLastMarker} markerNumber={run.targetMarker}/>
+          <TouchMarkerPanel touchMarker={touchMarker} track={track} markerNumber={run.targetMarker}/>
         }
         { !isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
           <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/>
@@ -126,7 +130,8 @@ const Design = ({ mapUrl }) => {
           <InFinishPanel finishRun={finishRun}/> 
         }
 
-        <div className="absolute bottom-0 left-0 p-5 text-xs z-10">GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }</div>
+        <div className="absolute bottom-0 left-0 m-5 text-xs z-10 bg-white">
+          GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }</div>
         </>
       }
 

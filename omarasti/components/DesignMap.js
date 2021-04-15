@@ -7,15 +7,14 @@ import { PersonMarker } from './PersonMarker'
 import L from 'leaflet'
 
 import { designModeState } from './DesignMenu'
-import { trackState } from '../pages/track.js'
-import { runState } from '../pages/tracks/run/start'
+import { runState, trackState } from '../models/state'
 import { useRecoilState, } from 'recoil'
 
 
 const TrackPoints = () => {
-  const [mode, setMode] = useRecoilState(designModeState)
+  const [mode] = useRecoilState(designModeState)
   const [track, setTrack] = useRecoilState(trackState)
-  const [run, setRun] = useRecoilState(runState)
+  const [run] = useRecoilState(runState)
   const [lines, setLines] = useState([])
 
   const map = useMapEvents({
@@ -108,7 +107,10 @@ const DesignMap = ({ mapUrl, mapCenter }) => {
   }
   return (
     <MapContainer
-      style={{ width: '100%', height: '80vh' }} center={mapCenter} zoom={14.5}
+      style={{ width: '100%', height: '90vh' }} center={mapCenter} 
+      zoom={14.5}
+      minZoom={7}
+      maxZoom={16}
     >
       <TileLayer
         url={mapUrl}

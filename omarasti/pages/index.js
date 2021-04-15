@@ -12,6 +12,11 @@ const Menu = () => {
 
 export default function Home () {
   const [session, loading] = useSession()
+  const [angle, setAngle] = useState(0)
+
+  useEffect(() => {
+    setTimeout(() => setAngle((angle+1)%360), 100)
+  }, [angle])
   return (
     <Layout menu={<Menu/>}>
       <h3 className='mt-8 mb-8 text-xl text-bold text-orange-900'>Tervetuloa OMArastiin.</h3>
@@ -48,6 +53,7 @@ export default function Home () {
         <li>Kun olet lähellä rastia, "näät" sen puhelimen ruudulla.</li>
         <li>Kun olet aivan rastin vieressä, voit "leimata" puhelimella.</li>
       </ul>
+      <Compass angle={angle} cName=""></Compass>
 
     </Layout>
   )

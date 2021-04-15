@@ -5,9 +5,10 @@ import Link from 'next/link'
 import Layout from '../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../components/Buttons'
-import { atom, useRecoilState } from 'recoil'
+import { trackState } from '../models/state'
+import { useRecoilState } from 'recoil'
 import { totalDistance } from '../utils/location'
-const trackState = atom({ key: 'trackState', default: undefined })
+import { TrackLength } from '../components/TrackLength'
 
 const TrackMenu = () => {
   const { asPath } = useRouter()
@@ -25,7 +26,7 @@ const OneTrack = () => {
   const [message, setMessage] = useState('')
   const router = useRouter()
   if (loading) return <div>loading...</div>
-  if (!session || !track) router.push('/')
+  if (!session || !track) {router.push('/');return<div/>}
 
   useEffect(() => {
     if (track !== undefined) {
@@ -73,8 +74,7 @@ const OneTrack = () => {
 
 
         <div className="flex my-5">
-          <label className="w-20">Pituus:</label>
-          <div className="w-40">{length}</div>
+          <TrackLength markers={track.markers}/>
         </div>
         </div>
         {!track.published &&
