@@ -47,11 +47,13 @@ const TrackPoints = () => {
 
   return (
     <>
-      {track.markers.map((marker) =>
+      {track.markers.map((marker, index) =>
         <TrackMarker
           key={'rm-' + JSON.stringify(marker)}
           marker={marker}
           published={track.published}
+          index={index}
+          isLastMarker={index === track.markers.length-1}
         />
       )}
 

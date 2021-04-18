@@ -109,7 +109,7 @@ const Design = ({ mapUrl }) => {
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
   let mapCenter = [61.504721, 23.825561]
   if (run !== undefined) mapCenter = track?.markers[run?.targetMarker-1].latlng
-  else if (track !== undefined) mapCenter = track.markers[0].latlng
+  else if (track !== undefined && track.markers.length > 0) mapCenter = track.markers[0].latlng
 
   return (
     <Layout menu={menu}>
