@@ -10,7 +10,6 @@ const userState = atom({key: 'userState',default: {}})
 const Menu = () => {
   const router = useRouter()
   return <>
-    <div>Profiili</div>
     <Button onClick={() => router.back()}>Takaisin</Button>
     </>
 }

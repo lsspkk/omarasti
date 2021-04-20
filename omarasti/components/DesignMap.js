@@ -9,6 +9,7 @@ import L from 'leaflet'
 import { designModeState } from './DesignMenu'
 import { runState, trackState } from '../models/state'
 import { useRecoilState, } from 'recoil'
+import { angleInDegrees } from '../utils/location'
 
 
 const TrackPoints = () => {
@@ -54,6 +55,8 @@ const TrackPoints = () => {
           published={track.published}
           index={index}
           isLastMarker={index === track.markers.length-1}
+          angle={(index !== 0 || track.markers.length < 2) ? 0 :
+            angleInDegrees(marker.latlng, track.markers[1].latlng)}
         />
       )}
 

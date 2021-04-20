@@ -7,10 +7,11 @@ import { useRecoilState, } from 'recoil'
 import { trackState } from '../pages/track.js'
 import { Button } from './Buttons'
 
-export const MARKER_SIZE = 50
+const MARKER_SIZE = 50
 
-const RunTrackMarker = () => {
+const CustomTrackMarker = () => {
   return (
+
     <svg style={{ position: 'relative', marginLeft: "-20px", marginTop: "-20px" }}
       width={MARKER_SIZE} height={MARKER_SIZE} viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'>
       <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='45' stroke='#FA923B' strokeWidth='10' />
@@ -20,27 +21,30 @@ const RunTrackMarker = () => {
   )
 }
 
-const StartTrackMarker = () => {
+const StartMarker = () => {
   return (
-    <svg style={{ position: 'relative', marginLeft: "-20px", marginTop: "-20px" }}
-      width={MARKER_SIZE} height={MARKER_SIZE} viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'>
-      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='45' stroke='#FA923B' strokeWidth='10' />
-      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='40' stroke='rgba(0,0,0,0.5)' strokeWidth='1' />
-      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r={MARKER_SIZE} stroke='rgba(0,0,0,0.5)' strokeWidth='1' />
+    <svg width="55" height="48" viewBox="0 0 50 43" fill="none" >
+      <path d="M44.7786 40H5.20738L24.9402 5.96872L44.7786 40Z" stroke="#FA923B" stroke-width="6" />
     </svg>
+
   )
 }
 
 
-export const TrackMarker = ({ marker, published, index, isLastMarker }) => {
+const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
   const [track, setTrack] = useRecoilState(trackState)
   const [mode] = useRecoilState(designModeState)
   const [description, setDescription] = useState(marker.description)
-  const iconMarkup = renderToStaticMarkup(<RunTrackMarker />)
-  const number= (index > 0 && !isLastMarker) ? index : ''
-  const customMarkerIcon = divIcon({
-    html: `<span class="track-marker-number">${number}</span>${iconMarkup}`
-  })
+
+  const startIcon = renderToStaticMarkup(<StartMarker />)
+  const startHtml = `<div style="transform: rotate(${Math.round(angle + 5)}deg);position:absolute;transform-origin:27px 10px;">${startIcon}</div>`
+
+  const markerIcon = renderToStaticMarkup(<CustomTrackMarker />)
+  const number = (index > 0 && !isLastMarker) ? index : ''
+  const markerHtml = `<span class="track-marker-number">${number}</span>${markerIcon}`
+
+  const html = index == 0 ? startHtml : markerHtml
+  const customMarkerIcon = divIcon({ html })
 
   const onClick = () => {
     if (mode === 'remove') {
@@ -93,3 +97,5 @@ export const TrackMarker = ({ marker, published, index, isLastMarker }) => {
     </Marker>
   )
 }
+
+export { MARKER_SIZE, TrackMarker, StartMarker }
