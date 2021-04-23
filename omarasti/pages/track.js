@@ -14,7 +14,7 @@ const TrackMenu = () => {
   const { asPath } = useRouter()
   return <>
     <Link href="/tracks"><Button>Radat</Button></Link>
-    { asPath === '/track' && <Link href="/track/edit"><Button>Rastit</Button></Link>}
+    { asPath === '/track' && <Link href="/tracks/edit"><Button>Rastit</Button></Link>}
   </>
 }
 

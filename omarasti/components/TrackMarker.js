@@ -21,11 +21,42 @@ const CustomTrackMarker = () => {
   )
 }
 
-const StartMarker = () => {
+const FinishMarker = () => {
   return (
-    <svg width="55" height="48" viewBox="0 0 50 43" fill="none" >
-      <path d="M44.7786 40H5.20738L24.9402 5.96872L44.7786 40Z" stroke="#FA923B" stroke-width="6" />
+
+    <svg style={{ position: 'relative', marginLeft: "-20px", marginTop: "-20px" }}
+      width={MARKER_SIZE} height={MARKER_SIZE} viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'>
+      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='39' stroke='#FA923B' strokeWidth='5' />
+      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='48' stroke='#FA923B' strokeWidth='5' />
+      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='37' stroke='rgba(0,0,0,0.5)' strokeWidth='1' />
+      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='41' stroke='rgba(0,0,0,0.5)' strokeWidth='1' />
+      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r='47' stroke='rgba(0,0,0,0.5)' strokeWidth='1' />
+      <circle cx={MARKER_SIZE} cy={MARKER_SIZE} r={MARKER_SIZE} stroke='rgba(0,0,0,0.5)' strokeWidth='1' />
     </svg>
+  )
+}
+
+const StartMarker = ({angle}) => {
+  return (
+    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" style={{transformBox: 'fill-box', transformOrigin: 'center 50%', transform: `rotate(${Math.round(angle)}deg)`, margin: '-26px 0 0 -26px'}}>
+    <g filter="url(#filter0_d)">
+    <path d="M7.57278 43L30.5 3.96195L53.4272 43H7.57278Z" stroke="#FA923B" stroke-width="3"/>
+    <path d="M10.1484 42.25L30.5 7L50.8516 42.25H10.1484Z" stroke="black" stroke-opacity="0.2"/>
+    <path d="M4.95948 44.5L30.5 0.987732L56.0405 44.5H4.95948Z" stroke="black" stroke-opacity="0.2"/>
+    </g>
+    <defs>
+    <filter id="filter0_d" x="0.0862274" y="0" width="60.8275" height="53" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
+    <feOffset dy="4"/>
+    <feGaussianBlur stdDeviation="2"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+    </filter>
+    </defs>
+    </svg>
+
 
   )
 }
@@ -36,14 +67,17 @@ const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
   const [mode] = useRecoilState(designModeState)
   const [description, setDescription] = useState(marker.description)
 
-  const startIcon = renderToStaticMarkup(<StartMarker />)
-  const startHtml = `<div style="transform: rotate(${Math.round(angle + 5)}deg);position:absolute;transform-origin:27px 10px;">${startIcon}</div>`
+  const startIcon = renderToStaticMarkup(<StartMarker angle={angle}/>)
+  const startHtml = `<span style="">${startIcon}</span>`
+
+  const finishIcon = renderToStaticMarkup(<FinishMarker/>)
+  const finishHtml = `<span style="">${finishIcon}</span>`
 
   const markerIcon = renderToStaticMarkup(<CustomTrackMarker />)
   const number = (index > 0 && !isLastMarker) ? index : ''
   const markerHtml = `<span class="track-marker-number">${number}</span>${markerIcon}`
 
-  const html = index == 0 ? startHtml : markerHtml
+  const html = index == 0 ? startHtml : isLastMarker ? finishHtml : markerHtml
   const customMarkerIcon = divIcon({ html })
 
   const onClick = () => {
@@ -98,4 +132,4 @@ const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
   )
 }
 
-export { MARKER_SIZE, TrackMarker, StartMarker }
+export { MARKER_SIZE, TrackMarker, StartMarker, FinishMarker }

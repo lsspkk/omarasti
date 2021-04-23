@@ -11,7 +11,8 @@ const emptyRun = {
   targetMarker: -1, 
   trackId: undefined,
   currentLatlng: undefined,
-  showPersonMarker: false
+  showPersonMarker: false,
+  routeMarkTime : undefined
  }
 
 

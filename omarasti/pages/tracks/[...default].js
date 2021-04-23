@@ -59,16 +59,19 @@ const Design = ({ mapUrl }) => {
     if (latlng.lat === previousLatlng.lat && latlng.lng === previousLatlng.lng) {
       return
     }
-    setRun({ ...run, route: [...run.route, latlng], currentLatlng: latlng })
+    // every 10 seconds store the route in array
+    const markRoute = run.routeMarkTime === undefined || (new Date().getTime() - run.routeMarkTime.getTime()) > 10000
+    const route = markRoute ? [...run.route, {latlng, timestamp: new Date()}] : run.route
+    const routeMarkTime = markRoute ? new Date() : run.routeMarkTime
+    setRun({ ...run, routeMarkTime, route, currentLatlng: latlng })
     const d = distance(latlng, track.markers[run.targetMarker].latlng)
     setLocation({latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d})    
   }
 
 
-
   useEffect(() => {
     if (run && !run.end) {
-      const timeout = window.setTimeout(() => updateRun(), 1000)
+      const timeout = window.setTimeout(() => updateRun(), 200)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
     }
@@ -78,6 +81,7 @@ const Design = ({ mapUrl }) => {
     }
   }, [run, timer])
 
+
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
     setMyTimeout(-1)
@@ -85,7 +89,6 @@ const Design = ({ mapUrl }) => {
     setLocation(emptyLocationState)
     router.push('/tracks/run/stop')
   }
-
 
 
   const touchMarker = () => {
@@ -104,6 +107,7 @@ const Design = ({ mapUrl }) => {
   }
 
 
+  const showRoute = router.asPath === "/tracks/route" && (run !== undefined)
   const menu = router.asPath === "/tracks/edit" ? <DesignMenu /> : (run !== undefined ? <RunMenu stopRun={stopRun} timer={timer} /> : <ViewMenu />)
 
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
@@ -114,7 +118,7 @@ const Design = ({ mapUrl }) => {
   return (
     <Layout menu={menu}>
 
-      { !location.canSeeMarker && <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> }
+      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> 
       { run !== undefined && <>
 
         {

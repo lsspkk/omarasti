@@ -65,7 +65,6 @@ const StopRun = () => {
           <TrackLength markers={track.markers} />
         </div>
 
-
         <div className="flex my-2">
           <h1 className="py-10">Aika: {run && showTime(run.start, run.end)}</h1>
         </div>
@@ -82,10 +81,10 @@ const StopRun = () => {
               {run.markerTimes.map((time, i) => <MarkerResult i={i} markerTime={time} run={run} />)}
             </table>
           </div>
-
         }
       </div>
       <div className="container flex justify-end pr-20 w-full">
+        <Button className="m-8" onClick={() => router.push('/tracks/route')}>Näytä reitti</Button>
         <Button className="m-8" onClick={() => clear()}>Takaisin</Button>
       </div>
     </Layout>

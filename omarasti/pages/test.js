@@ -20,7 +20,7 @@ const TestPage = () => {
     const [angle, setAngle] = useState(0)
 
     useEffect(() => {
-      setTimeout(() => setAngle((angle+1)), 100)
+      setTimeout(() => setAngle((angle+5)), 100)
     }, [angle])
   
     if (typeof window === "undefined") {
@@ -30,9 +30,18 @@ const TestPage = () => {
 
   return (
     <Layout menu={<div/>}>
-      <div className="container flex justify-between">
+      <div className="container">
         <h1>Hei</h1>
-          <div style={{transform: `rotate(${angle}deg)`, transition: 'transform 900ms ease'}}><Marker/></div>
+          <div style={{margin:'-40px 0 0 4px'}}>
+          <Marker angle={angle}/>
+          </div>
+
+          <svg>
+            <g>
+              <path />      
+            </g>
+
+          </svg>
         </div>
     </Layout>
   )

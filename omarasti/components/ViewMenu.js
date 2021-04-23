@@ -20,8 +20,6 @@ const ViewMenu = (props) => {
   return (
     <>
         <Link href="/tracks"><Button>Radat</Button></Link>
-        <ViewButton href='/tracks/view'>Rastit</ViewButton>
-        <ViewButton href='/tracks/info'>Tiedot</ViewButton>
         <ViewButton href='/tracks/run/start'>Suunnista</ViewButton>
       {props.children}
     </>
