@@ -24,13 +24,17 @@ const useAccurrateLocation = (accurracyWanted, accurracyWaitTime) => {
             setLocation({ lat, lng })
           }
         },
-        (e) => setError(e.message),
+        (e) => { 
+          setError(e.message) 
+          setTimeout(() =>setError(''), 3000)
+        },
         { enableHighAccuracy: true, maximumAge: 2000, timeout: 5000 }
       )
       if (accurracyWanted && accurracyWaitTime) {
         timeout = setTimeout(() => {
           if (!accuracy || accuracy < accurracyWanted) {
             setError(`Haluttu paikannustarkkuus ei saavutettu, tarkkuus(${accuracy}`)
+            setTimeout(() =>setError(''), 3000)
           }
         }, accurracyWaitTime * 1000)
       }

@@ -56,9 +56,6 @@ const Design = ({ mapUrl }) => {
       latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
     }
 
-    if (latlng.lat === previousLatlng.lat && latlng.lng === previousLatlng.lng) {
-      return
-    }
     // every 10 seconds store the route in array
     const markRoute = run.routeMarkTime === undefined || (new Date().getTime() - run.routeMarkTime.getTime()) > 10000
     const route = markRoute ? [...run.route, {latlng, timestamp: new Date()}] : run.route
