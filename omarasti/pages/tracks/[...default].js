@@ -107,7 +107,7 @@ const Design = ({ mapUrl }) => {
   }
 
 
-  const showRoute = router.asPath === "/tracks/route" && (run !== undefined)
+  // const showRoute = router.asPath === "/tracks/route" && (run !== undefined)
   const menu = router.asPath === "/tracks/edit" ? <DesignMenu /> : (run !== undefined ? <RunMenu stopRun={stopRun} timer={timer} /> : <ViewMenu />)
 
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
@@ -138,7 +138,11 @@ const Design = ({ mapUrl }) => {
         <div className="fixed bottom-0 left-0 p-1 text-xs bg-white xs:ml-10 md:ml-20"
          style={{zIndex: '1000'}}
         >
-          GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }</div>
+          GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }
+          <br/>
+          Sijainti: { run.currentLatlng.lat },{ run.currentLatlng.lng }
+          </div>
+          { locationError !== '' && <span>{locationError}</span> }
         </>
       }
 
