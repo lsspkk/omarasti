@@ -57,12 +57,13 @@ const Design = ({ mapUrl }) => {
       latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
     }
 
-    let route = run.route
+    let newRun = { ...run, currentLatlng: latlng }
     // every 10 seconds store the route in array
     if (run.routeMarkTime === undefined && now - run.routeMarkTime > 10000) {
-      route = [...route, {latlng, timestamp: (run.start.getTime() - now)}]      
+      newRun.route = [...run.route, {latlng, timestamp: (run.start.getTime() - now)}]
+      newRun.routeMarkTime = now
     }
-    setRun({ ...run, routeMarkTime, route, currentLatlng: latlng })
+    setRun(newRun)
     const d = distance(latlng, track.markers[run.targetMarker].latlng)
     setLocation({latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d})    
   }
@@ -139,7 +140,7 @@ const Design = ({ mapUrl }) => {
         >
           GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }
           <br/>
-          Sijainti: { run.currentLatlng.lat },{ run.currentLatlng.lng }
+          Sijainti: { run.currentLatlng.lat } - { run.currentLatlng.lng }
           </div>
           { locationError !== '' && <span>{locationError}</span> }
         </>
