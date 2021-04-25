@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 /**
  * When you start getting coordinates from phone GPS, 
  * it takes some time to get accurrate results.
- * Estimate 2 secs to get 10m
+ * accurracyWanted filters out results e.g. with 30meters variation
  */
 const useAccurrateLocation = (accurracyWanted, accurracyWaitTime) => {
   const [accuracy, setAccuracy] = useState(0)

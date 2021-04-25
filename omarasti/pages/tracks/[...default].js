@@ -31,7 +31,7 @@ const Design = ({ mapUrl }) => {
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
-  const [accurrateLocation, accurracy, locationError] = useAccurrateLocation(10, 2) // 10m, 2s
+  const [accurrateLocation, accurracy, locationError] = useAccurrateLocation(30, 2) // 30m, 2s
 
   const router = useRouter()
   if (loading) return <div>loading...</div>
@@ -41,7 +41,8 @@ const Design = ({ mapUrl }) => {
 
   async function updateRun() {
     // timer
-    const time = (new Date().getTime()) - run.start.getTime()
+    const now = new Date().getTime()
+    const time = now - run.start.getTime()
     const minutes = Math.floor(time / 60000)
     const seconds = Math.floor((time - minutes * 60000) / 1000)
     setTimer(() => `${(minutes)}m ${(seconds)}s`)
@@ -56,10 +57,11 @@ const Design = ({ mapUrl }) => {
       latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
     }
 
+    let route = run.route
     // every 10 seconds store the route in array
-    const markRoute = run.routeMarkTime === undefined || (new Date().getTime() - run.routeMarkTime.getTime()) > 10000
-    const route = markRoute ? [...run.route, {latlng, timestamp: new Date()}] : run.route
-    const routeMarkTime = markRoute ? new Date() : run.routeMarkTime
+    if (run.routeMarkTime === undefined && now - run.routeMarkTime > 10000) {
+      route = [...route, {latlng, timestamp: (run.start.getTime() - now)}]      
+    }
     setRun({ ...run, routeMarkTime, route, currentLatlng: latlng })
     const d = distance(latlng, track.markers[run.targetMarker].latlng)
     setLocation({latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d})    
@@ -68,7 +70,7 @@ const Design = ({ mapUrl }) => {
 
   useEffect(() => {
     if (run && !run.end) {
-      const timeout = window.setTimeout(() => updateRun(), 200)
+      const timeout = window.setTimeout(() => updateRun(), 1000)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
     }
