@@ -10,6 +10,7 @@ import { designModeState } from './DesignMenu'
 import { runState, trackState } from '../models/state'
 import { useRecoilState, } from 'recoil'
 import { angleInDegrees } from '../utils/location'
+import { RouteLines } from './RouteLines'
 
 
 const TrackPoints = () => {
@@ -106,7 +107,7 @@ const makeLines = (markers, map) => {
   return lines
 }
 
-const DesignMap = ({ mapUrl, mapCenter }) => {
+const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
   if (typeof window === 'undefined') {
     return null
   }
@@ -122,6 +123,7 @@ const DesignMap = ({ mapUrl, mapCenter }) => {
         attribution='MML avoin data'
       />
       <TrackPoints />
+      { showRoute === true && <RouteLines showRouteIndex={showRouteIndex}/> }
     </MapContainer>
   )
 }

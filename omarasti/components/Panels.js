@@ -62,7 +62,7 @@ export const SeeFinishPanel = ({ location, marker }) => {
       <div>
         <Compass angle={direction} />
       </div>
-      <div className="flex flex-col mr-20 justify-start">
+      <div className="flex flex-col mr-20 justify-start bg-white">
         <h1 className="w-200">Maali näkyy</h1>
         <div className="w-100">Etäisyys: {Math.trunc(location.distance)}m</div>
         <div className="w-100">Suunta: {direction} astetta</div>
@@ -74,10 +74,10 @@ export const SeeFinishPanel = ({ location, marker }) => {
 
 export const InFinishPanel = ({ finishRun }) => {
   return (
-    <div className="container h-7/8 p-10 flex flex-col absolute top-20 bg-white " style={{zIndex: '1000'}}>
+    <div className="container h-7/8 p-10 flex flex-col absolute top-20 bg-white absolute top-0" style={{zIndex: '1000'}}>
 
-      <h1 className="w-200">Olet maalissa</h1>
-      <div className="w-200"><Button onClick={() => finishRun()}>Ylitä maalilinja</Button></div>
+      <h1 className="w-200 bg-white">Olet maaliviivalla</h1>
+      <div className="w-200"><Button onClick={() => finishRun()}>Saavu maaliin</Button></div>
     </div>
   )
 }
