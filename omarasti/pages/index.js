@@ -4,15 +4,17 @@ import Link from 'next/link'
 import { Button } from "../components/Buttons"
 import { Compass } from "../components/Compass"
 import { useEffect, useState } from 'react'
+import dbConnect from '../utils/dbConnect'
 const Menu = () => {
   return <>
     <Link href="/tracks"><Button>Radat</Button></Link>
   </>
 }
 
-export default function Home () {
+export default function Home ({warm}) {
   const [session, loading] = useSession()
   const [angle, setAngle] = useState(0)
+
 
   useEffect(() => {
     setTimeout(() => setAngle((angle+1)%360), 100)
@@ -57,4 +59,10 @@ export default function Home () {
 
     </Layout>
   )
+}
+
+// speed up serverless by warming up db connection
+export async function getServerSideProps({req}) {
+  dbConnect().then(() => console.log('Warmed up') )
+  return { props: { 'warm' : 'up' } }
 }
