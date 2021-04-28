@@ -4,7 +4,7 @@ const Compass = ({ angle, cName }) => {
         <svg width="258" height="265" className={cName} viewBox="0 0 258 265" fill="none" >
             <defs>
                 <filter id="filter0_d" x="39.6432" y="198.81" width="29.1678" height="29.5406" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -13,7 +13,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter1_d" x="188.405" y="50.6465" width="29.9203" height="29.9203" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -22,7 +22,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter2_d" x="188.646" y="198.806" width="29.9203" height="29.9203" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -31,7 +31,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter3_d" x="39.6555" y="52.6376" width="28.9021" height="27.938" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -40,7 +40,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter4_d" x="86.5838" y="218.883" width="11.5456" height="14.8659" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -49,7 +49,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter5_d" x="159.162" y="46.0276" width="11.6027" height="14.8498" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -58,7 +58,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter6_d" x="208.235" y="169.415" width="14.8498" height="11.6027" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -67,7 +67,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter7_d" x="34.1501" y="98.8979" width="14.8921" height="11.4472" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -76,7 +76,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter8_d" x="34.4655" y="169.557" width="14.8331" height="11.6594" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -85,7 +85,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter9_d" x="208.03" y="98.6929" width="14.8498" height="11.6027" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -94,7 +94,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter10_d" x="159.402" y="219.018" width="11.6027" height="14.8498" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -103,7 +103,7 @@ const Compass = ({ angle, cName }) => {
                     <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
                 </filter>
                 <filter id="filter11_d" x="86.1619" y="46.0412" width="11.7558" height="14.8031" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
                     <feOffset dy="4" />
                     <feGaussianBlur stdDeviation="2" />
@@ -168,8 +168,8 @@ const Compass = ({ angle, cName }) => {
 
 
             <line x1="129" y1="136" x2="136" y2="30"
-                stroke="#000" stroke-width="5"
-                marker-end="url(#arrowhead)"
+                stroke="#000" strokeWidth="5"
+                markerEnd="url(#arrowhead)"
                 transform={`rotate(${angle})`}
                 transform-origin='129 136'
             />

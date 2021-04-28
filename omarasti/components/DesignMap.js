@@ -68,8 +68,6 @@ const TrackPoints = () => {
           color='#FA923B'
         />
       )}
-
-      { run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
     </>
   )
 }
@@ -111,6 +109,7 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
   if (typeof window === 'undefined') {
     return null
   }
+
   return (
     <MapContainer
       style={{ width: '100%', height: '90vh' }} center={mapCenter} 
@@ -123,7 +122,9 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
         attribution='MML avoin data'
       />
       <TrackPoints />
-      { showRoute === true && <RouteLines showRouteIndex={showRouteIndex}/> }
+      { !showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
+      { showRoute && <RouteLines showRouteIndex={showRouteIndex}/> }
+
     </MapContainer>
   )
 }

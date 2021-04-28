@@ -40,13 +40,13 @@ const StartMarker = ({angle}) => {
   return (
     <svg width="60" height="60" viewBox="0 0 60 60" fill="none" style={{transformBox: 'fill-box', transformOrigin: 'center 50%', transform: `rotate(${Math.round(angle)}deg)`, margin: '-26px 0 0 -26px'}}>
     <g filter="url(#filter0_d)">
-    <path d="M7.57278 43L30.5 3.96195L53.4272 43H7.57278Z" stroke="#FA923B" stroke-width="3"/>
-    <path d="M10.1484 42.25L30.5 7L50.8516 42.25H10.1484Z" stroke="black" stroke-opacity="0.2"/>
-    <path d="M4.95948 44.5L30.5 0.987732L56.0405 44.5H4.95948Z" stroke="black" stroke-opacity="0.2"/>
+    <path d="M7.57278 43L30.5 3.96195L53.4272 43H7.57278Z" stroke="#FA923B" strokeWidth="3"/>
+    <path d="M10.1484 42.25L30.5 7L50.8516 42.25H10.1484Z" stroke="black" strokeOpacity="0.2"/>
+    <path d="M4.95948 44.5L30.5 0.987732L56.0405 44.5H4.95948Z" stroke="black" strokeOpacity="0.2"/>
     </g>
     <defs>
-    <filter id="filter0_d" x="0.0862274" y="0" width="60.8275" height="53" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <filter id="filter0_d" x="0.0862274" y="0" width="60.8275" height="53" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+    <feFlood floodOpacity="0" result="BackgroundImageFix"/>
     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/>
     <feOffset dy="4"/>
     <feGaussianBlur stdDeviation="2"/>

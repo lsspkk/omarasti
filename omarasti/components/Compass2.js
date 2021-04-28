@@ -677,8 +677,8 @@ const Compass = ({angle, cName}) => {
                 </marker>
             </defs>
             <line x1="372" y1="372" x2="372" y2="130"
-                stroke="#000" stroke-width="8"
-                marker-end="url(#arrowhead)" 
+                stroke="#000" strokeWidth="8"
+                markerEnd="url(#arrowhead)" 
                 transform={`rotate(${angle})`}
                 transform-origin='50% 50%'
                 />

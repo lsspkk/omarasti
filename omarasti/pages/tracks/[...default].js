@@ -59,8 +59,8 @@ const Design = ({ mapUrl }) => {
 
     let newRun = { ...run, currentLatlng: latlng }
     // every 10 seconds store the route in array
-    if (run.routeMarkTime === undefined && now - run.routeMarkTime > 10000) {
-      newRun.route = [...run.route, {latlng, timestamp: (run.start.getTime() - now)}]
+    if (run.routeMarkTime === undefined || now - run.routeMarkTime > 10000) {
+      newRun.route = [...run.route, {latlng, timestamp: time}]
       newRun.routeMarkTime = now
     }
     setRun(newRun)
