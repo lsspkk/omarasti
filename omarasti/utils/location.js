@@ -14,7 +14,8 @@ function getCoordinates() {
 const simulateLocation = process.env.NEXT_PUBLIC_SIMULATE_LOCATION === 'true'
 const INTERVALS = {
   markRoute: simulateLocation ? 100 : 10000,
-  updateLocation: simulateLocation ? 50 : 1000
+  updateLocation: simulateLocation ? 50 : 1000,
+  drawRoute: simulateLocation ? 25 : 100
 }
 
 
