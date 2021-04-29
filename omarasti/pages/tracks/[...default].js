@@ -8,7 +8,7 @@ import { ViewMenu } from '../../components/ViewMenu'
 import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
 import { runState, trackState } from '../../models/state'
-import { distance, getLocation, INTERVALS } from '../../utils/location'
+import { getCoordinates, distance, getLocation, INTERVALS } from '../../utils/location'
 import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
@@ -22,7 +22,7 @@ const emptyLocationState = {
   latlng: { lat: -1, lng: -1 },
   distance : -1
 }
-
+const TAMPERE = [61.504721, 23.825561]
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
   const [session, loading] = useSession()
@@ -31,6 +31,7 @@ const Design = ({ mapUrl }) => {
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
   const [accurrateLocation, accurracy, locationError] = useAccurrateLocation(30, 2) // 30m, 2s
+  const [coordinates, setCoordinates] = useState(TAMPERE)
 
   const router = useRouter()
   if (loading) return <div>loading...</div>
@@ -81,6 +82,15 @@ const Design = ({ mapUrl }) => {
   }, [run, timer])
 
 
+  useEffect(async () => {
+      try {
+        const position = await getCoordinates()
+        setCoordinates([position.coords.latitude, position.coords.longitude])
+      } catch (error) {
+        console.log('No location:', error)
+      }
+  }, [])
+
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
     setMyTimeout(-1)
@@ -114,9 +124,9 @@ const Design = ({ mapUrl }) => {
   const menu = router.asPath === "/tracks/edit" ? <DesignMenu /> : (run !== undefined ? <RunMenu stopRun={stopRun} timer={timer} /> : <ViewMenu />)
 
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
-  let mapCenter = [61.504721, 23.825561]
-  if (run !== undefined) mapCenter = track?.markers[run?.targetMarker-1].latlng
-  else if (track !== undefined && track.markers.length > 0) mapCenter = track.markers[0].latlng
+  let mapCenter = coordinates
+  if (run !== undefined) mapCenter = (track?.markers[run?.targetMarker-1].latlng)
+  else if (track !== undefined && track.markers.length > 0) mapCenter = (track.markers[0].latlng)
 
   return (
     <Layout menu={menu}>
