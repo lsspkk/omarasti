@@ -8,7 +8,7 @@ export const MARKER_SIZE = 200
 
 const Panel = ({ children }) => {
   return (
-    <div className="container pl-20 flex flex-col md:flex-row justify-between absolute top-0 mt-16 sm:mt-20  items-start" style={{ zIndex: '1000' }}>
+    <div className="container flex flex-col md:flex-row justify-between absolute top-0 mt-12 sm:mt-20 ml-2 sm:ml-20 items-start" style={{ zIndex: '1000' }}>
       {children}
     </div>
   )
