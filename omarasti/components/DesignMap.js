@@ -106,6 +106,7 @@ const makeLines = (markers, map) => {
 }
 
 const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
+  const [run] = useRecoilState(runState)
   if (typeof window === 'undefined') {
     return null
   }
