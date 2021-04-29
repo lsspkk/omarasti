@@ -12,6 +12,11 @@ function getCoordinates() {
 }
 
 const simulateLocation = process.env.NEXT_PUBLIC_SIMULATE_LOCATION === 'true'
+const INTERVALS = {
+  markRoute: simulateLocation ? 100 : 10000,
+  updateLocation: simulateLocation ? 50 : 1000
+}
+
 
 // real geolocation, or simulated: 10 meters towards target
 async function getLocation(targetLatLng, previousLatLng) {
@@ -99,4 +104,4 @@ function angleInDegrees(latlng1, latlng2) {
 }
 
 
-export { angleInDegrees, distance, getLocation, totalDistance }
+export { angleInDegrees, distance, getLocation, totalDistance, INTERVALS }

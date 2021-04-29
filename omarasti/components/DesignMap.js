@@ -65,7 +65,7 @@ const TrackPoints = () => {
         <Polyline
           key={'lp' + JSON.stringify(linePositions)}
           positions={linePositions}
-          color='#FA923B'
+          pathOptions={{color:'#FA923B', weight: '5'}}
         />
       )}
     </>

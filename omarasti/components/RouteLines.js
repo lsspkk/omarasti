@@ -37,11 +37,8 @@ const RouteLines = ({ showRouteIndex }) => {
   if (!run) {
     return <div/>
   }
-  console.log(run.route)
   const points = run.route.filter((r, index) => index < showRouteIndex)
-  console.log(JSON.stringify(points))
   const lines = makeRouteLines(points)
-  console.log(JSON.stringify(lines), showRouteIndex)
   return (
     <>
       {lines.map((linePositions, index) =>

@@ -2,10 +2,10 @@ import { SignInButton } from './Buttons'
 import { runState } from '../models/state'
 import { useRecoilState, } from 'recoil'
 
-const RunMenu = ({stopRun, timer}) => {
+const RunMenu = ({ stopRun, timer }) => {
   const [run] = useRecoilState(runState)
 
-  const isLastMarker = run?.targetMarker === (run?.markers?.length -1)
+  const isLastMarker = run?.targetMarker === (run?.markers?.length - 1)
   const target = isLastMarker ? 'maali' : `rasti ${run.targetMarker}`
 
   return (
@@ -17,15 +17,17 @@ const RunMenu = ({stopRun, timer}) => {
             {timer}
           </div>
         </div>
+        { run?.end !== undefined && 
         <div>
           Seuraava: {target}
         </div>
+        }
       </div>
 
       <SignInButton onClick={() => stopRun()}>
-        Lopeta
+      Lopeta
       </SignInButton>
-    </div>
+    </div >
   )
 }
 

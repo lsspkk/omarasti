@@ -8,7 +8,7 @@ import { ViewMenu } from '../../components/ViewMenu'
 import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
 import { runState, trackState } from '../../models/state'
-import { distance, getLocation } from '../../utils/location'
+import { distance, getLocation, INTERVALS } from '../../utils/location'
 import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
@@ -22,7 +22,6 @@ const emptyLocationState = {
   latlng: { lat: -1, lng: -1 },
   distance : -1
 }
-
 
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
@@ -59,7 +58,7 @@ const Design = ({ mapUrl }) => {
 
     let newRun = { ...run, currentLatlng: latlng }
     // every 10 seconds store the route in array
-    if (run.routeMarkTime === undefined || now - run.routeMarkTime > 10000) {
+    if (run.routeMarkTime === undefined || now - run.routeMarkTime > INTERVALS.markRoute) {
       newRun.route = [...run.route, {latlng, timestamp: time}]
       newRun.routeMarkTime = now
     }
@@ -71,7 +70,7 @@ const Design = ({ mapUrl }) => {
 
   useEffect(() => {
     if (run && !run.end) {
-      const timeout = window.setTimeout(() => updateRun(), 1000)
+      const timeout = window.setTimeout(() => updateRun(), INTERVALS.updateLocation)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
     }
@@ -102,7 +101,11 @@ const Design = ({ mapUrl }) => {
     setLocation(emptyLocationState)
     const end = new Date()
     setTimer('')
-    setRun({...run, markerTimes: [...run.markerTimes, end], end, totalTime: (end.getTime() - run.start.getTime())})
+    setRun({...run, end, 
+      markerTimes: [...run.markerTimes, end], 
+      totalTime: (end.getTime() - run.start.getTime()),
+      route: [...run.route, {latlng : track.markers[run.targetMarker].latlng, timestamp: end.getTime()}]
+    })
     router.push('/tracks/run/stop')
   }
 

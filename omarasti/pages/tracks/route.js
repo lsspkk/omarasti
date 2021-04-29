@@ -1,16 +1,13 @@
 import { useEffect, useState, useRef } from 'react'
 import { useSession } from 'next-auth/client'
 import Layout from '../../components/Layout'
-import { DesignMenu } from '../../components/DesignMenu'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { ViewMenu } from '../../components/ViewMenu'
 import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
 import { runState, trackState } from '../../models/state'
-import { distance, getLocation } from '../../utils/location'
-import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
-import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
+import { INTERVALS } from '../../utils/location'
 
 const DesignMap = dynamic(() => {
   return import('../../components/DesignMap')
@@ -35,7 +32,7 @@ const Route = ({ mapUrl }) => {
     setShowRouteIndex(showRouteIndex+1)
 
     // timer
-    const time = point.timestamp - run.start.getTime()
+    const time = point.timestamp
     const minutes = Math.floor(time / 60000)
     const seconds = Math.floor((time - minutes * 60000) / 1000)
     setTimer(() => `${(minutes)}m ${(seconds)}s`)
@@ -43,17 +40,22 @@ const Route = ({ mapUrl }) => {
 
 
   useEffect(() => {
+    setTimer('')
+    setShowRouteIndex(0)
+  }, [run])
+
+  useEffect(() => {
     if (run && run.route && showRouteIndex < run.route.length) {
-      const timeout = window.setTimeout(() => updateRoute(), 1000)
+      const timeout = window.setTimeout(() => updateRoute(), INTERVALS.markRoute)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
     }
     else {
       myTimeout !== -1 && clearTimeout(myTimeout)
-      setMyTimeout(-1)
       setTimer('')
+      setMyTimeout(-1)
     }
-  }, [run, timer])
+  }, [run, showRouteIndex])
 
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
