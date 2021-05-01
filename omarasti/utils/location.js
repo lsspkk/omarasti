@@ -45,8 +45,8 @@ function simulateGetLocation(targetLatLng, previousLatLng) {
 
   const dlat = lat1 - lat2
   const dlng = lng1 - lng2
-  const distance = Math.sqrt(dlat * dlat + dlng * dlng)
-  if (distance < 0.0005) { // about 100m
+  const dist = Math.sqrt(dlat * dlat + dlng * dlng)
+  if (dist < 0.0005) { // about 100m
     return targetLatLng
   }
   const angle = Math.atan2(dlat, dlng)

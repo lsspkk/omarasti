@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 import Layout from '../../components/Layout'
 import { DesignMenu } from '../../components/DesignMenu'
@@ -120,7 +120,6 @@ const Design = ({ mapUrl }) => {
   }
 
 
-  // const showRoute = router.asPath === "/tracks/route" && (run !== undefined)
   const menu = router.asPath === "/tracks/edit" ? <DesignMenu /> : (run !== undefined ? <RunMenu stopRun={stopRun} timer={timer} /> : <ViewMenu />)
 
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
@@ -148,8 +147,8 @@ const Design = ({ mapUrl }) => {
           <InFinishPanel finishRun={finishRun}/> 
         }
 
-        <div className="fixed bottom-0 left-0 p-1 text-xs bg-white xs:ml-10 md:ml-20"
-         style={{zIndex: '1000'}}
+        <div className="fixed bottom-0 left-0 p-1  bg-white xs:ml-10 md:ml-20"
+         style={{zIndex: '1000', fontSize: '0.5em'}}
         >
           GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }
           <br/>
