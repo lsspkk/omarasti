@@ -71,7 +71,7 @@ const Route = ({ mapUrl }) => {
   else if (track !== undefined && track.markers.length > 0) mapCenter = track.markers[0].latlng
 
   return (
-    <Layout menu={menu}>
+    <Layout map="true" menu={menu}>
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} showRouteIndex={showRouteIndex} showRoute={true}/> 
     </Layout>
   )

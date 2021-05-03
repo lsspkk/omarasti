@@ -44,18 +44,18 @@ export default function Home ({warm}) {
 
       <h1 className='mt-4 mb-4 text-xl'>Ole ratamestari</h1>
 
-      <ul>
-        <li>Tee tampereen alueen kartalle oma suunnistusrata.</li>
-        <li>Jaa linkki rataan kavereillesi, ja...</li>
-      </ul>
+      <p>
+        Tee tampereen alueen kartalle oma suunnistusrata.
+        Jaa linkki rataan kavereillesi, ja...
+      </p>
 
       <h1 className='mt-4 mb-4 text-xl'>Suunnista</h1>
 
       <ul>
-        <li>Kun olet lähellä rastia, "näät" sen puhelimen ruudulla.</li>
+        <li>Kun olet lähellä rastia, "näet" sen puhelimen ruudulla.</li>
         <li>Kun olet aivan rastin vieressä, voit "leimata" puhelimella.</li>
       </ul>
-      <Compass angle={angle} cName=""></Compass>
+      <Compass angle={angle} cName="w-40 mx-auto"></Compass>
 
     </Layout>
   )

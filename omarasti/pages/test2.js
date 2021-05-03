@@ -25,7 +25,7 @@ const Test2 = ({ mapUrl }) => {
   }
   const location = {latlng: {lat:61.500621, lng:23.804561} }
   return (
-    <Layout menu={<div />}>
+    <Layout map="true" menu={<div />}>
 
       <DesignMap mapUrl={mapUrl} mapCenter={[61.500721, 23.805561]} />
       { touch &&

@@ -34,7 +34,7 @@ const Header = ({ menu }) => {
 
 
 
-  const showSignOut = ['/', '/profile', '/tracks'].includes(router.asPath)
+  const showSignOut = ['/', '/profile'].includes(router.asPath)
   // jos juoksu käynnissä, älä näytä rasti-ikonia
   const showLogo = run === undefined || run?.start === undefined || run?.end !== undefined
 

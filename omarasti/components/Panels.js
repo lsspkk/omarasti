@@ -11,7 +11,7 @@ const Panel = ({ position, children }) => {
     cName = 'bottom-0 p-4 mb-12 sm:mb-20 bg-white shadow-xl'
 
   return (
-    <div className={`absolute right-0 mr-4 sm:mr-10 ${cName} ml-2 sm:ml-20 items-start`} style={{ zIndex: '1000' }}>
+    <div className={`absolute right-0 mr-2 sm:mr-10 ${cName} ml-2 sm:ml-20 items-start`} style={{ zIndex: '1000' }}>
       {children}
     </div>
   )
@@ -23,14 +23,14 @@ export const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
   return (
     <>
       <Panel>
-        <div className="shadow-xl mb-20" style={{ background: 'rgba(255,255,255,0.7)' }}>
-          <Compass angle={direction} />
+        <div className="shadow-xl" style={{ background: 'rgba(255,255,255,0.8)' }}>
+          <Compass angle={direction} cName='w-40 h-40 sm:w-auto'/>
         </div>
       </Panel>
       <Panel position="bottom">
 
         <div className="flex flex-col mr-20 justify-start">
-          <h1 className="w-200">Rasti näkyy</h1>
+          <h1 className="w-200">Rasti {markerNumber} näkyy</h1>
           {marker.description !== '' && <>
             <h3 className="">Rastikuvaus:</h3>
             <div className="">{marker.description}</div>
@@ -85,11 +85,9 @@ export const SeeFinishPanel = ({ location, marker }) => {
         </div>
       </Panel>
       <Panel position={"bottom"}>
-        <div className="flex flex-col mr-20 mt-16 justify-start bg-white p-4 shadow-xl">
           <h1 className="w-200">Maali näkyy</h1>
           <div className="w-100">Etäisyys: {Math.trunc(location.distance)}m</div>
           <div className="w-100">Suunta: {direction} astetta</div>
-        </div>
       </Panel>
     </>
   )
@@ -99,10 +97,8 @@ export const SeeFinishPanel = ({ location, marker }) => {
 export const InFinishPanel = ({ finishRun }) => {
   return (
     <Panel position={"bottom"}>
-      <div className="bg-white p-20">
-       <h1 className="w-200 bg-white">Olet maaliviivalla!</h1>
-        <div className="w-200"><Button onClick={() => finishRun()}>Saavu maaliin</Button></div>
-      </div>
+       <h1 className="">Olet maaliviivalla!</h1>
+        <div className=""><Button onClick={() => finishRun()}>Saavu maaliin</Button></div>
     </Panel>
   )
 }
