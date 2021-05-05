@@ -8,6 +8,7 @@ import { designModeState } from './DesignMenu'
 const TrackList = ({ tracks }) => {
   const [, setMode] = useRecoilState(designModeState)
   const [, setTrack] = useRecoilState(trackState)
+  const [sorted, setSorted] = useState({ column: 'name', ascending: true})
   const [message, setMessage] = useState('')
   const router = useRouter()
 
@@ -32,17 +33,61 @@ const TrackList = ({ tracks }) => {
   }
 
   if (!tracks) return <div></div>
+
+  const changeSorted = (column, ascending) => setSorted({column, ascending})
+
+  const sortedTracks = tracks.sort((a,b) => {
+    if (sorted.ascending)
+      return a[sorted.column].localeCompare(b[sorted.column])
+    return b[sorted.column].localeCompare(a[sorted.column])
+  })
+
   return (
     <>
       { message !== '' && <div>{message}</div>}
-
-      {tracks.map((track) => (
+      <SortMenu changeSorted={changeSorted} sorted={sorted} />
+      {sortedTracks.map((track) => (
         <div key={track._id}>
           <TrackCard track={track} toUrl={toUrl} remove={remove} />
         </div>
       ))}
     </>
+  ) 
+}
+
+const SortMenu = ({changeSorted, sorted}) => {
+  const isName = sorted.column === 'name'
+
+  const updateSorted = (column) => {
+    const ascending = (sorted.column !== column) ? true : !sorted.ascending
+    changeSorted(column, ascending)
+  }
+
+  return (
+    <div className="flex justify-between mx-5">
+      
+      <div className={`${isName && 'bold'} text-gray-800`} onClick={() => updateSorted('name')}>
+        Nimi
+        <SortIcon ascending={sorted.ascending} selected={isName} />
+        </div>
+
+
+      <div className={`${!isName && 'bold'} text-gray-800`} onClick={() => updateSorted('modified')}>
+        MuokkausPvm
+        <SortIcon ascending={sorted.ascending} selected={!isName} />
+
+        </div>
+
+    </div>
   )
+
+}
+
+const SortIcon = ({ascending, selected}) => {
+  return (
+  <img style={{width:'1.2em', height: 'auto', display: 'inline-block', marginLeft:'0.5em', opacity: selected ? '1' : '0.8'}} 
+    src={`${!selected ? '/none.svg' : ascending ? '/ascending.svg': '/descending.svg'}`}/>
+    )
 }
 
 
@@ -60,12 +105,12 @@ const TrackCard = ({ track, toUrl, remove }) => {
         <div>
           <div className={`inline-block ${color} bold text-2xl ${cName}`}>{track.name}</div>
         </div>
-        <p className="owner text-gray-600 text-sm text-right">
+        <div className="owner text-gray-600 text-sm text-right">
           {modified}
           {selected &&
             <>
               <div>
-                {track.owner === undefined ? '' : track.owner.name}
+                {track.owner === undefined ? '' : <><div style={{fontSize: '0.8em', lineHeight: '0.7em'}}>Ratamestari</div>{track.owner.name}</>}
               </div>
               { track.published === false &&
                 <div style={{fontSize: '0.8em'}}>
@@ -75,15 +120,16 @@ const TrackCard = ({ track, toUrl, remove }) => {
             </>
 
           }
-        </p>
+        </div>
       </div>
-      { selected &&
-        <div className="flex justify-between">
+      
+        <div className="flex justify-between selected" style={{maxHeight : (!selected ? '0px' : 'none'), transition: 'max-height 0.5s'}}>
+        {selected &&
+        <>
           <div>
             <div className="track-name ">{track.location !== '' && <> Sijainti: {track.location} </>}</div>
             <Button className="inline-block m-0 md:m-0 mt-1 md:mt-2" onClick={() => toUrl(track, '/tracks/view', 'view')}>Näytä</Button>
           </div>
-
           <div className="flex">
 
             {!track.published &&
@@ -96,8 +142,10 @@ const TrackCard = ({ track, toUrl, remove }) => {
               onClick={() => remove(track._id, track.name)}
             >Poista</Button>
           </div>
+          </>
+          }
         </div>
-      }
+      
     </div>
   )
 }
