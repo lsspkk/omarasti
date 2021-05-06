@@ -64,11 +64,11 @@ const SortMenu = ({changeSorted, sorted}) => {
   }
 
   return (
-    <div className="flex justify-between mx-5">
+    <div className="flex justify-between mx-2">
       
       <div className={`${isName && 'bold'} text-gray-800`} onClick={() => updateSorted('name')}>
+      <SortIcon ascending={sorted.ascending} selected={isName} />
         Nimi
-        <SortIcon ascending={sorted.ascending} selected={isName} />
         </div>
 
 
@@ -85,8 +85,9 @@ const SortMenu = ({changeSorted, sorted}) => {
 
 const SortIcon = ({ascending, selected}) => {
   return (
-  <img style={{width:'1.2em', height: 'auto', display: 'inline-block', marginLeft:'0.5em', opacity: selected ? '1' : '0.8'}} 
-    src={`${!selected ? '/none.svg' : ascending ? '/ascending.svg': '/descending.svg'}`}/>
+  <img style={{width:'1.2em', height: 'auto', display: 'inline-block', opacity: selected ? '1' : '0.8'}} 
+    src={`${!selected ? '/none.svg' : ascending ? '/ascending.svg': '/descending.svg'}`}
+    className="mx-2"/>
     )
 }
 
