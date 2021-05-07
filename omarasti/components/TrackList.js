@@ -4,11 +4,13 @@ import { useRecoilState } from 'recoil'
 import { Button } from './Buttons'
 import { useRouter } from 'next/router'
 import { designModeState } from './DesignMenu'
+import { TrackLength } from '../components/TrackLength'
+import { userState } from '../pages/settings'
 
 const TrackList = ({ tracks }) => {
   const [, setMode] = useRecoilState(designModeState)
   const [, setTrack] = useRecoilState(trackState)
-  const [sorted, setSorted] = useState({ column: 'name', ascending: true})
+  const [sorted, setSorted] = useState({ column: 'name', ascending: true })
   const [message, setMessage] = useState('')
   const router = useRouter()
 
@@ -34,9 +36,9 @@ const TrackList = ({ tracks }) => {
 
   if (!tracks) return <div></div>
 
-  const changeSorted = (column, ascending) => setSorted({column, ascending})
+  const changeSorted = (column, ascending) => setSorted({ column, ascending })
 
-  const sortedTracks = tracks.sort((a,b) => {
+  const sortedTracks = tracks.sort((a, b) => {
     if (sorted.ascending)
       return a[sorted.column].localeCompare(b[sorted.column])
     return b[sorted.column].localeCompare(a[sorted.column])
@@ -52,10 +54,10 @@ const TrackList = ({ tracks }) => {
         </div>
       ))}
     </>
-  ) 
+  )
 }
 
-const SortMenu = ({changeSorted, sorted}) => {
+const SortMenu = ({ changeSorted, sorted }) => {
   const isName = sorted.column === 'name'
 
   const updateSorted = (column) => {
@@ -65,56 +67,57 @@ const SortMenu = ({changeSorted, sorted}) => {
 
   return (
     <div className="flex justify-between mx-2">
-      
+
       <div className={`${isName && 'bold'} text-gray-800`} onClick={() => updateSorted('name')}>
-      <SortIcon ascending={sorted.ascending} selected={isName} />
+        <SortIcon ascending={sorted.ascending} selected={isName} />
         Nimi
         </div>
 
 
       <div className={`${!isName && 'bold'} text-gray-800`} onClick={() => updateSorted('modified')}>
-        MuokkausPvm
+        Pvm
         <SortIcon ascending={sorted.ascending} selected={!isName} />
 
-        </div>
+      </div>
 
     </div>
   )
 
 }
 
-const SortIcon = ({ascending, selected}) => {
+const SortIcon = ({ ascending, selected }) => {
   return (
-  <img style={{width:'1.2em', height: 'auto', display: 'inline-block', opacity: selected ? '1' : '0.8'}} 
-    src={`${!selected ? '/none.svg' : ascending ? '/ascending.svg': '/descending.svg'}`}
-    className="mx-2"/>
-    )
+    <img style={{ width: '1.2em', height: 'auto', display: 'inline-block', opacity: selected ? '1' : '0.8' }}
+      src={`${!selected ? '/none.svg' : ascending ? '/ascending.svg' : '/descending.svg'}`}
+      className="mx-2" />
+  )
 }
 
 
 const TrackCard = ({ track, toUrl, remove }) => {
+  const [user,] = useRecoilState(userState)
   const [selected, setSelected] = useState(false)
 
   const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const modified = new Date(track.modified).toLocaleDateString('fi-FI', options)
 
-  const cName = selected === false ? '' : 'text-2xl'
   const color = track.published ? 'text-orange-900' : 'text-gray-600'
   return (
     <div className="border p-5">
       <div className="flex justify-between content-end" onClick={() => setSelected(!selected)}>
         <div>
-          <div className={`inline-block ${color} bold text-2xl ${cName}`}>{track.name}</div>
+          <div className={`inline-block ${color} bold text-2xl `}>{track.name}</div>
+          <div className="track-name ">{track.location !== '' && <> Sijainti: {track.location} </>}</div>
         </div>
         <div className="owner text-gray-600 text-sm text-right">
           {modified}
           {selected &&
             <>
               <div>
-                {track.owner === undefined ? '' : <><div style={{fontSize: '0.8em', lineHeight: '0.7em'}}>Ratamestari</div>{track.owner.name}</>}
+                {track.owner === undefined ? '' : <><div style={{ fontSize: '0.8em', lineHeight: '0.7em' }}>Ratamestari</div>{track.owner.name}</>}
               </div>
-              { track.published === false &&
-                <div style={{fontSize: '0.8em'}}>
+              {track.published === false &&
+                <div style={{ fontSize: '0.8em' }}>
                   Ei julkaistu
                 </div>
               }
@@ -123,30 +126,31 @@ const TrackCard = ({ track, toUrl, remove }) => {
           }
         </div>
       </div>
-      
-        <div className="flex justify-between selected" style={{maxHeight : (!selected ? '0px' : 'none'), transition: 'max-height 0.5s'}}>
+
+      <div className="flex justify-between selected" style={{ maxHeight: (!selected ? '0px' : 'none'), transition: 'max-height 0.5s' }}>
         {selected &&
-        <>
-          <div>
-            <div className="track-name ">{track.location !== '' && <> Sijainti: {track.location} </>}</div>
-            <Button className="inline-block m-0 md:m-0 mt-1 md:mt-2" onClick={() => toUrl(track, '/tracks/view', 'view')}>Näytä</Button>
-          </div>
-          <div className="flex">
+          <>
+            <div>
+              <TrackLength markers={track.markers} />
+            </div>
+            <div className="flex justify-end items-end">
 
-            {!track.published &&
-              <Button className="self-end"
-                onClick={() => toUrl(track, '/tracks/edit', 'move')}
-              >Muokkaa</Button>
-            }
+              {track.owner._id === user.id &&
+                <Button className="bg-red-200"onClick={() => remove(track._id, track.name)}
+                >Poista</Button>
+              }
 
-            <Button className="self-end bg-red-200"
-              onClick={() => remove(track._id, track.name)}
-            >Poista</Button>
-          </div>
+              {!track.published &&
+                <Button className="self-end mr-4" onClick={() => toUrl(track, '/tracks/edit', 'move')}
+                >Muokkaa</Button>
+              }
+              <Button className="" onClick={() => toUrl(track, '/tracks/view', 'view')}>Suunnista</Button>
+
+            </div>
           </>
-          }
-        </div>
-      
+        }
+      </div>
+
     </div>
   )
 }

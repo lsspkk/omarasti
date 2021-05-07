@@ -7,8 +7,8 @@ export const TrackLength = ({markers}) => {
 
     return (
         <>
-        <label className="w-20 p-0">Pituus:</label>
-        <div className="w-40">{length}m</div>
+        <label className="w-20 p-0">Pituus: </label>
+        <div className="pr-4 inline-block">{length}m</div>
         </>
     )
 }

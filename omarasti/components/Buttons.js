@@ -13,7 +13,7 @@ const Button = (props) => {
   const add = props?.className? props?.className : '' 
   const margins = add && add.includes(' m-') ? '' : ' m-1 md:m-2'
   const paddings = add && add.includes(' p-') ?  '' : ' p-1 md:p-2'
-  const cName = "text-sm rounded bg-orange-300 text-orange-900 hover:text-blue-700 " + add + margins + paddings  
+  const cName = "text-sm rounded bg-orange-300 text-orange-900 hover:text-blue-700 inline-block " + add + margins + paddings  
   return (
     <div
       {...props}

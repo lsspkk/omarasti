@@ -1,6 +1,5 @@
 
 import { useSession } from 'next-auth/client'
-import Link from 'next/link'
 import Layout from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
@@ -12,8 +11,9 @@ import { designModeState } from '../../components/DesignMenu'
 import dbConnect from '../../utils/dbConnect'
 
 const TracksMenu = () => {
+  const [, setMode] = useRecoilState(designModeState)
   const router = useRouter()
-  const [track, setTrack] = useRecoilState(trackState)
+  const [, setTrack] = useRecoilState(trackState)
   const createNewTrack = () => {
     const newTrack = {
       name: '',
