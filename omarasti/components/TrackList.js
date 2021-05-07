@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil'
 import { Button } from './Buttons'
 import { useRouter } from 'next/router'
 import { designModeState } from './DesignMenu'
-import { TrackLength } from '../components/TrackLength'
+import { TrackDistance } from '../components/Distance'
 import { userState } from '../pages/settings'
 
 const TrackList = ({ tracks }) => {
@@ -131,7 +131,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
         {selected &&
           <>
             <div>
-              <TrackLength markers={track.markers} />
+              <TrackDistance markers={track.markers} />
             </div>
             <div className="flex justify-end items-end">
 

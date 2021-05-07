@@ -8,7 +8,7 @@ import { Button } from '../components/Buttons'
 import { trackState } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { totalDistance } from '../utils/location'
-import { TrackLength } from '../components/TrackLength'
+import { TrackDistance } from '../components/Distance'
 
 const TrackMenu = () => {
   const { asPath } = useRouter()
@@ -77,7 +77,7 @@ const OneTrack = () => {
 
 
         <div className="flex my-5">
-          <TrackLength markers={track.markers}/>
+          <TrackDistance markers={track.markers}/>
         </div>
         </div>
         {!track.published &&
