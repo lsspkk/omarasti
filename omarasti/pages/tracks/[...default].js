@@ -163,7 +163,6 @@ const Design = ({ mapUrl }) => {
 }
 
 export async function getServerSideProps() {
-  //const mapUrl = 'https://xn--hyty-6qa.net/omarasti/{z}/{x}/{y}.png'
   const mapUrl = process.env.TAMPERE_MAP_URL
   return { props: { mapUrl } }
 }
