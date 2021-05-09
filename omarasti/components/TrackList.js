@@ -103,10 +103,10 @@ const TrackCard = ({ track, toUrl, remove }) => {
 
   const color = track.published ? 'text-orange-900' : 'text-gray-600'
   return (
-    <div className="border p-5">
+    <div className="border p-2">
       <div className="flex justify-between content-end" onClick={() => setSelected(!selected)}>
         <div>
-          <div className={`inline-block ${color} bold text-2xl `}>{track.name}</div>
+          <div className={`inline-block ${color} bold text-xl `}>{track.name}</div>
           <div className="track-name ">{track.location !== '' && <> Sijainti: {track.location} </>}</div>
         </div>
         <div className="owner text-gray-600 text-sm text-right">
