@@ -128,7 +128,7 @@ const Design = ({ mapUrl }) => {
   else if (track !== undefined && track.markers.length > 0) mapCenter = (track.markers[0].latlng)
 
   return (
-    <Layout menu={menu}>
+    <Layout map="true" menu={menu}>
 
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> 
       { run !== undefined && <>
@@ -163,7 +163,6 @@ const Design = ({ mapUrl }) => {
 }
 
 export async function getServerSideProps() {
-  //const mapUrl = 'https://xn--hyty-6qa.net/omarasti/{z}/{x}/{y}.png'
   const mapUrl = process.env.TAMPERE_MAP_URL
   return { props: { mapUrl } }
 }

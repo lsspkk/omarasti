@@ -8,7 +8,7 @@ import { Button } from '../components/Buttons'
 import { trackState } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { totalDistance } from '../utils/location'
-import { TrackLength } from '../components/TrackLength'
+import { TrackDistance } from '../components/Distance'
 
 const TrackMenu = () => {
   const { asPath } = useRouter()
@@ -38,7 +38,7 @@ const OneTrack = () => {
 
   const save = async ({ published }) => {
     const newTrack = { ...track, published, name, location, modified: new Date() }
-    const urlEnd = track._id !== undefined ? ('/' + $track._id) : ''
+    const urlEnd = track._id !== undefined ? ('/' + track._id) : ''
     const url = `/api/tracks${urlEnd}`
     const res = await fetch(url, { 
       method: track._id ? 'PUT' : 'POST',
@@ -47,7 +47,9 @@ const OneTrack = () => {
     })
 
     if (res.ok) {
-      setTrack(newTrack)
+      const savedTrack = await res.json()
+      console.log(savedTrack.data)
+      setTrack(savedTrack.data)
     }
     setMessage(res.ok ? 'Tallennettu' : 'Tallennus epäonnistui')
     setTimeout(() => setMessage(''), 2000)
@@ -56,11 +58,12 @@ const OneTrack = () => {
 
   return (
     <Layout menu={<TrackMenu/>}>
+      <div>{track?._id} </div>
+      { message !== '' && <div className="text-center text-grey-800">{message}</div>}
       <div className="container flex justify-between">
+
         <div className="m-5 w-64">
         <h1 className="py-10">Radan tiedot</h1>
-
-        {message.length > 0 && <div className="text-grey-500">{message}</div>}
 
         <div className="flex my-5">
           <label className="w-20">Nimi:</label>
@@ -74,14 +77,18 @@ const OneTrack = () => {
 
 
         <div className="flex my-5">
-          <TrackLength markers={track.markers}/>
+          <TrackDistance markers={track.markers}/>
         </div>
         </div>
         {!track.published &&
 
           <div className="py-10 w-34">
+            <div>
             <Button onClick={() => save({ published: false })}>Tallenna</Button>
+            </div>
+            <div>
             <Button onClick={() => save({ published: true })} >Julkaise</Button>
+            </div>
           </div>
         }
       </div>

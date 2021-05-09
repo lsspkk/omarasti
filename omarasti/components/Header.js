@@ -1,9 +1,7 @@
-// components/header.js
-
 import Link from 'next/link'
-import { signin, signout, useSession } from 'next-auth/client'
+import { signin, useSession } from 'next-auth/client'
 import { SignInButton } from './Buttons'
-import { userState } from '../pages/profile'
+import { userState } from '../pages/settings'
 import { useRecoilState, } from 'recoil'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -34,7 +32,7 @@ const Header = ({ menu }) => {
 
 
 
-  const showSignOut = ['/', '/profile', '/tracks'].includes(router.asPath)
+  const showSignOut = ['/', '/profile'].includes(router.asPath)
   // jos juoksu käynnissä, älä näytä rasti-ikonia
   const showLogo = run === undefined || run?.start === undefined || run?.end !== undefined
 
@@ -50,7 +48,7 @@ const Header = ({ menu }) => {
         </Link>
         }
 
-        <div className='container flex justify-start'>
+        <div className='container flex justify-end'>
           {session &&
             { ...menu }
           }
@@ -61,11 +59,7 @@ const Header = ({ menu }) => {
             <SignInButton onClick={async () => signin('google')}>Kirjaudu</SignInButton>
           )}
           {session && showSignOut && (
-            <>
-
-              <Link href="/profile"><span className={`m-2 self-center inline`}>{session.user.email}</span></Link>
-              <SignInButton onClick={signout}>Kirjaudu ulos</SignInButton>
-            </>
+              <Link href="/settings"><SignInButton>Asetukset</SignInButton></Link>
           )}
         </div>
       </nav>

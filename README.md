@@ -1,4 +1,20 @@
-# karttapala
+
+
+# next.js suunnistussovellus
+
+omarasti/readme.md
+
+
+# mapant kartat
+
+Creative Common lisenssin karttoja suunnistukseen.
+https://www.mapant.fi
+
+
+
+# maanmittauslaitoksen kartat
+
+## karttapala 
 https://tiedostopalvelu.maanmittauslaitos.fi/tp/kartta
 vasen alareuna N: 6812432 E: 320480
 oikea yläreuna N: 6831760 E: 337728

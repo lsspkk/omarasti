@@ -1,7 +1,7 @@
 
 import { useSession } from 'next-auth/client'
 import Layout from '../../../components/Layout'
-import { TrackLength } from '../../../components/TrackLength'
+import { TrackDistance } from '../../../components/Distance'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { Button } from '../../../components/Buttons'
@@ -42,7 +42,7 @@ const StartRun = () => {
             Ajanotto ja reitin seuranta käynnistyy.</p>
 
           <div className="flex my-5">
-            <TrackLength markers={track?.markers} />
+            <TrackDistance markers={track?.markers} />
           </div>
           <div className="flex my-5">
             <input type='checkbox'

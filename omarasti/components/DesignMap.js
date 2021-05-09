@@ -65,7 +65,7 @@ const TrackPoints = () => {
         <Polyline
           key={'lp' + JSON.stringify(linePositions)}
           positions={linePositions}
-          pathOptions={{color:'#FA923B', weight: '5'}}
+          pathOptions={{color:'#fa4362', weight: '5'}}
         />
       )}
     </>
@@ -111,16 +111,18 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
     return null
   }
 
+  const attribution = process.env.NEXT_PUBLIC_MAP_ATTRIBUTION
+  console.log(attribution)
   return (
     <MapContainer
       style={{ width: '100%', height: '90vh' }} center={mapCenter} 
       zoom={14.5}
-      minZoom={7}
-      maxZoom={16}
+      minZoom={process.env.NEXT_PUBLIC_MINZOOM}
+      maxZoom={process.env.NEXT_PUBLIC_MAXZOOM}
     >
       <TileLayer
         url={mapUrl}
-        attribution='MML avoin data'
+        attribution={process.env.NEXT_PUBLIC_MAP_ATTRIBUTION}
       />
       <TrackPoints />
       { !showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}

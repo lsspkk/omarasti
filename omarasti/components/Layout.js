@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import Header from './Header'
 
-const Layout = ({ menu, children }) => (
+const Layout = ({ menu, children, map }) => {
+const margins = map === 'true' ? '' : 'mx-2'
+return (
   <>
     <Head>
       <title>OMArasti</title>
@@ -22,9 +24,10 @@ const Layout = ({ menu, children }) => (
       <div className="flex-none">
     <Header menu={menu}/>
     </div>
-    <main className="flex-grow md:container md:mx-auto">{children}</main>
+    <main className={`flex-grow md:container md:mx-auto ${margins}`}>{children}</main>
     </div>
   </>
 )
+}
 
 export default Layout

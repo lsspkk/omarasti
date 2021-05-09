@@ -1,6 +1,5 @@
 
 import { useSession } from 'next-auth/client'
-import Link from 'next/link'
 import Layout from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
@@ -12,18 +11,9 @@ import { designModeState } from '../../components/DesignMenu'
 import dbConnect from '../../utils/dbConnect'
 
 const TracksMenu = () => {
-  return <>
-  </>
-}
-
-const Tracks = ({tracks}) => {
   const [, setMode] = useRecoilState(designModeState)
-  const [track, setTrack] = useRecoilState(trackState)
-  const [session, loading] = useSession()
   const router = useRouter()
-  if (loading) return <div>loading...</div>
-  if (!session) router.push('/')
-
+  const [, setTrack] = useRecoilState(trackState)
   const createNewTrack = () => {
     const newTrack = {
       name: '',
@@ -37,13 +27,24 @@ const Tracks = ({tracks}) => {
     setTrack(newTrack)
     router.push('/tracks/edit')
   }
+  return <div className="flex justify-between mx-6 w-full">
+    <h1>Radat</h1>
 
-  //console.log("tracks", tracks)
-  const trackMenu = track === undefined ?  (<div></div>) : (<TracksMenu/>)
+    <Button className="w-30" onClick={() => createNewTrack()}>Uusi Rata</Button>
+  </div>
+}
+
+const Tracks = ({tracks}) => {
+  const [, setMode] = useRecoilState(designModeState)
+  const [session, loading] = useSession()
+  const router = useRouter()
+  if (loading) return <div>loading...</div>
+  if (!session) router.push('/')
+
 
   return (
-    <Layout menu={trackMenu}>
-      <Button className="w-30" onClick={() => createNewTrack()}>Uusi</Button>
+    <Layout menu={<TracksMenu/>}>
+      
       <TrackList tracks={tracks}/>
     </Layout>
   )
