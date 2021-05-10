@@ -59,7 +59,7 @@ const Header = ({ menu }) => {
             <SignInButton onClick={async () => signin('google')}>Kirjaudu</SignInButton>
           )}
           {session && showSignOut && (
-              <Link href="/settings"><SignInButton>Asetukset</SignInButton></Link>
+              <Link className="ml-2" href="/settings"><SignInButton>Asetukset</SignInButton></Link>
           )}
         </div>
       </nav>

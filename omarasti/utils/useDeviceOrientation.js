@@ -6,16 +6,14 @@ const useDeviceOrientation = () => {
     const [deviceOrientation, setDeviceOrientation] = useState({available: false, alpha: undefined});
   
     function handleDeviceOrientation(event) {
-      if (event.absolute) {
-        setDeviceOrientation({alpha: event.alpha, available: true})
-      }
+      setDeviceOrientation({alpha: (360 - event.alpha), available: true})
     }
   
     useEffect(() => {
-      window.addEventListener('deviceorientation', handleDeviceOrientation, true)
+      window.addEventListener('deviceorientationabsolute', handleDeviceOrientation, true)
   
       return () => {
-        window.removeEventListener('deviceorientation', handleDeviceOrientation)
+        window.removeEventListener('deviceorientationabsolute', handleDeviceOrientation)
       };
     }, [])
   

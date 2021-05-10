@@ -48,7 +48,6 @@ const OneTrack = () => {
 
     if (res.ok) {
       const savedTrack = await res.json()
-      console.log(savedTrack.data)
       setTrack(savedTrack.data)
     }
     setMessage(res.ok ? 'Tallennettu' : 'Tallennus epäonnistui')
@@ -58,7 +57,6 @@ const OneTrack = () => {
 
   return (
     <Layout menu={<TrackMenu/>}>
-      <div>{track?._id} </div>
       { message !== '' && <div className="text-center text-grey-800">{message}</div>}
       <div className="container flex justify-between">
 
@@ -85,9 +83,15 @@ const OneTrack = () => {
           <div className="py-10 w-34">
             <div>
             <Button onClick={() => save({ published: false })}>Tallenna</Button>
+
+            Tallennettu rata näkyy vain sinulle.
+            Voit muokata sitä ja suunnistaa radan.
             </div>
             <div>
             <Button onClick={() => save({ published: true })} >Julkaise</Button>
+
+            Julkaistu rata näkyy kaikille.
+            Sitä ei voi muokata.
             </div>
           </div>
         }
