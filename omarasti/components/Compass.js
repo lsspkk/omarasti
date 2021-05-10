@@ -1,7 +1,11 @@
 
-const Compass = ({ angle, cName }) => {
+const Compass = ({ angle, cName, orientation, closeToMarker=false}) => {
+
+    const myStyle = (orientation === undefined || !orientation.available) ? {} : 
+        { transformBox: 'fill-box', transformOrigin: 'center 50%', transform: `rotate(${Math.round(orientation.alpha)}deg)` }
+
     return (
-        <svg width="258" height="265" className={cName} viewBox="0 0 258 265" fill="none" >
+        <svg width="258" height="265" className={cName} viewBox="0 0 258 265" fill="none" style={myStyle}>
             <defs>
                 <filter id="filter0_d" x="39.6432" y="198.81" width="29.1678" height="29.5406" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
@@ -117,10 +121,12 @@ const Compass = ({ angle, cName }) => {
                 </marker>
 
                 </defs>
-            <g opacity="0.5">
+            { closeToMarker === true &&    
+                <g opacity="0.5">
                 <rect x="30" y="35" width="200" height="200" fill="#FA923B" />
                 <path d="M214 51.5V221.5H44L214 51.5Z" fill="white" />
             </g>
+            }
             <circle cx="129" cy="136" r="124.5" stroke="black" />
             <circle cx="129" cy="136" r="119.5" stroke="black" />
             <path d="M129 16V256" stroke="black" />
@@ -167,12 +173,14 @@ const Compass = ({ angle, cName }) => {
             <path d="M129 265L135.062 255.25H122.938L129 265Z" fill="#A09C9C" />
 
 
+            { closeToMarker &&
             <line x1="129" y1="136" x2="136" y2="30"
                 stroke="#000" strokeWidth="5"
                 markerEnd="url(#arrowhead)"
                 transform={`rotate(${angle})`}
                 transform-origin='129 136'
             />
+        }
             <circle cx="129" cy="136" r="4"  fill='grey' opacity='0.5' />
 
 

@@ -17,14 +17,28 @@ const Panel = ({ position, children }) => {
   )
 }
 
-export const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
+const ShowOrientationPanel = ({ location, marker, markerNumber, orientation }) => {
+
+  if (orientation === undefined || !orientation.available) return <div/>
+
+  return (
+      <Panel>
+        <div className="shadow-xl" style={{ background: 'rgba(255,255,255,0.8)' }}>
+          <Compass angle={direction} orientation={orientation} cName='w-40 h-40 sm:w-auto'/>
+        </div>
+      </Panel>
+  )
+}
+
+
+const SeeMarkerPanel = ({ location, marker, markerNumber, orientation }) => {
 
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
     <>
       <Panel>
         <div className="shadow-xl" style={{ background: 'rgba(255,255,255,0.8)' }}>
-          <Compass angle={direction} cName='w-40 h-40 sm:w-auto'/>
+          <Compass angle={direction} orientation={orientation} closeToMarker={true} cName='w-40 h-40 sm:w-auto'/>
         </div>
       </Panel>
       <Panel position="bottom">
@@ -45,7 +59,7 @@ export const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
   )
 }
 
-export const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
+const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
   const marker = track.markers[markerNumber - 1]
   return (
     <>
@@ -75,13 +89,13 @@ export const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
   )
 }
 
-export const SeeFinishPanel = ({ location, marker }) => {
+const SeeFinishPanel = ({ location, marker, orientation }) => {
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
     <>
       <Panel>
         <div className="shadow-xl mb-20" style={{ background: 'rgba(255,255,255,0.7)' }}>
-          <Compass angle={direction} />
+          <Compass angle={direction} orientation={orientation} closeToMarker={true}/>
         </div>
       </Panel>
       <Panel position={"bottom"}>
@@ -94,7 +108,7 @@ export const SeeFinishPanel = ({ location, marker }) => {
 
 }
 
-export const InFinishPanel = ({ finishRun }) => {
+const InFinishPanel = ({ finishRun }) => {
   return (
     <Panel position={"bottom"}>
        <h1 className="">Olet maaliviivalla!</h1>
@@ -102,3 +116,5 @@ export const InFinishPanel = ({ finishRun }) => {
     </Panel>
   )
 }
+
+export { ShowOrientationPanel, SeeMarkerPanel, SeeFinishPanel, TouchMarkerPanel, InFinishPanel }

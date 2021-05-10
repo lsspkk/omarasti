@@ -1,6 +1,6 @@
 // visual test for panels
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 import Layout from '../components/Layout'
 import dynamic from 'next/dynamic'
@@ -15,6 +15,11 @@ const DesignMap = dynamic(() => {
 
 const Test2 = ({ mapUrl }) => {
   const [, loading] = useSession()
+  const [angle, setAngle] = useState(0)
+
+  useEffect(() => {
+    setTimeout(() => setAngle((angle+5)), 100)
+  }, [angle])
 
   const [touch, setTouch] = useState(false)
   if (loading) return <div>loading...</div>
@@ -32,7 +37,7 @@ const Test2 = ({ mapUrl }) => {
         <TouchMarkerPanel touchMarker={() => ''} track={track} markerNumber={1} />
       }
       { !touch &&
-        <SeeMarkerPanel location={location} marker={track.markers[0]} markerNumber={1} />
+        <SeeMarkerPanel location={location} marker={track.markers[0]} markerNumber={1} orientation={{available:true, alpha:angle}}/>
       }
 
       {/* { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 

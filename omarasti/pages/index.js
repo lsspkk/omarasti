@@ -55,7 +55,7 @@ export default function Home ({warm}) {
         <li>Kun olet lähellä rastia, "näet" sen puhelimen ruudulla.</li>
         <li>Kun olet aivan rastin vieressä, voit "leimata" puhelimella.</li>
       </ul>
-      <Compass angle={angle} cName="w-40 mx-auto"></Compass>
+      <Compass angle={angle*3%360} orientation={{available:true, alpha: -angle}} closeToMarker={true} cName="w-40 mx-auto"></Compass>
 
     </Layout>
   )
