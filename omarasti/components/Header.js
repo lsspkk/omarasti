@@ -3,7 +3,7 @@ import { signin, useSession } from 'next-auth/client'
 import { SignInButton } from './Buttons'
 import { userState } from '../pages/settings'
 import { useRecoilState, } from 'recoil'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { runState } from '../models/state'
 
@@ -11,11 +11,13 @@ const Header = ({ menu }) => {
   const [run] = useRecoilState(runState)
   const [session] = useSession()
   const [user, setUser] = useRecoilState(userState)
+  const [isSigning, setIsSigning] = useState(false)
   const router = useRouter()
 
   useEffect(async () => {
     // load/create additional user account to mongodb
     if (session && Object.keys(user).length === 0) {
+      setIsSigning(true)
       const res = await fetch('/api/user')
       if (res.ok) {
         const { data } = await res.json()
@@ -24,6 +26,7 @@ const Header = ({ menu }) => {
           setUser(data)
         }
       }
+      setIsSigning(false)
     }
     if (!session) {
       setUser({})
@@ -55,9 +58,10 @@ const Header = ({ menu }) => {
         </div>
 
         <div className='flex-end flex-3 flex text-sm'>
-          {!session && (
+          {!session && !isSigning && (
             <SignInButton onClick={async () => signin('google')}>Kirjaudu</SignInButton>
           )}
+          { isSigning && <div>...</div> }
           {session && showSignOut && (
               <Link className="ml-2" href="/settings"><SignInButton>Asetukset</SignInButton></Link>
           )}
