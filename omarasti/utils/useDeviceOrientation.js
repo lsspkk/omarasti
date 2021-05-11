@@ -13,7 +13,7 @@ const useDeviceOrientation = () => {
       if (typeof event.alpha === 'number') {
 
         const newAlpha = Math.round(event.alpha)
-        newAlpha !== deviceOrientation.alpha && setDeviceOrientation({alpha: (360 - event.alpha), available: true})
+        newAlpha !== deviceOrientation.alpha && setDeviceOrientation({alpha: (event.alpha), available: true})
       }
     }
   
