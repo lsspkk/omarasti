@@ -17,14 +17,14 @@ const Panel = ({ position, children }) => {
   )
 }
 
-const ShowOrientationPanel = ({ location, marker, markerNumber, orientation }) => {
+const ShowOrientationPanel = ({orientation }) => {
 
   if (orientation === undefined || !orientation.available) return <div/>
 
   return (
       <Panel>
         <div className="shadow-xl" style={{ background: 'rgba(255,255,255,0.8)' }}>
-          <Compass angle={direction} orientation={orientation} cName='w-40 h-40 sm:w-auto'/>
+          <Compass orientation={orientation} cName='w-40 h-40 sm:w-auto'/>
         </div>
       </Panel>
   )

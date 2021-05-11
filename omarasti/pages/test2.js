@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 import Layout from '../components/Layout'
 import dynamic from 'next/dynamic'
-import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../components/Panels'
+import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel, ShowOrientationPanel } from '../components/Panels'
 import { Button } from '../components/Buttons'
+import { useDeviceOrientation } from '../utils/useDeviceOrientation'
 
 
 
@@ -16,12 +17,14 @@ const DesignMap = dynamic(() => {
 const Test2 = ({ mapUrl }) => {
   const [, loading] = useSession()
   const [angle, setAngle] = useState(0)
+  const orientation = useDeviceOrientation();
 
   useEffect(() => {
     setTimeout(() => setAngle((angle+5)), 100)
   }, [angle])
 
-  const [touch, setTouch] = useState(false)
+  const [what, setWhat] = useState('orientation')
+
   if (loading) return <div>loading...</div>
 
 
@@ -33,11 +36,16 @@ const Test2 = ({ mapUrl }) => {
     <Layout map="true" menu={<div />}>
 
       <DesignMap mapUrl={mapUrl} mapCenter={[61.500721, 23.805561]} />
-      { touch &&
-        <TouchMarkerPanel touchMarker={() => ''} track={track} markerNumber={1} />
+
+      { what === 'orientation' &&
+      <ShowOrientationPanel orientation={orientation} />
+  }
+
+      { what === 'touch' &&
+        <TouchMarkerPanel touchMarker={() => ''} track={track} markerNumber={1}/>
       }
-      { !touch &&
-        <SeeMarkerPanel location={location} marker={track.markers[0]} markerNumber={1} orientation={{available:true, alpha:angle}}/>
+      { what ==='see' &&
+        <SeeMarkerPanel location={location} marker={track.markers[0]} markerNumber={1} orientation={{available:true, alpha:angle}} orientation={orientation}/>
       }
 
       {/* { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
@@ -50,7 +58,9 @@ const Test2 = ({ mapUrl }) => {
       <div className="fixed bottom-0 left-0 p-1 text-xs bg-white xs:ml-10 md:ml-20"
         style={{ zIndex: '1000' }}
       >
-        <Button onClick={() => setTouch(!touch)}>{touch ? 'Näe rasti' : 'Leimaa rasti'}</Button>
+        { what !== 'orientation' && <Button onClick={() => setWhat('orientation')}>Kompassi</Button> }
+        { what !== 'see' && <Button onClick={() => setWhat('see')}>Lähellä</Button> }
+        { what !== 'touch' && <Button onClick={() => setWhat('touch')}>Rastilla</Button> }
       </div>
 
     </Layout>
