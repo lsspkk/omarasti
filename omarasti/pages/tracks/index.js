@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 import { getTracks } from '../api/tracks'
 import { designModeState } from '../../components/DesignMenu'
 import dbConnect from '../../utils/dbConnect'
+import { useEffect } from 'react'
 
 const TracksMenu = () => {
   const [, setMode] = useRecoilState(designModeState)
