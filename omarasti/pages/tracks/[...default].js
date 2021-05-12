@@ -11,7 +11,6 @@ import { runState, trackState } from '../../models/state'
 import { getCoordinates, distance, getLocation, INTERVALS } from '../../utils/location'
 import { ShowOrientationPanel, SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
-import { useDeviceOrientation } from '../../utils/useDeviceOrientation'
 
 const DesignMap = dynamic(() => {
   return import('../../components/DesignMap')
@@ -32,7 +31,6 @@ const Design = ({ mapUrl }) => {
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
   const [accurrateLocation, accurracy, locationError] = useAccurrateLocation(30, 2) // 30m, 2s
-  const orientation = useDeviceOrientation({})
   const [coordinates, setCoordinates] = useState(TAMPERE)
 
   const router = useRouter()
@@ -135,18 +133,18 @@ const Design = ({ mapUrl }) => {
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> 
       { run !== undefined && <>
 
-        { !location.canTouchMarker && location.canSeeMarker && 
-          <ShowOrientationPanel orientation={orientation}/>
+        { !location.canTouchMarker && !location.canSeeMarker && 
+          <ShowOrientationPanel/>
         }
         {
           !isLastMarker && location.canTouchMarker && 
           <TouchMarkerPanel touchMarker={touchMarker} track={track} markerNumber={run.targetMarker}/>
         }
         { !isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
-          <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1} orientation={orientation}/>
+          <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/>
         }
         { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
-          <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]} orientation={orientation}/> 
+          <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]}/> 
         }
         { isLastMarker && location.canTouchMarker && 
           <InFinishPanel finishRun={finishRun}/> 

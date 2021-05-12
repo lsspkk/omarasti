@@ -17,28 +17,24 @@ const Panel = ({ position, children }) => {
   )
 }
 
-const ShowOrientationPanel = ({orientation }) => {
-
-  if (orientation === undefined || !orientation.available) return <div/>
+const ShowOrientationPanel = () => {
 
   return (
       <Panel>
-        <div className="shadow-xl" style={{ background: 'rgba(255,255,255,0.8)' }}>
-          <Compass orientation={orientation} cName='w-40 h-40 sm:w-auto'/>
-        </div>
+          <Compass cName='w-40 h-40 sm:w-auto'/>
       </Panel>
   )
 }
 
 
-const SeeMarkerPanel = ({ location, marker, markerNumber, orientation }) => {
+const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
 
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
     <>
       <Panel>
         <div className="shadow-xl" style={{ background: 'rgba(255,255,255,0.8)' }}>
-          <Compass angle={direction} orientation={orientation} closeToMarker={true} cName='w-40 h-40 sm:w-auto'/>
+          <Compass angle={direction} closeToMarker={true} cName='w-40 h-40 sm:w-auto'/>
         </div>
       </Panel>
       <Panel position="bottom">
@@ -89,13 +85,13 @@ const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
   )
 }
 
-const SeeFinishPanel = ({ location, marker, orientation }) => {
+const SeeFinishPanel = ({ location, marker }) => {
   const direction = Math.trunc(angleInDegrees(location.latlng, marker.latlng))
   return (
     <>
       <Panel>
         <div className="shadow-xl mb-20" style={{ background: 'rgba(255,255,255,0.7)' }}>
-          <Compass angle={direction} orientation={orientation} closeToMarker={true}/>
+          <Compass angle={direction} closeToMarker={true}/>
         </div>
       </Panel>
       <Panel position={"bottom"}>

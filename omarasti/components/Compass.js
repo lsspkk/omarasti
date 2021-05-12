@@ -1,5 +1,8 @@
+import { useDeviceOrientation } from '../utils/useDeviceOrientation'
 
-const Compass = ({ angle, cName, orientation, closeToMarker=false}) => {
+
+const Compass = ({ angle, cName, closeToMarker=false}) => {
+    const orientation = useDeviceOrientation({})
 
     const myStyle = (orientation === undefined || !orientation.available) ? {} : 
         { transformBox: 'fill-box', transformOrigin: 'center 50%', transform: `rotate(${Math.round(orientation.alpha)}deg)` }

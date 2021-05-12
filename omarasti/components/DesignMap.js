@@ -14,7 +14,7 @@ import { RouteLines } from './RouteLines'
 
 
 const TrackPoints = () => {
-  const [mode] = useRecoilState(designModeState)
+  const [mode, setMode] = useRecoilState(designModeState)
   const [track, setTrack] = useRecoilState(trackState)
   const [run] = useRecoilState(runState)
   const [lines, setLines] = useState([])
@@ -46,7 +46,7 @@ const TrackPoints = () => {
   }, [track])
 
   if (!track) return <div />
-
+  console.log(mode)
   return (
     <>
       {track.markers.map((marker, index) =>
