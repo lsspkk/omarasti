@@ -69,7 +69,7 @@ const StopRun = () => {
           <TrackDistance markers={track.markers} />
         </div>
         <div className="flex mb-3">
-          <RunDistance route={run.route} />
+          { run !== undefined && <RunDistance route={run.route} /> }
         </div>
 
         <div className="flex my-2">

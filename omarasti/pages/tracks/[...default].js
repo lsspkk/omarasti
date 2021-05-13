@@ -9,7 +9,7 @@ import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
 import { runState, trackState } from '../../models/state'
 import { getCoordinates, distance, getLocation, INTERVALS } from '../../utils/location'
-import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
+import { ShowOrientationPanel, SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
 const DesignMap = dynamic(() => {
@@ -133,6 +133,9 @@ const Design = ({ mapUrl }) => {
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> 
       { run !== undefined && <>
 
+        { !location.canTouchMarker && !location.canSeeMarker && 
+          <ShowOrientationPanel/>
+        }
         {
           !isLastMarker && location.canTouchMarker && 
           <TouchMarkerPanel touchMarker={touchMarker} track={track} markerNumber={run.targetMarker}/>
@@ -141,7 +144,7 @@ const Design = ({ mapUrl }) => {
           <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/>
         }
         { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
-          <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]} /> 
+          <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]}/> 
         }
         { isLastMarker && location.canTouchMarker && 
           <InFinishPanel finishRun={finishRun}/> 

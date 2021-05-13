@@ -105,4 +105,5 @@ function angleInDegrees(latlng1, latlng2) {
 }
 
 
-export { getCoordinates, angleInDegrees, distance, getLocation, totalDistance, INTERVALS }
+
+export { getCoordinates, angleInDegrees, distance, getLocation, totalDistance, INTERVALS, simulateLocation }
