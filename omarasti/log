@@ -1,0 +1,484 @@
+commit 3dade0bb7772644a97d0b35b0d931d7c88895d16
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed May 12 21:24:45 2021 +0300
+
+    clearing the run
+
+commit b572033e5f439122b41b1b2f565991599930c843
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed May 12 21:05:44 2021 +0300
+
+    refactored deviceorientation
+
+commit e9aa1c994f92ba24eda10138ab5acd50e4de30be
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue May 11 19:56:10 2021 +0300
+
+    changed device direction
+
+commit 5ef16191a89003a1361f8fa326f741fd41ac5b29
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue May 11 17:23:05 2021 +0300
+
+    deviceorientation fixes
+
+commit ac5a78ac456fab8053b4525a88d15f2510262f0f
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 10 21:56:27 2021 +0300
+
+    more orientation fixes
+
+commit 1aed9fca7ea95be9d71e82edc3a6abbd0f5edef3
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 10 21:45:50 2021 +0300
+
+    improving compass
+
+commit 5d00acbeac915661d655b8768674c6656bf4a239
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 10 21:37:16 2021 +0300
+
+    fixed device orientation
+
+commit c52edaecc96aaf13ca3c8b965ce9c10b75557501
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 10 19:57:03 2021 +0300
+
+    added device location
+
+commit b15af1d379fbdecb581e03a89ef7ed1323bc204a
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 10 19:53:35 2021 +0300
+
+    added device orientation
+
+commit cc37515816e0189059058aa3b4df6489ef2c0c09
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun May 9 21:36:23 2021 +0300
+
+    tracklist layout improved
+
+commit 41b475c33cde7c50ebb0f2b60fb5199469fe4b66
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun May 9 21:30:36 2021 +0300
+
+    audit fix
+
+commit 0802fcf1d7a02ca27cd606e1b998219139a8d2c3
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun May 9 21:25:41 2021 +0300
+
+    Using mapant maps
+
+commit f4a607f131514be4b53477540352bbe5b5601f4d
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Fri May 7 23:21:45 2021 +0300
+
+    added routedistance and speed
+
+commit c71e8c9c7b12fa6bbe34136d54e3bf875f3bd21c
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Fri May 7 19:25:25 2021 +0300
+
+    Tracklist and settings improvements
+
+commit 19c3d24139d5a375a60f4e8026a23502eb62c0b5
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu May 6 21:26:23 2021 +0300
+
+    nicer profile
+
+commit ef0666c64bc9e130e2a0b81d89afcd0e40ea7758
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed May 5 21:46:05 2021 +0300
+
+    tracklist improvements
+
+commit 57f34c2f7654ed2151ed222a9da6f349590d684c
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 3 22:11:06 2021 +0300
+
+    improved tracklist
+
+commit 49d4d5a441b8691851b63f889b9f58da79e42555
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon May 3 22:10:46 2021 +0300
+
+    improved tracklist
+
+commit 84c11830dfa2bc312f127bfdc2a5c6ae7b9be9c8
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat May 1 16:22:54 2021 +0300
+
+    can see map when close to marker
+
+commit b8e2dc7374db9551616a0a19bf3de3956042b8e9
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 29 22:02:44 2021 +0300
+
+    mobile improvement
+
+commit 7554ab1f298b176a2de25812815eb71166d63451
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 29 21:56:21 2021 +0300
+
+    faster show route draw
+
+commit c40f177cb291f522c315a728d48a83a26a36ce8a
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 29 21:42:14 2021 +0300
+
+    mapcenter from geolocation
+
+commit 276bdfbc702073d5e8b7a508bbe1e44406040de4
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 29 20:56:50 2021 +0300
+
+    show route improvements
+
+commit ac79b387812d599f4c398090aa10ed2337e46c53
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 29 20:08:45 2021 +0300
+
+    fix showroute
+
+commit e0ce4b3bb28875616ee245c4bf4238a4be2a89b4
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed Apr 28 22:01:02 2021 +0300
+
+    show the route
+
+commit d6fbaec35183a0c0d7ce8a32d0037651c3a385ff
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed Apr 28 22:00:30 2021 +0300
+
+    show the route
+
+commit 73e85bd00d0759265df5d52bc3d878995741b2c1
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Apr 25 11:36:24 2021 +0300
+
+    started adding showroute
+
+commit f1df767af1c8f06a379fa5b4416476a898046f84
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Apr 25 10:18:57 2021 +0300
+
+    fixed route marking
+
+commit 86114bf43e909c0a29cd12a26dcd44ef3566b106
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Apr 25 09:01:02 2021 +0300
+
+    improve location update
+
+commit 47c68130e80c82e637d750253724fe301a575092
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 24 15:27:04 2021 +0300
+
+    update route always
+
+commit 2a6999de0058d1e0adfeb8371b10b799e3891d4f
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 24 13:19:10 2021 +0300
+
+    show gps errors
+
+commit a09f802be9873d969b434c9e576936d4896e9cdb
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 24 00:06:43 2021 +0300
+
+    see through marker approach
+
+commit 4efa650c820bcbbfb9525c182580b3086066db4c
+Merge: eb82144 2d79e1e
+Author: Lasse Pekkarinen <lvp@iki.fi>
+Date:   Fri Apr 23 12:16:22 2021 +0300
+
+    Merge pull request #5 from lsspkk/dependabot/npm_and_yarn/omarasti/jose-1.28.1
+    
+    Bump jose from 1.28.0 to 1.28.1 in /omarasti
+
+commit eb8214499e71765afdc5f4f0c2e4fe2bee0924c8
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Apr 20 21:57:17 2021 +0300
+
+    added start triangle
+
+commit 2d79e1e17182cd794c0206e22833e4b248d18a05
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Mon Apr 19 15:01:34 2021 +0000
+
+    Bump jose from 1.28.0 to 1.28.1 in /omarasti
+    
+    Bumps [jose](https://github.com/panva/jose) from 1.28.0 to 1.28.1.
+    - [Release notes](https://github.com/panva/jose/releases)
+    - [Changelog](https://github.com/panva/jose/blob/v1.28.1/CHANGELOG.md)
+    - [Commits](https://github.com/panva/jose/compare/v1.28.0...v1.28.1)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit 6d60c860eef2663c81b7d7b6ab305e12c7205f72
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Apr 18 20:30:29 2021 +0300
+
+    added marker numbers
+
+commit c6d21f181fc85d855daf4938de1854c3c52b4697
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Apr 18 20:27:46 2021 +0300
+
+    added marker numbers
+
+commit c45592d6ba6847996a70638851a6b87e20eb6279
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 15 22:11:25 2021 +0300
+
+    mobile fixes
+
+commit d66294e5fc1448484c96a3220d87b3573ff4f37e
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Thu Apr 15 19:33:15 2021 +0300
+
+    improved looks
+
+commit 3718446b70813b09d4dae0ba67d5755e8ab36068
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Apr 13 20:22:22 2021 +0300
+
+    updated seefinish, tracklist
+
+commit 31e34afcfd49f666a084a0446c5c1ecd8bf72d7e
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon Apr 12 22:26:51 2021 +0300
+
+    accurrate location and mobile improvements
+
+commit a44a73f083899f2ccdb11721021f6f829af53dad
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 10 16:04:57 2021 +0300
+
+    improved mobile layout
+
+commit 055260204cc9bf4d41b869e1f8a1eb0d522197b1
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 10 00:56:07 2021 +0300
+
+    marker visibility 100m
+
+commit e3687504a60409bec2064086824f0925d204d8a0
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 10 00:51:33 2021 +0300
+
+    fix location and compass
+
+commit eef80f9c831df233e513e7121fcb1d8ff9292ed3
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Apr 10 00:45:57 2021 +0300
+
+    compass and mongo cache promise
+
+commit 5c3c8bdbb603831eb8fd5c728886aaea391aaa56
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed Apr 7 19:27:56 2021 +0300
+
+    fixed utils path
+
+commit 9a89745d8a4f67a2c5c1dc3f57b731ebf85c8482
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed Apr 7 19:14:15 2021 +0300
+
+    added disconnects
+
+commit 769f0f251a3104b1502180908b660acf6b791d8a
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed Apr 7 18:53:29 2021 +0300
+
+    added netlify.toml
+
+commit 95da5a8f091a2a26066b2445166b689f6b8ed455
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Wed Apr 7 18:30:59 2021 +0300
+
+    updated mongoose version
+
+commit fad6116b645a5dc9d0c125ab0f45e7c7ceef6798
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Apr 6 22:08:51 2021 +0300
+
+    removed postbuild hook
+
+commit 0b4b6899b7976326e549f1113dc9c4000eb31504
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Apr 6 22:05:44 2021 +0300
+
+    rremoved next on netlify
+
+commit 49856ea0894af734075cb7e9a9dd221ff6d2ae3c
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon Apr 5 22:25:40 2021 +0300
+
+    fixing vulnerabilities
+
+commit 4efc9ec1db7cb39a666576747b44f6e3fbf4566d
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon Apr 5 22:23:06 2021 +0300
+
+    test run works
+
+commit 83701beac2cb0958074575029c7f734c97dcdc0a
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Mon Apr 5 22:22:38 2021 +0300
+
+    test run works
+
+commit 8e1344b5344b31670a0ac87f9168e2c3efc5937e
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Mar 20 10:06:06 2021 +0200
+
+    removed unused variables
+
+commit e84f177e98e8481e7c504a3110b8a6df4f0f5ec6
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Mar 20 10:04:44 2021 +0200
+
+    added 10m movement simulator
+
+commit 987d3ec673031b83409428471b0236797cf2b6d0
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Mar 20 10:04:09 2021 +0200
+
+    added 10 meters moving simulator
+
+commit 4972727bade91ded334aedbecaf8ad4a050e6964
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Mar 14 22:09:59 2021 +0200
+
+    Added save/load/run
+    
+    mongodb for save/load tracks and users
+    
+    simple view/run track
+
+commit 0ff5602ddc70017e0b1649382bf4c245fc1518c5
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Feb 9 22:19:57 2021 +0200
+
+    lisätty radan muokkausmoodit
+
+commit 002c7cffa9ac89913bfc0525f1db376010667ffa
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Feb 9 20:41:51 2021 +0200
+
+    Added lines between trackpoint markers
+
+commit 99e4503593029a75119f2282ae089554b4319d7b
+Merge: f5c5279 fda5c2d
+Author: Lasse Pekkarinen <lvp@iki.fi>
+Date:   Sun Feb 7 11:14:11 2021 +0200
+
+    Merge pull request #1 from lsspkk/dependabot/npm_and_yarn/omarasti/ini-1.3.8
+    
+    Bump ini from 1.3.5 to 1.3.8 in /omarasti
+
+commit fda5c2d507115a5bbd88526192924de770c1b729
+Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
+Date:   Sun Dec 13 06:48:38 2020 +0000
+
+    Bump ini from 1.3.5 to 1.3.8 in /omarasti
+    
+    Bumps [ini](https://github.com/isaacs/ini) from 1.3.5 to 1.3.8.
+    - [Release notes](https://github.com/isaacs/ini/releases)
+    - [Commits](https://github.com/isaacs/ini/compare/v1.3.5...v1.3.8)
+    
+    Signed-off-by: dependabot[bot] <support@github.com>
+
+commit f5c5279d5a724dc3bb7c0349b0c35deefe70145e
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 22:32:15 2020 +0200
+
+    upgraded node-fetch
+
+commit 75b59e701365ade5b3c0bad8e3dab60acb920548
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 22:30:07 2020 +0200
+
+    hyöty maps
+
+commit c6c6740628448636f45494ce173307871ccba547
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 22:29:06 2020 +0200
+
+    basic markers
+
+commit 187243dc472770d951a00feba34d1baac9c77aa6
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 17:05:34 2020 +0200
+
+    removed url from environment variable
+
+commit 52f191814c03929896de49bf1c43a8399aa68715
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 16:15:59 2020 +0200
+
+    more ssr leaflet fixing
+
+commit ba63cc866aae0847e64342b84570a4a2e79a0a6f
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 16:10:25 2020 +0200
+
+    keeping leaflet away from ssr
+
+commit d2b8c9b39412d5ac69b955847ddfc92f61ea5852
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 16:01:43 2020 +0200
+
+    local map folder in gitignore
+
+commit 2e264418e31aab753ceb6dce0f578478ce1adaf1
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 15:59:41 2020 +0200
+
+    adding purge unsued styles for tailwind
+
+commit 8f5a65c6f841407cd047dc7d7b4714a87a699781
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 15:55:51 2020 +0200
+
+    fixing netlify build
+
+commit f378ed63f831dfef608045bf6684296d01ffc811
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sat Nov 7 15:48:28 2020 +0200
+
+    added tailwind and map
+
+commit 71fa2dfd4e3a8d7c5e5108208b4372a13b97892d
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Nov 1 20:12:49 2020 +0200
+
+    added next-on-netlify
+
+commit 6ca6c75968aa2f01924ff034d8dfa3d6b23edceb
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Sun Nov 1 18:08:03 2020 +0200
+
+    added netlify deployment
+
+commit 5f97cadb391dfe43d42536dd78f1a18aedc13ad8
+Author: lsspkk <lsspkk@gmail.com>
+Date:   Tue Oct 27 21:46:36 2020 +0200
+
+    next ja next-auth käyttöön
+
+commit 65ecc1a88078e57c76d1170f591658bea7aca486
+Author: Lasse Pekkarinen <lsspkk@gmail.com>
+Date:   Wed Aug 19 19:48:37 2020 +0300
+
+    xyx kuvatilet ja leaflet
+
+commit 4cdfbd14581a9b94904941319f8af666b61136c9
+Author: Lasse Pekkarinen <lsspkk@gmail.com>
+Date:   Mon Jun 29 10:12:46 2020 +0300
+
+    first version

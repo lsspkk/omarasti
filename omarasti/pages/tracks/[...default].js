@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
-import Layout from '../../components/Layout'
+import { Layout } from '../../components/Layout'
 import { DesignMenu } from '../../components/DesignMenu'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -22,7 +22,7 @@ const emptyLocationState = {
   latlng: { lat: -1, lng: -1 },
   distance : -1
 }
-const TAMPERE = [61.504721, 23.825561]
+const TAMPERE = [61.5107, 23.7616]
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
   const [session, loading] = useSession()
@@ -34,7 +34,7 @@ const Design = ({ mapUrl }) => {
   const [coordinates, setCoordinates] = useState(TAMPERE)
 
   const router = useRouter()
-  if (loading) return <div>loading...</div>
+  if (loading) { router.push('/'); return <div/> }
   if (!session || !track) { router.push('/'); return <div/> }
 
 
@@ -120,12 +120,21 @@ const Design = ({ mapUrl }) => {
   }
 
 
-  const menu = router.asPath === "/tracks/edit" ? <DesignMenu /> : (run !== undefined ? <RunMenu stopRun={stopRun} timer={timer} /> : <ViewMenu />)
+  let menu = <ViewMenu />
+  if (router.asPath === "/tracks/edit") {
+    menu = <DesignMenu />
+  } else if (run !== undefined) {
+    menu = <RunMenu stopRun={stopRun} timer={timer} run={run}/>
+  }
 
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
   let mapCenter = coordinates
-  if (run !== undefined) mapCenter = (track?.markers[run?.targetMarker-1].latlng)
-  else if (track !== undefined && track.markers.length > 0) mapCenter = (track.markers[0].latlng)
+  if (run !== undefined) {
+    mapCenter = (track?.markers[run?.targetMarker-1].latlng)
+  }
+  else if (track !== undefined && track.markers.length > 0) {
+    mapCenter = (track.markers[track.markers.length-1].latlng)
+  }
 
   return (
     <Layout map="true" menu={menu}>

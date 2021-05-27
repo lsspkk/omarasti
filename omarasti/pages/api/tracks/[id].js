@@ -38,14 +38,11 @@ export default async function handler(req, res) {
     return
   }
 
-
-  console.log(req.query)
   if (method === 'PUT') {
     await Track.findByIdAndUpdate(req.query.id, req.body, {
       new: true,
       runValidators: true,
     })
-    console.log('put')
   }
   else if (method === 'DELETE') {
     try {

@@ -13,7 +13,7 @@ export async function getTracks(req) {
   try {
     const user = await User.findOne({ email: session.user.email })
     const query = { $or: [{ published: true }, { owner: user.id }] }
-    const tracks = await Track.find(query).populate("owner").select('-markers._id -markers.latlng._id')
+    const tracks = await Track.find(query).populate('owner', '-email -__v').select('-markers._id -markers.latlng._id')
     return { success: true, data: tracks }
   } catch (error) {
     console.log(error)

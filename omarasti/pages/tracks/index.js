@@ -1,15 +1,14 @@
 
 import { useSession } from 'next-auth/client'
-import Layout from '../../components/Layout'
+import { Layout } from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
-import TrackList from '../../components/TrackList'
-import { trackState } from '../track'
+import { TrackList}  from '../../components/TrackList'
+import { trackState } from '../../models/state'
 import { useRecoilState } from 'recoil'
 import { getTracks } from '../api/tracks'
 import { designModeState } from '../../components/DesignMenu'
 import dbConnect from '../../utils/dbConnect'
-import { useEffect } from 'react'
 
 const TracksMenu = () => {
   const [, setMode] = useRecoilState(designModeState)
@@ -45,12 +44,10 @@ const Tracks = ({tracks}) => {
 
   return (
     <Layout menu={<TracksMenu/>}>
-      
       <TrackList tracks={tracks}/>
     </Layout>
   )
 };
-
 
 export async function getServerSideProps({req}) {
   await dbConnect()

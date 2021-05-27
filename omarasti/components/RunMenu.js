@@ -1,12 +1,8 @@
 import { SignInButton } from './Buttons'
-import { runState } from '../models/state'
-import { useRecoilState, } from 'recoil'
 
-const RunMenu = ({ stopRun, timer }) => {
-  const [run] = useRecoilState(runState)
+const RunMenu = ({ run, stopRun, timer }) => {
 
   const isLastMarker = run?.targetMarker === (run?.markers?.length - 1)
-  const target = isLastMarker ? 'maali' : `rasti ${run.targetMarker}`
 
   return (
     <div className="flex justify-between text-sm align-center w-full">
@@ -17,9 +13,9 @@ const RunMenu = ({ stopRun, timer }) => {
             {timer}
           </div>
         </div>
-        { run?.end !== undefined && 
+        { run !== undefined && run.end === undefined && 
         <div>
-          Seuraava: {target}
+          Seuraava: {isLastMarker ? 'maali' : `rasti ${run?.targetMarker}`}
         </div>
         }
       </div>

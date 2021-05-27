@@ -1,6 +1,6 @@
 
 import { useSession } from 'next-auth/client'
-import Layout from '../../../components/Layout'
+import { Layout } from '../../../components/Layout'
 import { TrackDistance } from '../../../components/Distance'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
@@ -8,6 +8,7 @@ import { Button } from '../../../components/Buttons'
 import { ViewMenu } from '../../../components/ViewMenu'
 import { runState, emptyRun, trackState } from '../../../models/state'
 import { useState } from 'react'
+
 
 const StartRun = () => {
   const [session, loading] = useSession()
@@ -21,7 +22,7 @@ const StartRun = () => {
   async function start() {
     setRun({
       ...emptyRun,
-      trackId: track._id,
+      track: track._id,
       start: new Date(),
       targetMarker: 1,
       currentLatlng: track.markers[0].latlng,

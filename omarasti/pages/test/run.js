@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
-import Layout from '../components/Layout'
+import { Layout } from '../../components/Layout'
 import dynamic from 'next/dynamic'
-import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel, ShowOrientationPanel } from '../components/Panels'
-import { Button } from '../components/Buttons'
+import { SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel, ShowOrientationPanel } from '../../components/Panels'
+import { Button } from '../../components/Buttons'
 
 
 
 const DesignMap = dynamic(() => {
-  return import('../components/DesignMap')
+  return import('../../components/DesignMap')
 }, { ssr: false })
 
 const Test2 = ({ mapUrl }) => {

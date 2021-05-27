@@ -58,13 +58,12 @@ const Header = ({ menu }) => {
         </div>
 
         <div className='flex-end flex-3 flex text-sm'>
+          { isSigning && <div>...</div> }
+
           {!session && !isSigning && (
             <SignInButton onClick={async () => signin('google')}>Kirjaudu</SignInButton>
           )}
-          { isSigning && <div>...</div> }
-          {session && showSignOut && (
-              <Link className="ml-2" href="/settings"><SignInButton>Asetukset</SignInButton></Link>
-          )}
+
         </div>
       </nav>
 

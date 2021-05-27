@@ -4,11 +4,11 @@ import { useDeviceOrientation } from '../utils/useDeviceOrientation'
 const Compass = ({ angle, cName, closeToMarker=false}) => {
     const orientation = useDeviceOrientation({})
 
-    const myStyle = (orientation === undefined || !orientation.available) ? {} : 
+    const alignNorth = (orientation === undefined || !orientation.available) ? {} : 
         { transformBox: 'fill-box', transformOrigin: 'center 50%', transform: `rotate(${Math.round(orientation.alpha)}deg)` }
 
     return (
-        <svg width="258" height="265" className={cName} viewBox="0 0 258 265" fill="none" style={myStyle}>
+        <svg width="258" height="265" className={cName} viewBox="0 0 258 265" fill="none" style={alignNorth} strokeWidth={closeToMarker ? 1 : 2}>
             <defs>
                 <filter id="filter0_d" x="39.6432" y="198.81" width="29.1678" height="29.5406" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
@@ -170,10 +170,10 @@ const Compass = ({ angle, cName, closeToMarker=false}) => {
             <g filter="url(#filter11_d)">
                 <path d="M93.4607 52.6413L90.6188 46.2442" stroke="black" />
             </g>
-            <path d="M129 0L139.392 16.5H118.608L129 0Z" fill="#B64949" />
-            <path d="M-8.34742e-08 135L9.75 141.062L9.75 128.938L-8.34742e-08 135Z" fill="#A09C9C" />
-            <path d="M258 136L248.25 129.938L248.25 142.062L258 136Z" fill="#A09C9C" />
-            <path d="M129 265L135.062 255.25H122.938L129 265Z" fill="#A09C9C" />
+            <path d="M129 0L139.392 16.5H118.608L129 0Z" fill="#B64949" stroke="#B64949" strokeWidth={closeToMarker ? 1 : 4}/>
+            <path d="M-8.34742e-08 135L9.75 141.062L9.75 128.938L-8.34742e-08 135Z" fill="#A09C9C" stroke="#555555" strokeWidth={closeToMarker ? 1 : 4}/>
+            <path d="M258 136L248.25 129.938L248.25 142.062L258 136Z" fill="#A09C9C" stroke="#555555" strokeWidth={closeToMarker ? 1 : 4}/>
+            <path d="M129 265L135.062 255.25H122.938L129 265Z" fill="#A09C9C" stroke="#555555" strokeWidth={closeToMarker ? 1 : 4}/>
 
 
             { closeToMarker &&

@@ -10,6 +10,30 @@ Käytössä kirjastot
 
 
 
+# Ryhmät
+
+Tarvittais "urheiluseurat" eli kaveripiirit eli ryhmät,
+jotta kaveripiirejä, koululuokkia tms. voi olla useita.
+Esim. admin generoi salasanan, jolla voi liittyä ryhmään, ja jakaa sen
+täysin omarastin ulkopuolella.
+
+
+# Tulosten tallennus
+
+Tallenna ajat ja juoksijat.
+Reittivertailuun tallenna vaikka enintään viisi reittiä,
+käyttäjän valinta on, tallentaako reitin.
+Reittivertailun katseluun voi valita haluamansa juoksijat.
+
+
+
+# vercel eikä netlify
+
+Koska mongoose:n yhteyden voi jättää päälle. 
+netlifyyn tarviis toisen ratkaisun, tai sit välittää backend-kutsut eteenpäin ihan oikealle API:lle.
+
+
+
 # next-on-netlify
 Kirjastopa deprekoitui, uusi käytössä oleva on
 https://github.com/netlify/netlify-plugin-nextjs

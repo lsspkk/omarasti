@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { trackState } from '../pages/track'
+import { trackState } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { Button } from './Buttons'
 import { useRouter } from 'next/router'
@@ -96,22 +96,38 @@ const SortIcon = ({ ascending, selected }) => {
 
 const TrackCard = ({ track, toUrl, remove }) => {
   const [user,] = useRecoilState(userState)
-  const [selected, setSelected] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [runAmounts, setRunAmounts] = useState({})
+
+  const changeVisibility = async () => {
+
+    if (!visible ) {
+      const res = await fetch(`/api/run/track/${track._id}/show`)
+      if (res.ok) {
+        const { data } = await res.json()
+        if (data.totalAmounts !== runAmounts?.totalRuns || data.myRuns !== runAmounts?.myRuns) {
+          setRunAmounts(data)
+        }
+      }
+    }
+    setVisible(!visible)
+  }
 
   const options = { year: 'numeric', month: 'numeric', day: 'numeric' };
   const modified = new Date(track.modified).toLocaleDateString('fi-FI', options)
-
   const color = track.published ? 'text-orange-900' : 'text-gray-600'
+  const canSeeResults = runAmounts?.totalRuns > 1 && runAmounts?.myRuns > 0
+
   return (
     <div className="border p-2">
-      <div className="flex justify-between content-end" onClick={() => setSelected(!selected)}>
+      <div className="flex justify-between content-end" onClick={() => changeVisibility()}>
         <div>
           <div className={`inline-block ${color} bold text-xl `}>{track.name}</div>
           <div className="track-name ">{track.location !== '' && <> Sijainti: {track.location} </>}</div>
         </div>
         <div className="owner text-gray-600 text-sm text-right">
           {modified}
-          {selected &&
+          {visible &&
             <>
               <div>
                 {track.owner === undefined ? '' : <><div style={{ fontSize: '0.8em', lineHeight: '0.7em' }}>Ratamestari</div>{track.owner.name}</>}
@@ -122,13 +138,12 @@ const TrackCard = ({ track, toUrl, remove }) => {
                 </div>
               }
             </>
-
           }
         </div>
       </div>
 
-      <div className="flex justify-between selected" style={{ maxHeight: (!selected ? '0px' : 'none'), transition: 'max-height 0.5s' }}>
-        {selected &&
+      <div className="flex justify-between selected" style={{ maxHeight: (!visible ? '0px' : 'none'), transition: 'max-height 0.5s' }}>
+        {visible &&
           <>
             <div>
               <TrackDistance markers={track.markers} />
@@ -136,13 +151,17 @@ const TrackCard = ({ track, toUrl, remove }) => {
             <div className="flex justify-end items-end">
 
               {track.owner._id === user.id &&
-                <Button className="bg-red-200"onClick={() => remove(track._id, track.name)}
+                <Button className="bg-red-200" onClick={() => remove(track._id, track.name)}
                 >Poista</Button>
               }
 
               {!track.published &&
                 <Button className="self-end mr-4" onClick={() => toUrl(track, '/tracks/edit', 'move')}
                 >Muokkaa</Button>
+              }
+
+              {canSeeResults &&
+                <Button className="self-end " onClick={() => toUrl(track, '/results', 'view')}>Tulokset</Button>
               }
               <Button className="" onClick={() => toUrl(track, '/tracks/view', 'view')}>Suunnista</Button>
 
@@ -155,4 +174,4 @@ const TrackCard = ({ track, toUrl, remove }) => {
   )
 }
 
-export default TrackList
+export { TrackList }

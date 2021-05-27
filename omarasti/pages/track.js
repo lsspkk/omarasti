@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import { Layout } from '../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../components/Buttons'
 import { trackState } from '../models/state'
@@ -57,7 +57,7 @@ const OneTrack = () => {
 
   return (
     <Layout menu={<TrackMenu/>}>
-      { message !== '' && <div className="text-center text-grey-800">{message}</div>}
+      { message !== '' && <div className="text-center text-gray-600">{message}</div>}
       <div className="container flex justify-between">
 
         <div className="m-5 w-64">
@@ -78,27 +78,28 @@ const OneTrack = () => {
           <TrackDistance markers={track.markers}/>
         </div>
         </div>
+        </div>
+
         {!track.published &&
-
-          <div className="py-10 w-34">
-            <div>
-            <Button onClick={() => save({ published: false })}>Tallenna</Button>
-
-            Tallennettu rata näkyy vain sinulle.
+        <>
+        <div className="container w-full flex justify-end items-center">
+            <div className="mr-8 text-right">
+            Tallennettu rata näkyy vain sinulle.<br/>
             Voit muokata sitä ja suunnistaa radan.
             </div>
-            <div>
-            <Button onClick={() => save({ published: true })} >Julkaise</Button>
-
-            Julkaistu rata näkyy kaikille.
+            <Button onClick={() => save({ published: false })}>Tallenna</Button>
+            </div>
+            <div className="mt-12 container w-full flex justify-end items-center">
+            <div className="mr-8 text-right">
+            Julkaistu rata näkyy kaikille.<br/>
             Sitä ei voi muokata.
             </div>
+            <Button onClick={() => save({ published: true })} >Julkaise</Button>
           </div>
+            </>
         }
-      </div>
     </Layout>
   )
 };
 
 export default OneTrack
-export { trackState }

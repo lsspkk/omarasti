@@ -1,15 +1,16 @@
-
+import { useEffect, useState } from 'react'
 import { useMap, Polyline } from 'react-leaflet'
 import { PersonMarker } from './PersonMarker'
-import { runState } from '../models/state'
-import { useRecoilState, } from 'recoil'
 
+const RouteLines = ({ showRouteIndex, run, color }) => {
 
-
-const RouteLines = ({ showRouteIndex }) => {
-
+  const [shownLines, setShownLines] = useState([])
   const map = useMap()
-  const [run] = useRecoilState(runState)
+
+  if (!run) {
+    return <div />
+  }
+
 
 
   // calculate map markers in points, then return polyline endpoints as latlng
@@ -33,26 +34,48 @@ const RouteLines = ({ showRouteIndex }) => {
     return lines
   }
 
+  const makeRouteLine = (routePoints) => {
+    try {
+      const start = map.latLngToLayerPoint(routePoints[0].latlng)
+      const end = map.latLngToLayerPoint(routePoints[1].latlng)
 
-  if (!run) {
-    return <div/>
+      const s = map.layerPointToLatLng(start)
+      const e = map.layerPointToLatLng(end)
+      return [[s.lat, s.lng], [e.lat, e.lng]]
+    } catch (e) {
+      console.log('Error at makeRouteLines()', routePoints, e)
+    }
+    return undefined
   }
-  const points = run.route.filter((r, index) => index < showRouteIndex)
-  const lines = makeRouteLines(points)
+
+  // useEffect(() => {
+  // console.log(showRouteIndex)
+  // if (showRouteIndex > 0 && showRouteIndex < run.route.length) {
+  //   const points = run.route.slice(showRouteIndex - 1, showRouteIndex)
+  //   const lines = makeRouteLine(points)
+  //   if (lines) setShownLines([...shownLines, lines])
+  // }
+  // }, [showRouteIndex])
+
+  const personLatlng = showRouteIndex < run.route.length ?
+    run.route[showRouteIndex].latlng
+    : run.route[run.route.length - 1].latlng
+
+
+  const max = showRouteIndex < (run.route.length) ? showRouteIndex: run.route.length
+  const lines = makeRouteLines(run.route.slice(0, max))
   return (
     <>
-      {lines.map((linePositions, index) =>
+      {lines.map((linePositions, i) =>
         <Polyline
-          key={'lp' +index + JSON.stringify(linePositions)}
+          key={`lp${i}-${run._id}`}
           positions={linePositions}
-          pathOptions={{color:'#0023ff', weight: '6'}}
+          pathOptions={{ color, weight: '6' }}
         />
       )}
 
-      { showRouteIndex < run.route.length && 
-        <PersonMarker latlng={run.route[showRouteIndex].latlng} />
-      }
-      </>
+      { showRouteIndex < run.route.length && <PersonMarker latlng={personLatlng} color={color} />}
+    </>
   )
 }
 

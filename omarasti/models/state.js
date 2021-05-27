@@ -9,7 +9,8 @@ const emptyRun = {
   route: [], 
   markerTimes: [], 
   targetMarker: -1, 
-  trackId: undefined,
+  track: undefined,
+  runner: undefined,
   currentLatlng: undefined,
   showPersonMarker: false,
   routeMarkTime : undefined
@@ -20,4 +21,11 @@ const emptyRun = {
   // see Track.js for data model
 
 
- export { runState, emptyRun, trackState }
+
+const emptyResults = {
+  trackRuns: [],
+  selectedRuns: []
+}
+const resultState = atom({ key: 'resultState', default: emptyResults })
+
+ export { runState, emptyRun, trackState, resultState, emptyResults }
