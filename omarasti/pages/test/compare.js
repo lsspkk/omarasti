@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState, } from 'recoil'
 import { resultState, trackState } from '../../models/state'
 import { INTERVALS } from '../../utils/location'
-import { demoResults, demoTrack } from './demodata'
+import { demoResults, demoTrack } from '../../model/demodata'
 import { Button } from '../../components/Buttons'
 import { designModeState } from '../../components/DesignMenu'
 
