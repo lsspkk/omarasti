@@ -1,6 +1,9 @@
 import { SignInButton } from './Buttons'
 
-const RunMenu = ({ run, stopRun, timer }) => {
+const runner = (run) => (run.runner?.name !== undefined) ? run.runner.name : 'tuntematon'
+
+
+const RunMenu = ({ run, stopRun, timer, compareRuns = []}) => {
 
   const isLastMarker = run?.targetMarker === (run?.markers?.length - 1)
 
@@ -19,6 +22,13 @@ const RunMenu = ({ run, stopRun, timer }) => {
         </div>
         }
       </div>
+      { compareRuns.length > 0 &&
+        <div>
+          { compareRuns.map(r => 
+            <div key={`runmenurunners-${r._id}`} style={{color: r.color}}>{r.place} - {runner(r)}</div>
+          )}
+        </div>
+      }
 
       <SignInButton onClick={() => stopRun()}>
       Lopeta

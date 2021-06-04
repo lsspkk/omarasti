@@ -7,7 +7,7 @@ import { PersonMarker } from './PersonMarker'
 import L from 'leaflet'
 
 import { designModeState } from './DesignMenu'
-import { runState, trackState, resultState } from '../models/state'
+import { runState, trackState, resultState, routeColors } from '../models/state'
 import { useRecoilState, } from 'recoil'
 import { angleInDegrees } from '../utils/location'
 import { RouteLines } from './RouteLines'
@@ -116,7 +116,6 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
   if (results?.selected?.length > 1) {
     runs = results.selected
   }
-  const colors = ['#3B32AB', 'red', 'green', 'chucknorris', 'cyan', 'magenta', 'orange', 'plum']
 
   return (
     <MapContainer
@@ -137,7 +136,7 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
       }
 
       { showRoute && runs !== undefined && runs.map((runResult, i) =>
-        <RouteLines key={`routelines${runResult._id}`} showRouteIndex={showRouteIndex} run={runResult} color={colors[i%colors.length]} />)
+        <RouteLines key={`routelines${runResult._id}`} showRouteIndex={showRouteIndex} run={runResult} color={routeColors[i%routeColors.length]} />)
       }
 
     </MapContainer>

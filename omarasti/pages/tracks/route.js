@@ -41,15 +41,10 @@ const Route = ({ mapUrl }) => {
   }, [run])
 
   useEffect(() => {
-    if (run && run.route && showRouteIndex < run.route.length) {
+    if (run && run.route && showRouteIndex < (run.route.length-1)) {
       const timeout = window.setTimeout(() => updateRoute(), INTERVALS.drawRoute)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
-    }
-    else {
-      myTimeout !== -1 && clearTimeout(myTimeout)
-      setTimer('')
-      setMyTimeout(-1)
     }
   }, [run, showRouteIndex])
 

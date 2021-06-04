@@ -35,7 +35,10 @@ const Results = () => {
       const res = await fetch('/api/run/track/'+track._id)
       if (res.ok) {
         const { data } = await res.json()
-        setResults({...results, trackRuns: data, selected: []})
+        const sameData = data.every(d => results?.trackRuns.some(r => r._id === d._id))
+        if (!sameData) {
+          setResults({...results, trackRuns: data, selected: []})
+        }
       }
       setRun(undefined) // clear run, starts looking results after run
       // should this be done in return button

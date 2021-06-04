@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 import { Layout } from '../../components/Layout'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
-import { resultState, trackState } from '../../models/state'
+import { resultState, routeColors, trackState } from '../../models/state'
 import { INTERVALS } from '../../utils/location'
 
 const DesignMap = dynamic(() => {
@@ -13,7 +13,7 @@ const DesignMap = dynamic(() => {
 }, { ssr: false })
 
 const Route = ({ mapUrl }) => {
-  const [results] = useRecoilState(resultState)
+  const [results,] = useRecoilState(resultState)
   const [session, loading] = useSession()
   const [showRouteIndex, setShowRouteIndex] = useState(0)
   const [longestRun, setLongestRun] = useState({})
@@ -73,7 +73,14 @@ const Route = ({ mapUrl }) => {
     router.push('/results')
   }
 
-  const menu =  <RunMenu stopRun={stopRun} timer={timer} run={longestRun}/>
+  const coloredRuns = results.selected.map((r,i) => ({...r, color: routeColors[i % routeColors.length]}))
+
+  const compareRuns = [...coloredRuns].sort((a, b) => {
+    if (a.totalTime === b.totalTime) return 0
+    return (a.totalTime < b.totalTime) ? -1 : 1
+  })
+
+  const menu =  <RunMenu stopRun={stopRun} timer={timer} run={longestRun} compareRuns={compareRuns}/>
   const  mapCenter = track?.markers[0].latlng
 
   return (

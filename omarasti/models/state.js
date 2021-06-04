@@ -28,4 +28,8 @@ const emptyResults = {
 }
 const resultState = atom({ key: 'resultState', default: emptyResults })
 
- export { runState, emptyRun, trackState, resultState, emptyResults }
+
+const routeColors = ['#3B32AB', 'red', 'green', 'chucknorris', 'cyan', 'magenta', 'orange', 'plum']
+
+
+ export { runState, emptyRun, trackState, resultState, emptyResults, routeColors }

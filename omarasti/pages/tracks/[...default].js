@@ -150,7 +150,7 @@ const Design = ({ mapUrl }) => {
           <TouchMarkerPanel touchMarker={touchMarker} track={track} markerNumber={run.targetMarker}/>
         }
         { !isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
-          <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker+1}/>
+          <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker}/>
         }
         { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
           <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]}/> 

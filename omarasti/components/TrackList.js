@@ -121,7 +121,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
   return (
     <div className="border p-2">
       <div className="flex justify-between content-end" onClick={() => changeVisibility()}>
-        <div>
+        <div className="select-none">
           <div className={`inline-block ${color} bold text-xl `}>{track.name}</div>
           <div className="track-name ">{track.location !== '' && <> Sijainti: {track.location} </>}</div>
         </div>
