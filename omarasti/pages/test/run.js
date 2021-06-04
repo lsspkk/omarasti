@@ -1,5 +1,5 @@
 // visual test for panels
-
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
 import { Layout } from '../../components/Layout'
