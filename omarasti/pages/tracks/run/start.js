@@ -57,7 +57,7 @@ const StartRun = () => {
 
         </div>
       </div>
-      <div className="container flex justify-center">
+      <div className="select-none container flex justify-center">
         <Button className="m-8" onClick={() => router.push('/tracks/view')} >Takaisin</Button>
         <Button className="m-8" onClick={() => start()} >Aloita</Button>
       </div>
