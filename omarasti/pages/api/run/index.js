@@ -2,6 +2,7 @@
 import dbConnect from '../../../utils/dbConnect'
 import User from '../../../models/User'
 import Run from '../../../models/Run'
+import Track from '../../../models/Track'
 
 import { getSession } from 'next-auth/client'
 
