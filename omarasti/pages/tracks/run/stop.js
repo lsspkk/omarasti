@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
 import { Button } from '../../../components/Buttons'
 import { runState, trackState, resultState } from '../../../models/state'
+import { userState } from '../../settings'
 import { totalDistance } from '../../../utils/location'
 import { TrackDistance, RunDistance } from '../../../components/Distance'
 
@@ -62,6 +63,7 @@ const StopRun = () => {
   const [userRuns, setUserRuns] = useState([])
   const [isSaved, setIsSaved] = useState(false)
   const [message, setMessage] = useState('')
+  const [user, ] = useRecoilState(userState)
   if (loading) return <div>loading...</div>
   if (!session || !track) { router.push('/'); return <div>..</div> }
 
@@ -107,8 +109,12 @@ const StopRun = () => {
     if (res.ok) {
       const { data: savedRun } = await res.json()
 
-      const trackRuns = [...results.trackRuns, savedRun]
-      setResults({ trackRuns, selected: [savedRun] })
+      // add saved run to results with place and runner name, and select for comparison
+      const fasterRuns = results.trackRuns.filter(r => r.totalTime < savedRun.totalTime)
+      const slowerRuns = results.trackRuns.filter(r => r.totalTime >= savedRun.totalTime)
+      const placedRun = { ...savedRun, place: fasterRuns.length+1, runner: { name: user.name}}
+      const trackRuns = [...fasterRuns, placedRun, ...slowerRuns]
+      setResults({ trackRuns, selected: [placedRun] })
       setRun({ ...savedRun, start: run.start, end: run.end, markerTimes: run.markerTimes })
       setIsSaved(true)
     }
@@ -159,7 +165,8 @@ const StopRun = () => {
                 <th className='text-center w-1/4'>Matka</th>
                 <th className='text-center w-1/4'>Nopeus <span className="font-normal">(km/h)</span></th>
               </tr>
-              {run.markerTimes.map((time, i) => <MarkerResult i={i} markerTime={time} run={run} />)}
+              {run.markerTimes.map((time, i) => 
+                <MarkerResult key={`markerresult${time}-${i}`} i={i} markerTime={time} run={run} />)}
             </table>
           </div>
         }

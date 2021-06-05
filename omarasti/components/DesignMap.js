@@ -14,9 +14,8 @@ import { RouteLines } from './RouteLines'
 
 
 const TrackPoints = () => {
-  const [mode, setMode] = useRecoilState(designModeState)
+  const [mode, ] = useRecoilState(designModeState)
   const [track, setTrack] = useRecoilState(trackState)
-  const [run] = useRecoilState(runState)
   const [lines, setLines] = useState([])
 
   const map = useMapEvents({

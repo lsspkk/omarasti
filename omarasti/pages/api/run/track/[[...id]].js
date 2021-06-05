@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     else {
       // /api/run/track/[trackid]
 
-      const runs = await Run.find({ track: req.query.id }).populate('runner', '-email')
+      const runs = await Run.find({ track: req.query.id }).sort('totalTime').populate('runner', '-email')
       res.status(200).json({ success: true, data: runs })
     }
   }

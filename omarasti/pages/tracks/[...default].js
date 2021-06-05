@@ -130,7 +130,8 @@ const Design = ({ mapUrl }) => {
   const isLastMarker = run?.targetMarker === (track.markers.length - 1)
   let mapCenter = coordinates
   if (run !== undefined) {
-    mapCenter = (track?.markers[run?.targetMarker-1].latlng)
+    const markerIndex = (run.targetMarker === undefined) ? 0 : run.targetMarker-1
+    mapCenter = (track?.markers[markerIndex].latlng)
   }
   else if (track !== undefined && track.markers.length > 0) {
     mapCenter = (track.markers[track.markers.length-1].latlng)

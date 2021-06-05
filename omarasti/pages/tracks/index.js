@@ -27,10 +27,10 @@ const TracksMenu = () => {
     setTrack(newTrack)
     router.push('/tracks/edit')
   }
-  return <div className="flex justify-between mx-6 w-full">
-    <h1>Radat</h1>
+  return <div className="flex justify-between w-full">
+    <h1 className="ml-4">Radat</h1>
 
-    <Button className="w-30" onClick={() => createNewTrack()}>Uusi Rata</Button>
+    <Button className="mr-4 w-30" onClick={() => createNewTrack()}>Uusi Rata</Button>
   </div>
 }
 

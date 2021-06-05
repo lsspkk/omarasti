@@ -10,9 +10,11 @@ import { useEffect } from 'react'
 
 const ResultsMenu = () => {
   const [results, setResults] = useRecoilState(resultState)
+  const [, setRun] = useRecoilState(runState)
   const router = useRouter()
   const toTracks = () => {
     setResults({...results, trackRuns: []})
+    setRun(undefined)
     router.push('/tracks')
   }
   return <div className="flex justify-end mx-6 w-full">
@@ -22,7 +24,7 @@ const ResultsMenu = () => {
 
 const Results = () => {
   const [results, setResults] = useRecoilState(resultState)
-  const [run, setRun] = useRecoilState(runState)
+  const [run, ] = useRecoilState(runState)
   const [track] = useRecoilState(trackState)
 
   const [session, loading] = useSession()
@@ -40,8 +42,6 @@ const Results = () => {
           setResults({...results, trackRuns: data, selected: []})
         }
       }
-      setRun(undefined) // clear run, starts looking results after run
-      // should this be done in return button
     }
   }, [])
 

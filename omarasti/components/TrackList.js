@@ -66,7 +66,7 @@ const SortMenu = ({ changeSorted, sorted }) => {
   }
 
   return (
-    <div className="flex justify-between mx-2">
+    <div className="flex justify-between mx-1">
 
       <div className={`${isName && 'bold'} text-gray-800`} onClick={() => updateSorted('name')}>
         <SortIcon ascending={sorted.ascending} selected={isName} />
@@ -151,7 +151,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
             <div className="flex justify-end items-end">
 
               {track.owner._id === user.id &&
-                <Button className="bg-red-200" onClick={() => remove(track._id, track.name)}
+                <Button onClick={() => remove(track._id, track.name)}
                 >Poista</Button>
               }
 
@@ -163,7 +163,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
               {canSeeResults &&
                 <Button className="self-end " onClick={() => toUrl(track, '/results', 'view')}>Tulokset</Button>
               }
-              <Button className="" onClick={() => toUrl(track, '/tracks/view', 'view')}>Suunnista</Button>
+              <Button className="mr-0" onClick={() => toUrl(track, '/tracks/view', 'view')}>Suunnista</Button>
 
             </div>
           </>

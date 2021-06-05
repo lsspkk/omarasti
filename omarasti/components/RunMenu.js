@@ -8,7 +8,7 @@ const RunMenu = ({ run, stopRun, timer, compareRuns = []}) => {
   const isLastMarker = run?.targetMarker === (run?.markers?.length - 1)
 
   return (
-    <div className="flex justify-between text-sm align-center w-full">
+    <div className="flex justify-between text-sm items-center w-full">
       <div className="w-1/2">
         <div className="flex">
           <div>Suunnistusaika: </div>

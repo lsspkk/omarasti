@@ -18,7 +18,8 @@ export default function Home ({warm}) {
 
 
   useEffect(() => {
-    setTimeout(() => setAngle((angle+1)%360), 100)
+    const timeout = setTimeout(() => setAngle((angle+1)%360), 100)
+    return () => clearTimeout(timeout)
   }, [angle])
   return (
     <Layout menu={<Menu/>}>

@@ -10,13 +10,6 @@ import { useRecoilState } from 'recoil'
 import { totalDistance } from '../utils/location'
 import { TrackDistance } from '../components/Distance'
 
-const TrackMenu = () => {
-  const { asPath } = useRouter()
-  return <>
-    <Link href="/tracks"><Button>Radat</Button></Link>
-    { asPath === '/track' && <Link href="/tracks/edit"><Button>Rastit</Button></Link>}
-  </>
-}
 
 const OneTrack = () => {
   const [session, loading] = useSession()
@@ -56,14 +49,17 @@ const OneTrack = () => {
   const length = totalDistance(track.markers)
 
   return (
-    <Layout menu={<TrackMenu/>}>
+    <Layout menu={<Button onClick={() => router.back()} className="mr-4">Takaisin</Button>}>
       { message !== '' && <div className="text-center text-gray-600">{message}</div>}
+
+      <div className="flex justify-center">
+        <div>
+        <h1 className="mb-4">Radan tiedot</h1>
       <div className="container flex justify-between">
 
-        <div className="m-5 w-64">
-        <h1 className="py-10">Radan tiedot</h1>
+        <div className="mb-4">
 
-        <div className="flex my-5">
+        <div className="flex my-1">
           <label className="w-20">Nimi:</label>
           <input className="w-40" value={name} disabled={track.published} onChange={(e) => setName(e.target.value)} />
         </div>
@@ -74,30 +70,32 @@ const OneTrack = () => {
         </div>
 
 
-        <div className="flex my-5">
+        <div className="flex mt-5 mb-8 ml-3">
           <TrackDistance markers={track.markers}/>
         </div>
         </div>
         </div>
 
         {!track.published &&
-        <>
-        <div className="container w-full flex justify-end items-center">
-            <div className="mr-8 text-right">
+        <div className="block float-left">
+        <div className="container px-2 w-full flex justify-end items-center">
+            <div className="mr-2 w-full ">
             Tallennettu rata näkyy vain sinulle.<br/>
             Voit muokata sitä ja suunnistaa radan.
             </div>
             <Button onClick={() => save({ published: false })}>Tallenna</Button>
             </div>
-            <div className="mt-12 container w-full flex justify-end items-center">
-            <div className="mr-8 text-right">
+            <div className="mt-12 container px-2 w-full flex justify-end items-center">
+            <div className="mr-2 w-full ">
             Julkaistu rata näkyy kaikille.<br/>
             Sitä ei voi muokata.
             </div>
             <Button onClick={() => save({ published: true })} >Julkaise</Button>
           </div>
-            </>
+            </div>
         }
+        </div>
+        </div>
     </Layout>
   )
 };

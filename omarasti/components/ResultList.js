@@ -11,11 +11,6 @@ const ResultList = () => {
 
   if (!results) return <div></div>
 
-  const sortedRuns = [...results.trackRuns].sort((a, b) => {
-    if (a.totalTime === b.totalTime) return 0
-    return (a.totalTime < b.totalTime) ? -1 : 1
-  })
-
   return (
     <div className="container">
       <h1 className="my-4">Rata {track.name} tulokset</h1>
@@ -28,7 +23,8 @@ const ResultList = () => {
           <div className="w-1/6 ml-4"></div>
         </div>
 
-        {sortedRuns.map((runResult, i) => <RunResult i={i} run={runResult} />)}
+        {results.trackRuns.map((runResult, i) => <
+          RunResult key={`rresult${runResult._id}`} i={i} run={runResult} />)}
       </div>
 
       <div className="w-full m-4 mt-8 text-right justify-end pr-10 ">
