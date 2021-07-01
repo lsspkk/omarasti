@@ -5,6 +5,18 @@ import Track from '../../../../models/Track'
 import { getSession } from 'next-auth/client'
 
 
+export const getRunAmounts = async (trackId, req) => {
+  const session = await getSession({ req })
+  if (!session) {
+    throw new Error('no session')
+  }
+  const user = await User.findOne({ email: session.user.email })
+  const totalRuns = await Run.count({ track: trackId })
+  const query = { $and: [{ track: trackId }, { runner: user.id }] }
+  const myRuns = await Run.count(query)
+  return { totalRuns, myRuns }
+}
+
 export default async function handler(req, res) {
 
   const session = await getSession({ req })
@@ -19,11 +31,9 @@ export default async function handler(req, res) {
     if (req.query.id.includes('show')) {
       // /api/run/track/[trackid]/show
 
-      const user = await User.findOne({ email: session.user.email })
-      const totalRuns = await Run.count({ track: req.query.id[0] })
-      const query = { $and: [{ track: req.query.id[0] }, { runner: user.id }] }
-      const myRuns = await Run.count(query)
-      res.status(200).json({ success: true, data: { totalRuns, myRuns } })
+      const trackId = req.query.id[0]
+      const runAmounts = getRunAmounts(trackId)
+      res.status(200).json({ success: true, data: runAmounts})
     }
 
     else {

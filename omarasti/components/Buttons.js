@@ -19,7 +19,7 @@ const Button = React.forwardRef(({onClick, href, className, children}, ref) => {
   const margins = add && add.includes('m-') ? '' : ' m-1 md:m-2'
   const paddings = add && add.includes('p-') ?  '' : ' p-1 md:p-2'
   const background = add && add.includes('bg-') ?  '' : ' bg-orange-300'
-  const cName = " select-none text-sm rounded text-orange-900 hover:text-blue-700 inline-block " + add + margins + paddings + background 
+  const cName = "transition duration-100 select-none text-sm rounded text-orange-900 hover:text-blue-700 inline-block " + add + margins + paddings + background 
   return (
     <a
       className={cName}

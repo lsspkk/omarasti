@@ -35,7 +35,6 @@ const TracksMenu = () => {
 }
 
 const Tracks = ({tracks}) => {
-  const [, setMode] = useRecoilState(designModeState)
   const [session, loading] = useSession()
   const router = useRouter()
   if (loading) return <div>loading...</div>

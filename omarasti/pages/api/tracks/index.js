@@ -1,7 +1,7 @@
-
 import dbConnect from '../../../utils/dbConnect'
 import Track from '../../../models/Track'
 import User from '../../../models/User'
+import { nanoid } from 'nanoid'
 
 import { getSession } from 'next-auth/client'
 
@@ -19,6 +19,18 @@ export async function getTracks(req) {
     console.log(error)
     return { success: false, data: [] }
   }
+}
+
+
+
+// short Id for URLS
+const generateUniqueId = async () => {
+  const shortId = nanoid(4)
+  const tracks = await Track.find({shortId})
+  if (tracks.length === 0) {
+    return shortId
+  }
+  return generateUniqueId()
 }
 
 export default async function handler(req, res) {
@@ -39,7 +51,8 @@ export default async function handler(req, res) {
   else if (method === 'POST') {
     try {
       const user = await User.findOne({ email: session.user.email })
-      const newTrack = { ...req.body, owner: user }
+      const shortId = await generateUniqueId()
+      const newTrack = { ...req.body, owner: user, shortId }
 
       const track = await Track.create(newTrack)
       res.status(201).json({ success: true, data: track })

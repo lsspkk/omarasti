@@ -9,6 +9,25 @@ Käytössä kirjastot
 
 
 
+# TODO
+- Tulosvertailu jaetun radan katselussa, (ennen ja) jälkeen suunnistuksen.
+- Jos rataa muokataan, varoita radan tallennuksen yhteydessä,
+  mikäli radalle on tallennettu tuloksia: Jos talletat, niin tulokset tyhjennetään.
+- Virallinen Google login grafiikka kirjautumislinkkiin.
+- Käytetään cookieita toiminnallisuus.
+- Esittelysivu suunnistuksesta.
+- Karttojen valinta.
+- Taitotason valinta (metrit, kuinka läheltä rasti näkyy) ja tallennus suunnistustulokseen.
+- Korjaa kuvausten näkyminen, kun rasti on näkyvissä.
+- Päivitä tailwind 2:een
+- Päivitä uusimpaa next.js:ään
+
+
+
+# Radan jakaminen
+
+Kevyempi ratkaisu ryhmille.
+
 
 # Ryhmät
 

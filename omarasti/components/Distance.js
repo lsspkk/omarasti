@@ -23,4 +23,4 @@ const RunDistance = ({route, className}) => {
     )
 }
 
-export { TrackDistance, RunDistance }
+export { TrackDistance, RunDistance, distance }
