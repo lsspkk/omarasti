@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState, } from 'recoil'
-import { runState, trackState } from '../../models/state'
+import { resultState, routeColors, trackState } from '../../models/state'
 import { INTERVALS } from '../../utils/location'
 
 const DesignMap = dynamic(() => {
@@ -13,22 +13,23 @@ const DesignMap = dynamic(() => {
 }, { ssr: false })
 
 const Route = ({ mapUrl }) => {
-  const [run] = useRecoilState(runState)
+  const [results,] = useRecoilState(resultState)
   const [session, loading] = useSession()
   const [showRouteIndex, setShowRouteIndex] = useState(0)
+  const [longestRun, setLongestRun] = useState({})
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
 
   const router = useRouter()
   if (loading ) return <div>loading...</div>
-  if (!session || !run) { router.push('/'); return <div/> }
+  if (!session || !results) { router.push('/'); return <div/> }
 
 
   async function updateRoute() {
-    const point = run.route[showRouteIndex]
+    const point = longestRun.route[showRouteIndex]
     setShowRouteIndex(showRouteIndex+1)
-    // timer
+
     const time = point.timestamp
     const minutes = Math.floor(time / 60000)
     const seconds = Math.floor((time - minutes * 60000) / 1000)
@@ -37,26 +38,50 @@ const Route = ({ mapUrl }) => {
 
   useEffect(() => {
     setTimer('')
-    setShowRouteIndex(0)
-  }, [run])
+    if (results?.selected?.length > 1) {
+      const routeLengths = results.selected.map(r => r.route.length)
+      const longestRoute = Math.max(...routeLengths)
+      const longestIndex = routeLengths.findIndex(r => r === longestRoute)
+      setLongestRun(results.selected[longestIndex])
+      setShowRouteIndex(0)
+    }
+  }, [results])
+
 
   useEffect(() => {
-    if (run && run.route && showRouteIndex < (run.route.length-1)) {
-      const timeout = window.setTimeout(() => updateRoute(), INTERVALS.drawRoute)
-      setMyTimeout(timeout)
-      return () => clearTimeout(timeout)
+
+    if (results?.selected?.length > 1) {
+      
+      if (longestRun?.route !== undefined && showRouteIndex < (longestRun.route.length-1)) {
+        const timeout = window.setTimeout(() => updateRoute(), INTERVALS.drawRoute)
+        setMyTimeout(timeout)
+        return () => clearTimeout(timeout)
+      }
     }
-  }, [run, showRouteIndex])
+    else {
+      myTimeout !== -1 && clearTimeout(myTimeout)
+      setTimer('')
+      setMyTimeout(-1)
+    }
+  }, [results, showRouteIndex, longestRun])
 
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
+    setLongestRun({})
     setMyTimeout(-1)
     setTimer('')
-    router.push('/tracks/run/stop')
+    router.push('/results')
   }
 
-  const menu =  <RunMenu stopRun={stopRun} timer={timer} />
-  const  mapCenter = track?.markers[run?.targetMarker-1].latlng
+  const coloredRuns = results.selected.map((r,i) => ({...r, color: routeColors[i % routeColors.length]}))
+
+  const compareRuns = [...coloredRuns].sort((a, b) => {
+    if (a.totalTime === b.totalTime) return 0
+    return (a.totalTime < b.totalTime) ? -1 : 1
+  })
+
+  const menu =  <RunMenu stopRun={stopRun} timer={timer} run={longestRun} compareRuns={compareRuns}/>
+  const  mapCenter = track?.markers[0].latlng
 
   return (
     <Layout map="true" menu={menu}>

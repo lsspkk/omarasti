@@ -1,4 +1,4 @@
-import { angleInDegrees } from '../utils/location'
+import { angleInDegrees, simulation } from '../utils/location'
 import { Button } from './Buttons'
 import { Compass } from "./Compass"
 
@@ -56,6 +56,10 @@ const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
 }
 
 const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
+  if (simulation) {
+    setTimeout(() => touchMarker(), 500)
+  }
+
   const marker = track.markers[markerNumber - 1]
   return (
     <>
@@ -105,6 +109,10 @@ const SeeFinishPanel = ({ location, marker }) => {
 }
 
 const InFinishPanel = ({ finishRun }) => {
+  if (simulation) {
+    setTimeout(() => finishRun(), 500)
+  }
+
   return (
     <Panel position={"bottom"}>
        <h1 className="">Olet maaliviivalla!</h1>

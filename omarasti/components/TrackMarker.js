@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { divIcon } from 'leaflet'
 import { designModeState } from './DesignMenu'
 import { useRecoilState, } from 'recoil'
-import { trackState } from '../pages/track.js'
+import { trackState } from '../models/state'
 import { Button } from './Buttons'
 
 const MARKER_SIZE = 50

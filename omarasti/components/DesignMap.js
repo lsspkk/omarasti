@@ -7,16 +7,15 @@ import { PersonMarker } from './PersonMarker'
 import L from 'leaflet'
 
 import { designModeState } from './DesignMenu'
-import { runState, trackState } from '../models/state'
+import { runState, trackState, resultState, routeColors } from '../models/state'
 import { useRecoilState, } from 'recoil'
 import { angleInDegrees } from '../utils/location'
 import { RouteLines } from './RouteLines'
 
 
 const TrackPoints = () => {
-  const [mode, setMode] = useRecoilState(designModeState)
+  const [mode, ] = useRecoilState(designModeState)
   const [track, setTrack] = useRecoilState(trackState)
-  const [run] = useRecoilState(runState)
   const [lines, setLines] = useState([])
 
   const map = useMapEvents({
@@ -46,7 +45,7 @@ const TrackPoints = () => {
   }, [track])
 
   if (!track) return <div />
-  console.log(mode)
+
   return (
     <>
       {track.markers.map((marker, index) =>
@@ -55,7 +54,7 @@ const TrackPoints = () => {
           marker={marker}
           published={track.published}
           index={index}
-          isLastMarker={index === track.markers.length-1}
+          isLastMarker={index === track.markers.length - 1}
           angle={(index !== 0 || track.markers.length < 2) ? 0 :
             angleInDegrees(marker.latlng, track.markers[1].latlng)}
         />
@@ -65,7 +64,7 @@ const TrackPoints = () => {
         <Polyline
           key={'lp' + JSON.stringify(linePositions)}
           positions={linePositions}
-          pathOptions={{color:'#fa4362', weight: '5'}}
+          pathOptions={{ color: '#fa4362', weight: '5' }}
         />
       )}
     </>
@@ -107,15 +106,19 @@ const makeLines = (markers, map) => {
 
 const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
   const [run] = useRecoilState(runState)
+  const [results] = useRecoilState(resultState)
   if (typeof window === 'undefined') {
     return null
   }
 
-  const attribution = process.env.NEXT_PUBLIC_MAP_ATTRIBUTION
-  console.log(attribution)
+  let runs = undefined
+  if (results?.selected?.length > 1) {
+    runs = results.selected
+  }
+
   return (
     <MapContainer
-      style={{ width: '100%', height: '90vh' }} center={mapCenter} 
+      style={{ width: '100%', height: '90vh' }} center={mapCenter}
       zoom={14.5}
       minZoom={process.env.NEXT_PUBLIC_MINZOOM}
       maxZoom={process.env.NEXT_PUBLIC_MAXZOOM}
@@ -126,7 +129,14 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
       />
       <TrackPoints />
       { !showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
-      { showRoute && <RouteLines showRouteIndex={showRouteIndex}/> }
+
+      { showRoute && runs === undefined &&
+        <RouteLines showRouteIndex={showRouteIndex} run={run} color='blue' />
+      }
+
+      { showRoute && runs !== undefined && runs.map((runResult, i) =>
+        <RouteLines key={`routelines${runResult._id}`} showRouteIndex={showRouteIndex} run={runResult} color={routeColors[i%routeColors.length]} />)
+      }
 
     </MapContainer>
   )

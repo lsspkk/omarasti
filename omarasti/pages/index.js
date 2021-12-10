@@ -1,4 +1,4 @@
-import Layout from '../components/Layout'
+import { Layout } from '../components/Layout'
 import { signin, useSession } from 'next-auth/client'
 import Link from 'next/link'
 import { Button } from "../components/Buttons"
@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import dbConnect from '../utils/dbConnect'
 const Menu = () => {
   return <>
+    <Link href="/settings"><Button className="m-1 mr-8 md:m-2 md:mr-10">Asetukset</Button></Link>
     <Link href="/tracks"><Button>Radat</Button></Link>
   </>
 }
@@ -17,7 +18,8 @@ export default function Home ({warm}) {
 
 
   useEffect(() => {
-    setTimeout(() => setAngle((angle+1)%360), 100)
+    const timeout = setTimeout(() => setAngle((angle+1)%360), 100)
+    return () => clearTimeout(timeout)
   }, [angle])
   return (
     <Layout menu={<Menu/>}>
@@ -32,6 +34,11 @@ export default function Home ({warm}) {
             niin voit luoda suunnistusratoja, jakaa niitä kavereillesi,
             ja käydä suunnistamassa radan puhelimen kanssa.
           </p>
+          <p>
+             Suunnistettuasi radan, voit tallentaa tuloksesi ja vertailla reittivalintoja.        
+            <Link href="/test/compare"><Button>Esimerkki</Button></Link>
+          </p>
+
           <p>Sähköpostiosoitettasi ei välitetä muihin palveluihin,
             eikä käytöstäsi kerätä mitään tilastoja.
             Kirjautumista käytetään ainoastaan siihen, että
@@ -39,22 +46,32 @@ export default function Home ({warm}) {
             sinulla on pääsy valitsemaasi "suunnistajanimeen",
             jolla esiinnyt palvelun muille käyttäjille.
           </p>
+
         </div>
       )}
 
-      <h1 className='mt-4 mb-4 text-xl'>Ole ratamestari</h1>
+      <h1 className='mt-4 mb-2 text-xl'>Ole ratamestari</h1>
 
       <p>
         Tee tampereen alueen kartalle oma suunnistusrata.
         Jaa linkki rataan kavereillesi, ja...
       </p>
 
-      <h1 className='mt-4 mb-4 text-xl'>Suunnista</h1>
+      <h1 className='mt-4 mb-2 text-xl'>Suunnista</h1>
 
       <ul>
         <li>Kun olet lähellä rastia, "näet" sen puhelimen ruudulla.</li>
         <li>Kun olet aivan rastin vieressä, voit "leimata" puhelimella.</li>
       </ul>
+
+
+      <h1 className='mt-4 mb-2 text-xl'>Kilpaile</h1>
+      <ul>
+        <li>Suunnistettuasi radan, voit tallentaa tuloksesi vertailuun.</li>
+        <li>Näet muiden reitit, nopeudet ja ajat.</li>
+        </ul>
+      <Link href="/test/compare"><Button className="mb-8 ml-0">Esimerkki</Button></Link>
+
       <Compass angle={angle*3%360} orientation={{available:true, alpha: -angle}} closeToMarker={true} cName="w-40 mx-auto"></Compass>
 
     </Layout>

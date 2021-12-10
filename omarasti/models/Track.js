@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 const TrackSchema = new mongoose.Schema({
   name: String,
   location: String,
+  shortId: String,
   published: Boolean,
   modified: Date,
   owner: {type : mongoose.Schema.Types.ObjectId, ref: 'User'}, 

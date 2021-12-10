@@ -1,27 +1,35 @@
-const SignInButton = (props) => {
+import React from 'react'
+
+const SignInButton = React.forwardRef(({onClick, href, className, children}, ref) => {
   return (
     <button
-      {...props}
-      className='rounded bg-orange-400 hover:bg-orange-700 p-2 '
-    >
-      {props.children}
+      className='select-none rounded bg-orange-400 hover:bg-orange-700 p-2 '
+      href={href}
+      ref={ref}
+      onClick={onClick}
+      >
+      {children}
     </button>
   )
-}
-const Button = (props) => {
+})
 
-  const add = props?.className? props?.className : '' 
-  const margins = add && add.includes(' m-') ? '' : ' m-1 md:m-2'
-  const paddings = add && add.includes(' p-') ?  '' : ' p-1 md:p-2'
-  const cName = "text-sm rounded bg-orange-300 text-orange-900 hover:text-blue-700 inline-block " + add + margins + paddings  
+const Button = React.forwardRef(({onClick, href, className, children}, ref) => {
+
+  const add = className !== undefined ? className : '' 
+  const margins = add && add.includes('m-') ? '' : ' m-1 md:m-2'
+  const paddings = add && add.includes('p-') ?  '' : ' p-1 md:p-2'
+  const background = add && add.includes('bg-') ?  '' : ' bg-orange-300'
+  const cName = "transition duration-100 select-none text-sm rounded text-orange-900 hover:text-blue-700 inline-block " + add + margins + paddings + background 
   return (
-    <div
-      {...props}
+    <a
       className={cName}
+      href={href}
+      ref={ref}
+      onClick={onClick}
       >
-      {props.children}
-    </div>
+      {children}
+    </a>
   )
-}
+})
 
 export { SignInButton, Button }

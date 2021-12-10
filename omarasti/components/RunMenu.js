@@ -1,15 +1,14 @@
 import { SignInButton } from './Buttons'
-import { runState } from '../models/state'
-import { useRecoilState, } from 'recoil'
 
-const RunMenu = ({ stopRun, timer }) => {
-  const [run] = useRecoilState(runState)
+const runner = (run) => (run.runner?.name !== undefined) ? run.runner.name : 'tuntematon'
+
+
+const RunMenu = ({ run, stopRun, timer, compareRuns = []}) => {
 
   const isLastMarker = run?.targetMarker === (run?.markers?.length - 1)
-  const target = isLastMarker ? 'maali' : `rasti ${run.targetMarker}`
 
   return (
-    <div className="flex justify-between text-sm align-center w-full">
+    <div className="flex justify-between text-sm items-center w-full">
       <div className="w-1/2">
         <div className="flex">
           <div>Suunnistusaika: </div>
@@ -17,12 +16,19 @@ const RunMenu = ({ stopRun, timer }) => {
             {timer}
           </div>
         </div>
-        { run?.end !== undefined && 
+        { run !== undefined && run.end === undefined && 
         <div>
-          Seuraava: {target}
+          Seuraava: {isLastMarker ? 'maali' : `rasti ${run?.targetMarker}`}
         </div>
         }
       </div>
+      { compareRuns.length > 0 &&
+        <div>
+          { compareRuns.map(r => 
+            <div key={`runmenurunners-${r._id}`} style={{color: r.color}}>{r.place} - {runner(r)}</div>
+          )}
+        </div>
+      }
 
       <SignInButton onClick={() => stopRun()}>
       Lopeta

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { simulateLocation } from './location'
+import { simulation } from './location'
 
 
 // device orientation
@@ -20,7 +20,7 @@ const useDeviceOrientation = () => {
     useEffect(() => {
 
 
-      if (!simulateLocation) {
+      if (!simulation) {
         window.addEventListener('deviceorientationabsolute', handleDeviceOrientation, true)
     
         return () => {

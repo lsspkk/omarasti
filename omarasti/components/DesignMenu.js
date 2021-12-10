@@ -9,13 +9,13 @@ const designModeState = atom({
 
 const DesignMenu = (props) => {
   const [mode, setMode] = useRecoilState(designModeState)
-  const normal = 'bg-orange-400'
-  const selected = 'bg-orange-600'
+  const normal = 'bg-green-300 '
+  const selected = 'bg-green-100 border-b-2 border-orange-900'
 
   return (
     <>
-      <Link href="/tracks"><Button>Radat</Button></Link>
-      <Button><Link href='/track'> Rata</Link></Button>
+      <Link href="/tracks"><Button className="mr-4">Radat</Button></Link>
+      <Link href='/track'><Button className="bg-green-400">Rata</Button></Link>
 
       <Button
         className={mode === 'add' ? selected : normal}

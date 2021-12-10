@@ -13,11 +13,21 @@ export async function getTracks(req) {
     const user = await User.findOne({ email: session.user.email })
     const query = { $or: [{ published: true }, { owner: user.id }] }
     const tracks = await Track.find(query, {projection:{_id:0}}).populate("owner markers")  
+
     return { success: true, data: tracks }
   } catch (error) {
     console.log(error)
     return { success: false, data: [] }
   }
+}
+
+export async function getTrack(shortId, req) {
+  const session = await getSession({ req })
+  if (!session) {
+    throw new Error('no session')
+  }
+  const tracks = await Track.find({shortId: shortId}).populate('owner', '-email -__v').select('-markers._id -markers.latlng._id')
+  return tracks.length === 0 ? null : tracks[0]
 }
 
 export default async function handler(req, res) {
@@ -38,14 +48,11 @@ export default async function handler(req, res) {
     return
   }
 
-
-  console.log(req.query)
   if (method === 'PUT') {
     await Track.findByIdAndUpdate(req.query.id, req.body, {
       new: true,
       runValidators: true,
     })
-    console.log('put')
   }
   else if (method === 'DELETE') {
     try {

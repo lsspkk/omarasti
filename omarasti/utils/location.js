@@ -11,18 +11,18 @@ function getCoordinates() {
   })
 }
 
-const simulateLocation = process.env.NEXT_PUBLIC_SIMULATE_LOCATION === 'true'
+const simulation = process.env.NEXT_PUBLIC_SIMULATE_LOCATION === 'true'
 const INTERVALS = {
-  markRoute: simulateLocation ? 100 : 10000,
-  updateLocation: simulateLocation ? 50 : 1000,
-  drawRoute: simulateLocation ? 25 : 100
+  markRoute: simulation ? 100 : 10000,
+  updateLocation: simulation ? 50 : 1000,
+  drawRoute: simulation ? 25 : 100
 }
 
 
 // real geolocation, or simulated: 10 meters towards target
 async function getLocation(targetLatLng, previousLatLng) {
 
-  if (simulateLocation) {
+  if (simulation) {
     return simulateGetLocation(targetLatLng, previousLatLng)
   }
   
@@ -46,12 +46,12 @@ function simulateGetLocation(targetLatLng, previousLatLng) {
   const dlat = lat1 - lat2
   const dlng = lng1 - lng2
   const dist = Math.sqrt(dlat * dlat + dlng * dlng)
-  if (dist < 0.0005) { // about 100m
+  if (dist < 0.0004) { // about 100m
     return targetLatLng
   }
   const angle = Math.atan2(dlat, dlng)
-  const newLat = lat2 + Math.sin(angle) * 0.0001 + (Math.random()*0.0002-0.0001)
-  const newLon = lng2 + Math.cos(angle) * 0.0001 + (Math.random()*0.0002-0.0001)
+  const newLat = lat2 + Math.sin(angle) * 0.0001 + (Math.random()*0.0004-0.0002)
+  const newLon = lng2 + Math.cos(angle) * 0.0001 + (Math.random()*0.0004-0.0002)
   return { lat: newLat, lng: newLon }
 }
 
@@ -105,5 +105,4 @@ function angleInDegrees(latlng1, latlng2) {
 }
 
 
-
-export { getCoordinates, angleInDegrees, distance, getLocation, totalDistance, INTERVALS, simulateLocation }
+export { getCoordinates, angleInDegrees, distance, getLocation, totalDistance, INTERVALS, simulation }
