@@ -92,25 +92,19 @@ const Design = ({ mapUrl }) => {
   }, [run, timer])
 
   useEffect(async () => {
-    if (coordinates[0] !== TAMPERE[0] || coordinates[1] !== TAMPERE[1]) {
-      return
-    }
-    if (run && track) {
-      const markerIndex = run.targetMarker === undefined ? 0 : run.targetMarker - 1
-      setCoordinates(() => track?.markers[markerIndex].latlng)
-      return
-    }
     if (track && track.markers.length > 0) {
       setCoordinates(() => track.markers[track.markers.length - 1].latlng)
-      return
     }
+  }, [track])
+
+  useEffect(async () => {
     try {
       const position = await getCoordinates()
       setCoordinates([position.coords.latitude, position.coords.longitude])
     } catch (error) {
       console.log('No location:', error)
     }
-  }, [run?.targetMarker, track?.markers])
+  }, [])
 
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
