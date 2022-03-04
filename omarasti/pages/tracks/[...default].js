@@ -98,6 +98,10 @@ const Design = ({ mapUrl }) => {
   }, [track])
 
   useEffect(async () => {
+    if (track && track.markers.length > 0) {
+      setCoordinates(() => track.markers[track.markers.length - 1].latlng)
+      return
+    }
     try {
       const position = await getCoordinates()
       setCoordinates([position.coords.latitude, position.coords.longitude])
