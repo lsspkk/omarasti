@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, useMapEvents, Polyline } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -8,13 +7,12 @@ import L from 'leaflet'
 
 import { designModeState } from './DesignMenu'
 import { runState, trackState, resultState, routeColors } from '../models/state'
-import { useRecoilState, } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { angleInDegrees } from '../utils/location'
 import { RouteLines } from './RouteLines'
 
-
 const TrackPoints = () => {
-  const [mode, ] = useRecoilState(designModeState)
+  const [mode] = useRecoilState(designModeState)
   const [track, setTrack] = useRecoilState(trackState)
   const [lines, setLines] = useState([])
 
@@ -25,9 +23,8 @@ const TrackPoints = () => {
         const markers = [...track.markers, { latlng: e.latlng, description: '' }]
         //console.log(markers)
         setTrack({ ...track, markers })
-
       }
-      map.locate()
+      //map.locate()
     },
     locationfound(e) {
       // use another marker for current location
@@ -36,7 +33,7 @@ const TrackPoints = () => {
     zoomend: () => {
       // recalculate map circle-polylines when zoom ends
       setTrack({ ...track, markers: [...track.markers] })
-    }
+    },
   })
 
   useEffect(() => {
@@ -48,25 +45,24 @@ const TrackPoints = () => {
 
   return (
     <>
-      {track.markers.map((marker, index) =>
+      {track.markers.map((marker, index) => (
         <TrackMarker
           key={'rm-' + JSON.stringify(marker)}
           marker={marker}
           published={track.published}
           index={index}
           isLastMarker={index === track.markers.length - 1}
-          angle={(index !== 0 || track.markers.length < 2) ? 0 :
-            angleInDegrees(marker.latlng, track.markers[1].latlng)}
+          angle={index !== 0 || track.markers.length < 2 ? 0 : angleInDegrees(marker.latlng, track.markers[1].latlng)}
         />
-      )}
+      ))}
 
-      {lines.map((linePositions) =>
+      {lines.map((linePositions) => (
         <Polyline
           key={'lp' + JSON.stringify(linePositions)}
           positions={linePositions}
           pathOptions={{ color: '#fa4362', weight: '5' }}
         />
-      )}
+      ))}
     </>
   )
 }
@@ -77,7 +73,7 @@ const makeLines = (markers, map) => {
   markers.forEach((marker, i) => {
     try {
       const start = map.latLngToLayerPoint(marker.latlng)
-      if ((i + 2) > markers.length) {
+      if (i + 2 > markers.length) {
         return
       }
       const end = map.latLngToLayerPoint(markers[i + 1].latlng)
@@ -87,16 +83,19 @@ const makeLines = (markers, map) => {
         return
       }
       const lineStart = [
-        start.x + (MARKER_SIZE / 2 / distance * (end.x - start.x)),
-        start.y + (MARKER_SIZE / 2 / distance * (end.y - start.y)),
+        start.x + (MARKER_SIZE / 2 / distance) * (end.x - start.x),
+        start.y + (MARKER_SIZE / 2 / distance) * (end.y - start.y),
       ]
       const lineEnd = [
-        end.x + (MARKER_SIZE / 2 / distance * (start.x - end.x)),
-        end.y + (MARKER_SIZE / 2 / distance * (start.y - end.y)),
+        end.x + (MARKER_SIZE / 2 / distance) * (start.x - end.x),
+        end.y + (MARKER_SIZE / 2 / distance) * (start.y - end.y),
       ]
       const s = map.layerPointToLatLng(lineStart)
       const e = map.layerPointToLatLng(lineEnd)
-      lines.push([[s.lat, s.lng], [e.lat, e.lng]])
+      lines.push([
+        [s.lat, s.lng],
+        [e.lat, e.lng],
+      ])
     } catch (e) {
       console.log('Error at makeLines()', markers)
     }
@@ -118,26 +117,28 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
 
   return (
     <MapContainer
-      style={{ width: '100%', height: '90vh' }} center={mapCenter}
+      style={{ width: '100%', height: '90vh' }}
+      center={mapCenter}
       zoom={14.5}
       minZoom={process.env.NEXT_PUBLIC_MINZOOM}
       maxZoom={process.env.NEXT_PUBLIC_MAXZOOM}
     >
-      <TileLayer
-        url={mapUrl}
-        attribution={process.env.NEXT_PUBLIC_MAP_ATTRIBUTION}
-      />
+      <TileLayer url={mapUrl} attribution={process.env.NEXT_PUBLIC_MAP_ATTRIBUTION} />
       <TrackPoints />
-      { !showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
+      {!showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
 
-      { showRoute && runs === undefined &&
-        <RouteLines showRouteIndex={showRouteIndex} run={run} color='blue' />
-      }
+      {showRoute && runs === undefined && <RouteLines showRouteIndex={showRouteIndex} run={run} color='blue' />}
 
-      { showRoute && runs !== undefined && runs.map((runResult, i) =>
-        <RouteLines key={`routelines${runResult._id}`} showRouteIndex={showRouteIndex} run={runResult} color={routeColors[i%routeColors.length]} />)
-      }
-
+      {showRoute &&
+        runs !== undefined &&
+        runs.map((runResult, i) => (
+          <RouteLines
+            key={`routelines${runResult._id}`}
+            showRouteIndex={showRouteIndex}
+            run={runResult}
+            color={routeColors[i % routeColors.length]}
+          />
+        ))}
     </MapContainer>
   )
 }
