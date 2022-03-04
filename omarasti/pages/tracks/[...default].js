@@ -6,21 +6,30 @@ import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { ViewMenu } from '../../components/ViewMenu'
 import { RunMenu } from '../../components/RunMenu'
-import { useRecoilState, } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { runState, trackState } from '../../models/state'
 import { getCoordinates, distance, getLocation, INTERVALS } from '../../utils/location'
-import { ShowOrientationPanel, SeeFinishPanel, SeeMarkerPanel, TouchMarkerPanel, InFinishPanel } from '../../components/Panels'
+import {
+  ShowOrientationPanel,
+  SeeFinishPanel,
+  SeeMarkerPanel,
+  TouchMarkerPanel,
+  InFinishPanel,
+} from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
-const DesignMap = dynamic(() => {
-  return import('../../components/DesignMap')
-}, { ssr: false })
+const DesignMap = dynamic(
+  () => {
+    return import('../../components/DesignMap')
+  },
+  { ssr: false }
+)
 
 const emptyLocationState = {
-  canSeeMarker: false, 
+  canSeeMarker: false,
   canTouchMarker: false,
   latlng: { lat: -1, lng: -1 },
-  distance : -1
+  distance: -1,
 }
 const TAMPERE = [61.5107, 23.7616]
 const Design = ({ mapUrl }) => {
@@ -34,10 +43,14 @@ const Design = ({ mapUrl }) => {
   const [coordinates, setCoordinates] = useState(TAMPERE)
 
   const router = useRouter()
-  if (loading) { router.push('/'); return <div/> }
-  if (!session || !track) { router.push('/'); return <div/> }
-
-
+  if (loading) {
+    router.push('/')
+    return <div />
+  }
+  if (!session || !track) {
+    router.push('/')
+    return <div />
+  }
 
   async function updateRun() {
     // timer
@@ -45,51 +58,59 @@ const Design = ({ mapUrl }) => {
     const time = now - run.start.getTime()
     const minutes = Math.floor(time / 60000)
     const seconds = Math.floor((time - minutes * 60000) / 1000)
-    setTimer(() => `${(minutes)}m ${(seconds)}s`)
+    setTimer(() => `${minutes}m ${seconds}s`)
 
     // location
     const previousLatlng = location.latlng.lat === -1 ? track.markers[0].latlng : location.latlng
     let latlng = undefined
     if (locationError === '' && accurrateLocation.lat !== 0) {
-      latlng = {...accurrateLocation } 
-    }
-    else {
+      latlng = { ...accurrateLocation }
+    } else {
       latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
     }
 
     let newRun = { ...run, currentLatlng: latlng }
     // every 10 seconds store the route in array
     if (run.routeMarkTime === undefined || now - run.routeMarkTime > INTERVALS.markRoute) {
-      newRun.route = [...run.route, {latlng, timestamp: time}]
+      newRun.route = [...run.route, { latlng, timestamp: time }]
       newRun.routeMarkTime = now
     }
     setRun(newRun)
     const d = distance(latlng, track.markers[run.targetMarker].latlng)
-    setLocation({latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d})    
+    setLocation({ latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d })
   }
-
 
   useEffect(() => {
     if (run && !run.end) {
       const timeout = window.setTimeout(() => updateRun(), INTERVALS.updateLocation)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
-    }
-    else {
+    } else {
       setMyTimeout(-1)
       setTimer('')
     }
   }, [run, timer])
 
-
   useEffect(async () => {
-      try {
-        const position = await getCoordinates()
-        setCoordinates([position.coords.latitude, position.coords.longitude])
-      } catch (error) {
-        console.log('No location:', error)
-      }
-  }, [])
+    if (coordinates[0] !== TAMPERE[0] || coordinates[1] !== TAMPERE[1]) {
+      return
+    }
+    if (run && track) {
+      const markerIndex = run.targetMarker === undefined ? 0 : run.targetMarker - 1
+      setCoordinates(() => track?.markers[markerIndex].latlng)
+      return
+    }
+    if (track && track.markers.length > 0) {
+      setCoordinates(() => track.markers[track.markers.length - 1].latlng)
+      return
+    }
+    try {
+      const position = await getCoordinates()
+      setCoordinates([position.coords.latitude, position.coords.longitude])
+    } catch (error) {
+      console.log('No location:', error)
+    }
+  }, [run?.targetMarker, track?.markers])
 
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
@@ -99,78 +120,68 @@ const Design = ({ mapUrl }) => {
     router.push('/tracks/run/stop')
   }
 
-
   const touchMarker = () => {
-    const d = distance(location.latlng, track.markers[run.targetMarker+1].latlng)
-    setLocation({...location, canSeeMarker: d < 100, canTouchMarker: d < 20, distance: d})
-    setRun({...run, markerTimes: [...run.markerTimes, new Date()], targetMarker: run.targetMarker+1})
-
+    const d = distance(location.latlng, track.markers[run.targetMarker + 1].latlng)
+    setLocation({ ...location, canSeeMarker: d < 100, canTouchMarker: d < 20, distance: d })
+    setRun({ ...run, markerTimes: [...run.markerTimes, new Date()], targetMarker: run.targetMarker + 1 })
   }
 
   const finishRun = () => {
     setLocation(emptyLocationState)
     const end = new Date()
     setTimer('')
-    setRun({...run, end, 
-      markerTimes: [...run.markerTimes, end], 
-      totalTime: (end.getTime() - run.start.getTime()),
-      route: [...run.route, {latlng : track.markers[run.targetMarker].latlng, timestamp: end.getTime()}]
+    setRun({
+      ...run,
+      end,
+      markerTimes: [...run.markerTimes, end],
+      totalTime: end.getTime() - run.start.getTime(),
+      route: [...run.route, { latlng: track.markers[run.targetMarker].latlng, timestamp: end.getTime() }],
     })
     router.push('/tracks/run/stop')
   }
 
-
   let menu = <ViewMenu />
-  if (router.asPath === "/tracks/edit") {
+  if (router.asPath === '/tracks/edit') {
     menu = <DesignMenu />
   } else if (run !== undefined) {
-    menu = <RunMenu stopRun={stopRun} timer={timer} run={run}/>
+    menu = <RunMenu stopRun={stopRun} timer={timer} run={run} />
   }
 
-  const isLastMarker = run?.targetMarker === (track.markers.length - 1)
-  let mapCenter = coordinates
-  if (run !== undefined) {
-    const markerIndex = (run.targetMarker === undefined) ? 0 : run.targetMarker-1
-    mapCenter = (track?.markers[markerIndex].latlng)
-  }
-  else if (track !== undefined && track.markers.length > 0) {
-    mapCenter = (track.markers[track.markers.length-1].latlng)
-  }
+  const isLastMarker = run?.targetMarker === track.markers.length - 1
+  const mapCenter = coordinates
 
   return (
-    <Layout map="true" menu={menu}>
+    <Layout map='true' menu={menu}>
+      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} />
+      {run !== undefined && (
+        <>
+          {!location.canTouchMarker && !location.canSeeMarker && <ShowOrientationPanel />}
+          {!isLastMarker && location.canTouchMarker && (
+            <TouchMarkerPanel touchMarker={touchMarker} track={track} markerNumber={run.targetMarker} />
+          )}
+          {!isLastMarker && !location.canTouchMarker && location.canSeeMarker && (
+            <SeeMarkerPanel
+              location={location}
+              marker={track.markers[run.targetMarker]}
+              markerNumber={run.targetMarker}
+            />
+          )}
+          {isLastMarker && !location.canTouchMarker && location.canSeeMarker && (
+            <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]} />
+          )}
+          {isLastMarker && location.canTouchMarker && <InFinishPanel finishRun={finishRun} />}
 
-      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter}/> 
-      { run !== undefined && <>
-
-        { !location.canTouchMarker && !location.canSeeMarker && 
-          <ShowOrientationPanel/>
-        }
-        {
-          !isLastMarker && location.canTouchMarker && 
-          <TouchMarkerPanel touchMarker={touchMarker} track={track} markerNumber={run.targetMarker}/>
-        }
-        { !isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
-          <SeeMarkerPanel location={location} marker={track.markers[run.targetMarker]} markerNumber={run.targetMarker}/>
-        }
-        { isLastMarker && !location.canTouchMarker && location.canSeeMarker && 
-          <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]}/> 
-        }
-        { isLastMarker && location.canTouchMarker && 
-          <InFinishPanel finishRun={finishRun}/> 
-        }
-
-        <div className="fixed bottom-0 left-0 p-1  bg-white xs:ml-10 md:ml-20"
-         style={{zIndex: '1000', fontSize: '0.5em'}}
-        >
-          GPS tarkkuus: { accurracy !== undefined ? Math.trunc(accurracy) : '-' }
-          <br/>
-          Sijainti: { run.currentLatlng.lat } - { run.currentLatlng.lng }
+          <div
+            className='fixed bottom-0 left-0 p-1  bg-white xs:ml-10 md:ml-20'
+            style={{ zIndex: '1000', fontSize: '0.5em' }}
+          >
+            GPS tarkkuus: {accurracy !== undefined ? Math.trunc(accurracy) : '-'}
+            <br />
+            Sijainti: {run.currentLatlng.lat} - {run.currentLatlng.lng}
           </div>
-          { locationError !== '' && <span>{locationError}</span> }
+          {locationError !== '' && <span>{locationError}</span>}
         </>
-      }
-
+      )}
     </Layout>
   )
 }
