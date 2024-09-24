@@ -1,16 +1,32 @@
+import { CSSProperties } from 'react'
 import { useDeviceOrientation } from '../utils/useDeviceOrientation'
 
-const Compass = ({ angle, cName, closeToMarker = false }) => {
-  const orientation = useDeviceOrientation({})
+const Compass = ({
+  angle,
+  cName,
+  closeToMarker = false,
+  orientation,
+}: {
+  angle: number
+  cName: string
+  closeToMarker?: boolean
+  orientation?: { available: boolean; alpha: number }
+}) => {
+  const deviceOrientation = useDeviceOrientation()
 
-  const alignNorth =
-    orientation === undefined || !orientation.available
-      ? {}
-      : {
-          transformBox: 'fill-box',
-          transformOrigin: 'center 50%',
-          transform: `rotate(${Math.round(orientation.alpha)}deg)`,
-        }
+  const { available, alpha } = deviceOrientation.available
+    ? deviceOrientation
+    : orientation
+    ? orientation
+    : { available: false, alpha: undefined }
+
+  const alignNorth: CSSProperties = !available
+    ? {}
+    : {
+        transformBox: 'fill-box',
+        transformOrigin: 'center 50%',
+        transform: `rotate(${Math.round(alpha)}deg)`,
+      }
 
   return (
     <svg

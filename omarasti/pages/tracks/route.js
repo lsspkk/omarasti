@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
@@ -8,27 +7,15 @@ import { useRecoilState } from 'recoil'
 import { runState, trackState } from '../../models/state'
 import { INTERVALS } from '../../utils/location'
 
-const DesignMap = dynamic(
-  () => {
-    return import('../../components/DesignMap')
-  },
-  { ssr: false }
-)
+const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
 const Route = ({ mapUrl }) => {
   const [run] = useRecoilState(runState)
-  const { data: session, status } = useSession()
   const [showRouteIndex, setShowRouteIndex] = useState(0)
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
-
   const router = useRouter()
-  if (status === 'loading') return <div>loading...</div>
-  if (!session || !run) {
-    router.push('/')
-    return <div />
-  }
 
   async function updateRoute() {
     const point = run.route[showRouteIndex]

@@ -45,11 +45,11 @@ const LoadingTrack = ({ loadedTrack, error }) => {
     // can tell about the app and need of using google account
     // so we can just do direct sign in and rely on session
     const callbackUrl = window?.location?.href
-    signIn({ profile: 'google' }, { callbackUrl })
+    signIn('google', { callbackUrl })
   }
 
   return (
-    <Layout menu={<div />}>
+    <Layout menu={<div />} isPrivate={false}>
       <div className='container flex flex-col justify-between'>
         {message.length !== 0 && <div>{message}</div>}
         <h1 className='py-10'>Ladataan rataa {shortId}</h1>

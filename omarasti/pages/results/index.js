@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
@@ -29,14 +28,6 @@ const Results = () => {
   const [results, setResults] = useRecoilState(resultState)
   const [run] = useRecoilState(runState)
   const [track] = useRecoilState(trackState)
-
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  if (status === 'loading') return <div>loading...</div>
-  if (!session) {
-    router.push('/')
-    return <div />
-  }
 
   useEffect(() => {
     if (run === undefined) {

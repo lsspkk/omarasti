@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../../components/Layout'
 import { TrackDistance } from '../../../components/Distance'
 import { useRouter } from 'next/router'
@@ -9,16 +8,10 @@ import { runState, emptyRun, trackState } from '../../../models/state'
 import { useState } from 'react'
 
 const StartRun = () => {
-  const { data: session, status } = useSession()
   const [, setRun] = useRecoilState(runState)
   const [track] = useRecoilState(trackState)
   const [showPersonMarker, setShowPersonMarker] = useState(false)
   const router = useRouter()
-  if (status === 'loading') return <div>loading...</div>
-  if (!session || !track) {
-    router.push('/')
-    return <div />
-  }
 
   async function start() {
     setRun({

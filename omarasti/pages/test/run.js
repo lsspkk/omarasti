@@ -4,21 +4,10 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import dynamic from 'next/dynamic'
-import {
-  SeeFinishPanel,
-  SeeMarkerPanel,
-  TouchMarkerPanel,
-  InFinishPanel,
-  ShowOrientationPanel,
-} from '../../components/Panels'
+import { SeeMarkerPanel, TouchMarkerPanel, ShowOrientationPanel } from '../../components/Panels'
 import { Button } from '../../components/Buttons'
 
-const DesignMap = dynamic(
-  () => {
-    return import('../../components/DesignMap')
-  },
-  { ssr: false }
-)
+const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
 const SlowCompass = () => {
   const makeStyle = (angle) => ({

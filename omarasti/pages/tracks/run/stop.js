@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../../components/Layout'
 import { useRouter } from 'next/router'
 import { useRecoilState } from 'recoil'
@@ -21,7 +20,7 @@ function showTime(start, end) {
 
 const MarkerResult = ({ i, markerTime, run }) => {
   const [track] = useRecoilState(trackState)
-  const markers = track.markers.slice(i, i + 2)
+  const markers = track?.markers.slice(i, i + 2)
   const distance = totalDistance(markers)
   const startTime = i === 0 ? run.start : run.markerTimes[i - 1]
   const speed = ((distance / (markerTime - startTime)) * 1000 * 3.6).toFixed(1)
@@ -50,7 +49,6 @@ const OldestResult = ({ run }) => {
 }
 
 const StopRun = () => {
-  const { data: session, status } = useSession()
   const [run, setRun] = useRecoilState(runState)
   const [track] = useRecoilState(trackState)
   const [results, setResults] = useRecoilState(resultState)
@@ -59,11 +57,6 @@ const StopRun = () => {
   const [isSaved, setIsSaved] = useState(false)
   const [message, setMessage] = useState('')
   const [user] = useRecoilState(userState)
-  if (status === 'loading') return <div>loading...</div>
-  if (!session || !track) {
-    router.push('/')
-    return <div>..</div>
-  }
 
   useEffect(() => {
     if (run && !run.end) {
@@ -110,7 +103,7 @@ const StopRun = () => {
       // add saved run to results with place and runner name, and select for comparison
       const fasterRuns = results.trackRuns.filter((r) => r.totalTime < savedRun.totalTime)
       const slowerRuns = results.trackRuns.filter((r) => r.totalTime >= savedRun.totalTime)
-      const placedRun = { ...savedRun, place: fasterRuns.length + 1, runner: { name: user.name } }
+      const placedRun = { ...savedRun, place: fasterRuns.length + 1, runner: { name: user?.name } }
       const trackRuns = [...fasterRuns, placedRun, ...slowerRuns]
       setResults({ trackRuns, selected: [placedRun] })
       setRun({ ...savedRun, start: run.start, end: run.end, markerTimes: run.markerTimes })
@@ -144,10 +137,10 @@ const StopRun = () => {
         <div className='flex my-2'>
           <h1>Maali</h1>
           <h1 className='ml-5 mr-5'>-</h1>
-          <h1 className=''>{track.name}</h1>
+          <h1 className=''>{track?.name}</h1>
         </div>
         <div className='flex mt-5'>
-          <TrackDistance className='w-1/4' markers={track.markers} />
+          <TrackDistance className='w-1/4' markers={track?.markers} />
         </div>
         <div className='flex mb-3'>{run !== undefined && <RunDistance className='w-1/4' route={run.route} />}</div>
 

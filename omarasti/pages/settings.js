@@ -8,7 +8,7 @@ import { Button } from '../components/Buttons'
 const userState = atom({ key: 'userState', default: {} })
 
 const Profile = () => {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const [user, setUser] = useRecoilState(userState)
   const [userName, setUserName] = useState(user?.name ? user.name : '')
   const router = useRouter()
@@ -19,12 +19,6 @@ const Profile = () => {
       setUserName(user.name ? user.name : '')
     }
   }, [session, user])
-
-  if (status === 'loading') return <div>loading...</div>
-  if (!session) {
-    router.push('/')
-    return <div>redirecting...</div>
-  }
 
   const saveUserName = async () => {
     const newUser = { ...user, name: userName }
@@ -49,6 +43,7 @@ const Profile = () => {
           Takaisin
         </Button>
       }
+      hasRequiredData={Object.keys(user).length > 0}
     >
       {message !== '' && <div className='text-center text-gray-600'>{message}</div>}
       <div className='container mx-auto'>
@@ -56,7 +51,7 @@ const Profile = () => {
           <h1 className='pt-4'>Google-tunnus</h1>
           <div className='text-gray-700 pb-5'>Tiedot eivät näy OmaRastin käyttäjille</div>
 
-          <div className='pb-5'>{session.user.email}</div>
+          <div className='pb-5'>{session?.user.email}</div>
           <div className='py-2'>
             <Button
               onClick={() => {

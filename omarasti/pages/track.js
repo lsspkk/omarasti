@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { Layout } from '../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../components/Buttons'
@@ -9,32 +7,26 @@ import { useRecoilState } from 'recoil'
 import { distance, TrackDistance } from '../components/Distance'
 
 const OneTrack = () => {
-  const { data: session, status } = useSession()
   const [track, setTrack] = useRecoilState(trackState)
-  const [name, setName] = useState(track?.name ? track.name : '')
-  const [location, setLocation] = useState(track?.location ? track.location : '')
+  const [name, setName] = useState(track?.name ? track?.name : '')
+  const [location, setLocation] = useState(track?.location ? track?.location : '')
   const [message, setMessage] = useState('')
   const [copyClicked, setCopyClicked] = useState(false)
   const router = useRouter()
-  if (status === 'loading') return <div>loading...</div>
-  if (!session || !track) {
-    router.push('/')
-    return <div />
-  }
 
   useEffect(() => {
     if (track !== undefined) {
-      setName(track.name)
-      setLocation(track.location)
+      setName(track?.name)
+      setLocation(track?.location)
     }
   }, [track])
 
   const save = async ({ published }) => {
     const newTrack = { ...track, published, name, location, modified: new Date() }
-    const urlEnd = track._id !== undefined ? '/' + track._id : ''
+    const urlEnd = track?._id !== undefined ? '/' + track?._id : ''
     const url = `/api/tracks${urlEnd}`
     const res = await fetch(url, {
-      method: track._id ? 'PUT' : 'POST',
+      method: track?._id ? 'PUT' : 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify(newTrack),
     })
@@ -57,7 +49,9 @@ const OneTrack = () => {
   }
 
   const trackUrl =
-    track.shortId === undefined ? undefined : `${window?.location.href?.split('/track')[0]}/tracks/id/${track.shortId}`
+    track?.shortId === undefined
+      ? undefined
+      : `${window?.location.href?.split('/track')[0]}/tracks/id/${track?.shortId}`
 
   return (
     <Layout
@@ -66,6 +60,7 @@ const OneTrack = () => {
           Takaisin
         </Button>
       }
+      hasRequiredData={track !== undefined}
     >
       {message !== '' && <div className='text-center text-gray-600'>{message}</div>}
 
@@ -79,7 +74,7 @@ const OneTrack = () => {
                 <input
                   className='w-40'
                   value={name}
-                  disabled={track.published}
+                  disabled={track?.published}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
@@ -89,19 +84,21 @@ const OneTrack = () => {
                 <input
                   className='w-40'
                   value={location}
-                  disabled={track.published}
+                  disabled={track?.published}
                   onChange={(e) => setLocation(e.target.value)}
                 />
               </div>
 
               <div className='flex mt-5 mb-8 ml-3'>
-                <TrackDistance markers={track.markers} />
+                <TrackDistance markers={track?.markers} />
               </div>
 
               {trackUrl !== undefined && (
                 <div className='flex mt-5 mb-8 items-center'>
-                  <label className='w-20'>Linkki:</label>
-                  <input className='w-full' disabled value={trackUrl} />
+                  <label htmlFor='tracklink' className='w-20'>
+                    Linkki:
+                  </label>
+                  <input id='tracklink' className='w-full' disabled value={trackUrl} />
                   <Button className={copyClicked ? 'bg-orange-600' : ''} onClick={() => onCopyClicked()}>
                     Kopioi
                   </Button>
@@ -110,7 +107,7 @@ const OneTrack = () => {
                       onClick={async () =>
                         navigator.share({
                           title: 'Suunnistusrata jaettu sinulle',
-                          text: `OmaRasti sovelluksen rata: ${track.name}, pituus: ${distance(track.markers)}`,
+                          text: `OmaRasti sovelluksen rata: ${track?.name}, pituus: ${distance(track?.markers)}`,
                           url: trackUrl,
                         })
                       }
@@ -123,7 +120,7 @@ const OneTrack = () => {
             </div>
           </div>
 
-          {!track.published && (
+          {!track?.published && (
             <div className='block float-left'>
               <div className='container px-2 w-full flex justify-end items-center'>
                 <div className='mr-2 w-full '>

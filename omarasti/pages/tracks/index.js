@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
@@ -37,18 +36,11 @@ const TracksMenu = () => {
   )
 }
 
-const Tracks = ({ tracks }) => {
-  const { data: session, status } = useSession()
-  const router = useRouter()
-  if (status === 'loading') return <div>loading...</div>
-  if (!session) router.push('/')
-
-  return (
-    <Layout menu={<TracksMenu />}>
-      <TrackList tracks={tracks} />
-    </Layout>
-  )
-}
+const Tracks = ({ tracks }) => (
+  <Layout menu={<TracksMenu />}>
+    <TrackList tracks={tracks} />
+  </Layout>
+)
 
 export async function getServerSideProps({ req, res }) {
   await dbConnect()
