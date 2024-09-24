@@ -21,10 +21,10 @@ const TrackPoints = () => {
       if (!track) return
       if (mode === 'add') {
         const markers = [...track.markers, { latlng: e.latlng, description: '' }]
-        //console.log(markers)
+        // console.log(markers)
         setTrack({ ...track, markers })
       }
-      //map.locate()
+      // map.locate()
     },
     locationfound(e) {
       // use another marker for current location
@@ -110,7 +110,7 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
     return null
   }
 
-  let runs = undefined
+  let runs
   if (results?.selected?.length > 1) {
     runs = results.selected
   }

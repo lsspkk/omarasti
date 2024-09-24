@@ -1,9 +1,8 @@
-
-import { useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
-import { TrackList}  from '../../components/TrackList'
+import { TrackList } from '../../components/TrackList'
 import { trackState } from '../../models/state'
 import { useRecoilState } from 'recoil'
 import { getTracks } from '../api/tracks'
@@ -27,30 +26,33 @@ const TracksMenu = () => {
     setTrack(newTrack)
     router.push('/tracks/edit')
   }
-  return <div className="flex justify-between w-full">
-    <h1 className="ml-4">Radat</h1>
+  return (
+    <div className='flex justify-between w-full'>
+      <h1 className='ml-4'>Radat</h1>
 
-    <Button className="mr-4 w-30" onClick={() => createNewTrack()}>Uusi Rata</Button>
-  </div>
+      <Button className='mr-4 w-30' onClick={() => createNewTrack()}>
+        Uusi Rata
+      </Button>
+    </div>
+  )
 }
 
-const Tracks = ({tracks}) => {
-  const [session, loading] = useSession()
+const Tracks = ({ tracks }) => {
+  const { data: session, status } = useSession()
   const router = useRouter()
-  if (loading) return <div>loading...</div>
+  if (status === 'loading') return <div>loading...</div>
   if (!session) router.push('/')
 
-
   return (
-    <Layout menu={<TracksMenu/>}>
-      <TrackList tracks={tracks}/>
+    <Layout menu={<TracksMenu />}>
+      <TrackList tracks={tracks} />
     </Layout>
   )
-};
+}
 
-export async function getServerSideProps({req}) {
+export async function getServerSideProps({ req, res }) {
   await dbConnect()
-  const result = await getTracks(req)
+  const result = await getTracks(req, res)
   const tracks = JSON.parse(JSON.stringify(result.data))
   return { props: { tracks } }
 }

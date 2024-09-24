@@ -1,13 +1,12 @@
-
-var options = {
+const options = {
   enableHighAccuracy: true,
   timeout: 5000,
-  maximumAge: 0
+  maximumAge: 0,
 }
 
 function getCoordinates() {
   return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    navigator.geolocation.getCurrentPosition(resolve, reject, options)
   })
 }
 
@@ -15,17 +14,15 @@ const simulation = process.env.NEXT_PUBLIC_SIMULATE_LOCATION === 'true'
 const INTERVALS = {
   markRoute: simulation ? 100 : 10000,
   updateLocation: simulation ? 50 : 1000,
-  drawRoute: simulation ? 25 : 100
+  drawRoute: simulation ? 25 : 100,
 }
-
 
 // real geolocation, or simulated: 10 meters towards target
 async function getLocation(targetLatLng, previousLatLng) {
-
   if (simulation) {
     return simulateGetLocation(targetLatLng, previousLatLng)
   }
-  
+
   try {
     const position = await getCoordinates()
     return { lat: position.coords.latitude, lng: position.coords.longitude }
@@ -46,12 +43,13 @@ function simulateGetLocation(targetLatLng, previousLatLng) {
   const dlat = lat1 - lat2
   const dlng = lng1 - lng2
   const dist = Math.sqrt(dlat * dlat + dlng * dlng)
-  if (dist < 0.0004) { // about 100m
+  if (dist < 0.0004) {
+    // about 100m
     return targetLatLng
   }
   const angle = Math.atan2(dlat, dlng)
-  const newLat = lat2 + Math.sin(angle) * 0.0001 + (Math.random()*0.0004-0.0002)
-  const newLon = lng2 + Math.cos(angle) * 0.0001 + (Math.random()*0.0004-0.0002)
+  const newLat = lat2 + Math.sin(angle) * 0.0001 + (Math.random() * 0.0004 - 0.0002)
+  const newLon = lng2 + Math.cos(angle) * 0.0001 + (Math.random() * 0.0004 - 0.0002)
   return { lat: newLat, lng: newLon }
 }
 
@@ -64,27 +62,26 @@ function distance(latlng1, latlng2) {
 }
 
 function distanceInMeters(lat1, lng1, lat2, lng2) {
-  if ((lat1 == lat2) && (lng1 == lng2)) {
-    return 0;
-  }
-  else {
-    var radlat1 = Math.PI * lat1 / 180;
-    var radlat2 = Math.PI * lat2 / 180;
-    var theta = lng1 - lng2;
-    var radtheta = Math.PI * theta / 180;
-    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+  if (lat1 == lat2 && lng1 == lng2) {
+    return 0
+  } else {
+    const radlat1 = (Math.PI * lat1) / 180
+    const radlat2 = (Math.PI * lat2) / 180
+    const theta = lng1 - lng2
+    const radtheta = (Math.PI * theta) / 180
+    let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta)
     if (dist > 1) {
-      dist = 1;
+      dist = 1
     }
-    dist = Math.acos(dist);
-    dist = dist * 180 / Math.PI;
-    dist = dist * 60 * 1.1515;
+    dist = Math.acos(dist)
+    dist = (dist * 180) / Math.PI
+    dist = dist * 60 * 1.1515
     return dist * 1.609344 * 1000
   }
 }
 
 function totalDistance(markers) {
-  const latLngs = !markers ? [] : markers.map(m => m.latlng)
+  const latLngs = !markers ? [] : markers.map((m) => m.latlng)
   let dist = 0
   for (let i = 0; i + 1 < latLngs.length; i++) {
     dist += distance(latLngs[i], latLngs[i + 1])
@@ -97,12 +94,11 @@ function angleInDegrees(latlng1, latlng2) {
   const dlng = latlng2.lng - latlng1.lng
 
   if (dlat === 0) return dlng > 0 ? 90 : 270
-  var theta = Math.atan2(dlat, dlng); // range (-PI, PI]
-  theta = theta * 180 / Math.PI; // to degrees
+  let theta = Math.atan2(dlat, dlng) // range (-PI, PI]
+  theta = (theta * 180) / Math.PI // to degrees
   theta = -1 * theta + 90 // North is Zero, bearing to counterclockwise
-  if (theta < 0) theta = 360 + theta; // range [0, 360)
-  return theta;
+  if (theta < 0) theta = 360 + theta // range [0, 360)
+  return theta
 }
-
 
 export { getCoordinates, angleInDegrees, distance, getLocation, totalDistance, INTERVALS, simulation }

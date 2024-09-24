@@ -1,4 +1,4 @@
-import { atom, useRecoilState, } from 'recoil'
+import { atom, useRecoilState } from 'recoil'
 import Link from 'next/link'
 import { Button } from './Buttons'
 
@@ -14,22 +14,20 @@ const DesignMenu = (props) => {
 
   return (
     <>
-      <Link href="/tracks"><Button className="mr-4">Radat</Button></Link>
-      <Link href='/track'><Button className="bg-green-400">Rata</Button></Link>
+      <Link href='/tracks'>
+        <Button className='mr-4'>Radat</Button>
+      </Link>
+      <Link href='/track'>
+        <Button className='bg-green-400'>Rata</Button>
+      </Link>
 
-      <Button
-        className={mode === 'add' ? selected : normal}
-        onClick={() => setMode('add')}>
+      <Button className={mode === 'add' ? selected : normal} onClick={() => setMode('add')}>
         Lisää
       </Button>
-      <Button
-        className={mode === 'move' ? selected : normal}
-        onClick={() => setMode('move')}>
+      <Button className={mode === 'move' ? selected : normal} onClick={() => setMode('move')}>
         Siirrä
       </Button>
-      <Button
-        className={mode === 'remove' ? selected : normal}
-        onClick={() => setMode('remove')}>
+      <Button className={mode === 'remove' ? selected : normal} onClick={() => setMode('remove')}>
         Poista
       </Button>
       {props.children}
