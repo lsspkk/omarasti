@@ -1,6 +1,6 @@
 {
   "name": "omarasti",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
@@ -11,7 +11,7 @@
     "crypto": "^1.0.1",
     "eslint-config-next": "^14.2.13",
     "esm": "^3.2.25",
-    "leaflet": "^1.7.1",
+    "leaflet": "^1.9.4",
     "mongoose": "^5.13.22",
     "nanoid": "^5.0.7",
     "next": "^14.2.13",
@@ -20,7 +20,10 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "recoil": "^0.7.7",
-    "standard": "^16.0.3",
     "tailwindcss": "^1.9.6"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.8",
+    "typescript": "^5.6.2"
   }
 }

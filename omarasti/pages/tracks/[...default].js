@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import { DesignMenu } from '../../components/DesignMenu'
 import dynamic from 'next/dynamic'
@@ -18,12 +17,7 @@ import {
 } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 
-const DesignMap = dynamic(
-  () => {
-    return import('../../components/DesignMap')
-  },
-  { ssr: false }
-)
+const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
 const emptyLocationState = {
   canSeeMarker: false,
@@ -34,7 +28,6 @@ const emptyLocationState = {
 const TAMPERE = [61.5107, 23.7616]
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
-  const { data: session, status } = useSession()
   const [location, setLocation] = useState(emptyLocationState)
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
@@ -43,14 +36,6 @@ const Design = ({ mapUrl }) => {
   const [coordinates, setCoordinates] = useState(TAMPERE)
 
   const router = useRouter()
-  if (status === 'loading') {
-    router.push('/')
-    return <div />
-  }
-  if (!session || !track) {
-    router.push('/')
-    return <div />
-  }
 
   async function updateRun() {
     // timer
@@ -150,7 +135,7 @@ const Design = ({ mapUrl }) => {
   const mapCenter = coordinates
 
   return (
-    <Layout map='true' menu={menu}>
+    <Layout map='true' menu={menu} hasRequiredData={track !== undefined}>
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} />
       {run !== undefined && (
         <>

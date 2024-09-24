@@ -19,26 +19,21 @@ const Menu = () => {
 }
 
 export default function Home({ warm }) {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const [angle, setAngle] = useState(0)
-  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
     const timeout = setTimeout(() => setAngle((angle + 1) % 360), 100)
     return () => clearTimeout(timeout)
   }, [angle])
 
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
   return (
-    <Layout menu={<Menu />}>
+    <Layout menu={<Menu />} isPrivate={false}>
       <h3 className='mt-8 mb-8 text-xl text-bold text-orange-900'>Tervetuloa OMArastiin.</h3>
 
-      {isClient && !session && (
+      {!session && (
         <div>
-          <button className='signInButton' onClick={() => signIn({ profile: 'google' })}>
+          <button className='signInButton' onClick={() => signIn('google')}>
             Kirjaudu
           </button>
 

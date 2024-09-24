@@ -4,8 +4,11 @@ import { simulation } from './location'
 // device orientation
 // https://developer.mozilla.org/en-US/docs/Web/Events/Detecting_device_orientation
 const useDeviceOrientation = () => {
-  const [deviceOrientation, setDeviceOrientation] = useState({ available: false, alpha: undefined })
-  const [timeoutHandle, setTimeoutHandle] = useState(-1)
+  const [deviceOrientation, setDeviceOrientation] = useState<{ available: boolean; alpha?: number }>({
+    available: false,
+    alpha: undefined,
+  })
+  const [timeoutHandle, setTimeoutHandle] = useState<NodeJS.Timeout | undefined>()
   const [counter, setCounter] = useState(0)
 
   function handleDeviceOrientation(event) {

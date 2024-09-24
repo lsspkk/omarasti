@@ -61,9 +61,7 @@ const Header = ({ menu }) => {
         <div className='flex-end flex-3 flex text-sm'>
           {isSigning && <div>...</div>}
 
-          {!session && !isSigning && (
-            <SignInButton onClick={async () => signIn({ profile: 'google' })}>Kirjaudu</SignInButton>
-          )}
+          {!session && !isSigning && <SignInButton onClick={async () => signIn('google')}>Kirjaudu</SignInButton>}
         </div>
       </nav>
 
