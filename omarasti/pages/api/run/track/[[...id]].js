@@ -4,7 +4,6 @@ import User from '../../../../models/User'
 import Track from '../../../../models/Track'
 import { getSession } from 'next-auth/client'
 
-
 export const getRunAmounts = async (trackId, req) => {
   const session = await getSession({ req })
   if (!session) {
@@ -18,7 +17,6 @@ export const getRunAmounts = async (trackId, req) => {
 }
 
 export default async function handler(req, res) {
-
   const session = await getSession({ req })
   if (!session) {
     res.status(401).json({})
@@ -32,18 +30,15 @@ export default async function handler(req, res) {
       // /api/run/track/[trackid]/show
 
       const trackId = req.query.id[0]
-      const runAmounts = getRunAmounts(trackId)
-      res.status(200).json({ success: true, data: runAmounts})
-    }
-
-    else {
+      const runAmounts = getRunAmounts(trackId, req)
+      res.status(200).json({ success: true, data: runAmounts })
+    } else {
       // /api/run/track/[trackid]
 
       const runs = await Run.find({ track: req.query.id }).sort('totalTime').populate('runner', '-email')
       res.status(200).json({ success: true, data: runs })
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.log('error at /api/run/track/', req.query, error)
     res.status(500).json({ success: false })
   }
