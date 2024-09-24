@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       // /api/run/track/[trackid]/show
 
       const trackId = req.query.id[0]
-      const runAmounts = getRunAmounts(trackId, req)
+      const runAmounts = getRunAmounts(trackId, req, res)
       res.status(200).json({ success: true, data: runAmounts })
     } else {
       // /api/run/track/[trackid]

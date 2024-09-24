@@ -20,8 +20,8 @@ export async function getTracks(req, res) {
   }
 }
 
-export async function getTrack(shortId, req) {
-  const session = await getSession({ req })
+export async function getTrack(shortId, req, res) {
+  const session = await getSession(req, res)
   if (!session) {
     throw new Error('no session')
   }

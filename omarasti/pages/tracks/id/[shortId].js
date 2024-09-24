@@ -67,7 +67,7 @@ const LoadingTrack = ({ loadedTrack, error }) => {
 export async function getServerSideProps({ params, req, res }) {
   await dbConnect()
   try {
-    const data = await getTrack(params.shortId, req)
+    const data = await getTrack(params.shortId, req, res)
     const track = JSON.parse(JSON.stringify(data))
     const runAmounts = track === null ? null : await getRunAmounts(data._id, req, res)
     const loadedTrack = { ...track, runAmounts: JSON.parse(JSON.stringify(runAmounts)) }
