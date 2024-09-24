@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import { DesignMenu } from '../../components/DesignMenu'
 import dynamic from 'next/dynamic'
@@ -34,7 +34,7 @@ const emptyLocationState = {
 const TAMPERE = [61.5107, 23.7616]
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
-  const [session, loading] = useSession()
+  const { data: session, status } = useSession()
   const [location, setLocation] = useState(emptyLocationState)
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
@@ -43,7 +43,7 @@ const Design = ({ mapUrl }) => {
   const [coordinates, setCoordinates] = useState(TAMPERE)
 
   const router = useRouter()
-  if (loading) {
+  if (status === 'loading') {
     router.push('/')
     return <div />
   }
@@ -62,14 +62,14 @@ const Design = ({ mapUrl }) => {
 
     // location
     const previousLatlng = location.latlng.lat === -1 ? track.markers[0].latlng : location.latlng
-    let latlng = undefined
+    let latlng
     if (locationError === '' && accurrateLocation.lat !== 0) {
       latlng = { ...accurrateLocation }
     } else {
       latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
     }
 
-    let newRun = { ...run, currentLatlng: latlng }
+    const newRun = { ...run, currentLatlng: latlng }
     // every 10 seconds store the route in array
     if (run.routeMarkTime === undefined || now - run.routeMarkTime > INTERVALS.markRoute) {
       newRun.route = [...run.route, { latlng, timestamp: time }]
@@ -91,23 +91,24 @@ const Design = ({ mapUrl }) => {
     }
   }, [run, timer])
 
-  useEffect(async () => {
+  useEffect(() => {
     if (track && track.markers.length > 0) {
       setCoordinates(() => track.markers[track.markers.length - 1].latlng)
     }
   }, [track])
 
-  useEffect(async () => {
+  useEffect(() => {
     if (track && track.markers.length > 0) {
       setCoordinates(() => track.markers[track.markers.length - 1].latlng)
       return
     }
-    try {
-      const position = await getCoordinates()
-      setCoordinates([position.coords.latitude, position.coords.longitude])
-    } catch (error) {
-      console.log('No location:', error)
-    }
+    getCoordinates()
+      .then((position) => {
+        setCoordinates([position.coords.latitude, position.coords.longitude])
+      })
+      .catch((error) => {
+        console.log('No location:', error)
+      })
   }, [])
 
   const stopRun = () => {

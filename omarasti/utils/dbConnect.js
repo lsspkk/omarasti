@@ -1,6 +1,4 @@
-
 import mongoose from 'mongoose'
-
 
 const readyStates = {
   disconnected: 0,

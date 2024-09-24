@@ -1,10 +1,10 @@
 import dbConnect from '../../../utils/dbConnect'
 import User from '../../../models/User'
-import { getSession } from 'next-auth/client'
+import { getSession } from '../auth'
 
 export default async function handler(req, res) {
-  const session = await getSession({ req })
-  const {method} = req
+  const session = await getSession(req, res)
+  const { method } = req
   if (!session) {
     res.status(401).json({})
     return
@@ -12,8 +12,8 @@ export default async function handler(req, res) {
   await dbConnect()
 
   try {
-    const users = await User.find({email: session.user.email})
-    let user = undefined
+    const users = await User.find({ email: session.user.email })
+    let user
     if (method === 'PUT') {
       // update user in database
       user = await User.findByIdAndUpdate(users[0]._id, req.body, {
@@ -24,11 +24,11 @@ export default async function handler(req, res) {
     if (method === 'GET') {
       // user in database, return it
       if (users && users.length > 0) {
-        user = users[0] 
+        user = users[0]
       }
       // user not in database, create new user
       else {
-        user = await User.create({email: session.user.email, name: '', sub: session.user.sub })
+        user = await User.create({ email: session.user.email, name: '', sub: session.user.sub })
       }
     }
 

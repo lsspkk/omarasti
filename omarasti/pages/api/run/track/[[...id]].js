@@ -1,11 +1,10 @@
 import dbConnect from '../../../../utils/dbConnect'
 import Run from '../../../../models/Run'
 import User from '../../../../models/User'
-import Track from '../../../../models/Track'
-import { getSession } from 'next-auth/client'
+import { getSession } from '../../auth'
 
-export const getRunAmounts = async (trackId, req) => {
-  const session = await getSession({ req })
+export const getRunAmounts = async (trackId, req, res) => {
+  const session = await getSession(req, res)
   if (!session) {
     throw new Error('no session')
   }
@@ -17,7 +16,7 @@ export const getRunAmounts = async (trackId, req) => {
 }
 
 export default async function handler(req, res) {
-  const session = await getSession({ req })
+  const session = await getSession(req, res)
   if (!session) {
     res.status(401).json({})
     return

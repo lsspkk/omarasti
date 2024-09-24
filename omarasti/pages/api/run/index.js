@@ -1,15 +1,11 @@
-
 import dbConnect from '../../../utils/dbConnect'
 import User from '../../../models/User'
 import Run from '../../../models/Run'
-import Track from '../../../models/Track'
-
-import { getSession } from 'next-auth/client'
+import { getSession } from '../auth'
 
 export default async function handler(req, res) {
-
   const { method } = req
-  const session = await getSession({ req })
+  const session = await getSession(req, res)
   if (!session) {
     res.status(401).json({})
     return
@@ -19,8 +15,7 @@ export default async function handler(req, res) {
 
   try {
     const user = await User.findOne({ email: session.user.email })
-    const runs = await Run.find({ runner: user.id })
-      .populate('track', '-modified -owner -markers').sort('start')
+    const runs = await Run.find({ runner: user.id }).populate('track', '-modified -owner -markers').sort('start')
 
     if (method === 'GET') {
       res.status(201).json({ success: true, data: runs })
@@ -39,7 +34,6 @@ export default async function handler(req, res) {
     console.log(error)
     res.status(500).json({ success: false })
   }
-
 }
 
 export const config = {

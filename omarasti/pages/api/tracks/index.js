@@ -2,11 +2,10 @@ import dbConnect from '../../../utils/dbConnect'
 import Track from '../../../models/Track'
 import User from '../../../models/User'
 import { nanoid } from 'nanoid'
+import { getSession } from '../auth'
 
-import { getSession } from 'next-auth/client'
-
-export async function getTracks(req) {
-  const session = await getSession({ req })
+export async function getTracks(req, res) {
+  const session = await getSession(req, res)
   if (!session) {
     return { success: false, data: [] }
   }
@@ -21,12 +20,10 @@ export async function getTracks(req) {
   }
 }
 
-
-
 // short Id for URLS
 const generateUniqueId = async () => {
   const shortId = nanoid(4)
-  const tracks = await Track.find({shortId})
+  const tracks = await Track.find({ shortId })
   if (tracks.length === 0) {
     return shortId
   }
@@ -34,9 +31,8 @@ const generateUniqueId = async () => {
 }
 
 export default async function handler(req, res) {
-
   const { method } = req
-  const session = await getSession({ req })
+  const session = await getSession(req, res)
   if (!session) {
     res.status(401).json({})
     return
@@ -47,8 +43,7 @@ export default async function handler(req, res) {
   if (method === 'GET') {
     const response = getTracks(req)
     res.status(response.success ? 200 : 400).json(response)
-  }
-  else if (method === 'POST') {
+  } else if (method === 'POST') {
     try {
       const user = await User.findOne({ email: session.user.email })
       const shortId = await generateUniqueId()

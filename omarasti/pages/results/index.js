@@ -1,5 +1,4 @@
-
-import { useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import { useRouter } from 'next/router'
 import { Button } from '../../components/Buttons'
@@ -13,41 +12,49 @@ const ResultsMenu = () => {
   const [, setRun] = useRecoilState(runState)
   const router = useRouter()
   const toTracks = () => {
-    setResults({...results, trackRuns: []})
+    setResults({ ...results, trackRuns: [] })
     setRun(undefined)
     router.push('/tracks')
   }
-  return <div className="flex justify-end mx-6 w-full">
-    <Button className="w-30" onClick={() => toTracks()}>Radat</Button>
-  </div>
+  return (
+    <div className='flex justify-end mx-6 w-full'>
+      <Button className='w-30' onClick={() => toTracks()}>
+        Radat
+      </Button>
+    </div>
+  )
 }
 
 const Results = () => {
   const [results, setResults] = useRecoilState(resultState)
-  const [run, ] = useRecoilState(runState)
+  const [run] = useRecoilState(runState)
   const [track] = useRecoilState(trackState)
 
-  const [session, loading] = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
-  if (loading) return <div>loading...</div>
-  if (!session) { router.push('/'); return <div/> }
+  if (status === 'loading') return <div>loading...</div>
+  if (!session) {
+    router.push('/')
+    return <div />
+  }
 
-  useEffect(async () => {
-    if (run === undefined ) {
-      const res = await fetch('/api/run/track/'+track._id)
-      if (res.ok) {
-        const { data } = await res.json()
-        const sameData = data.every(d => results?.trackRuns.some(r => r._id === d._id))
-        if (!sameData) {
-          setResults({...results, trackRuns: data, selected: []})
-        }
-      }
+  useEffect(() => {
+    if (run === undefined) {
+      fetch('/api/run/track/' + track._id)
+        .then(async (res) => {
+          const { data } = await res.json()
+          const sameData = data.every((d) => results?.trackRuns.some((r) => r._id === d._id))
+          if (!sameData) {
+            setResults({ ...results, trackRuns: data, selected: [] })
+          }
+        })
+        .catch((err) => console.log('Error fetching runs of track:', track))
     }
   }, [])
 
   return (
-    <Layout menu={<ResultsMenu/>}>      
-      <ResultList selectedRun={run}/>
+    <Layout menu={<ResultsMenu />}>
+      <ResultList selectedRun={run} />
     </Layout>
   )
 }

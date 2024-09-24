@@ -1,17 +1,15 @@
+import { SessionProvider } from 'next-auth/react'
 import '../styles/globals.css'
 import '../styles/tailwind.css'
-import { Provider } from 'next-auth/client'
-import {
-  RecoilRoot,
-} from 'recoil';
+import { RecoilRoot } from 'recoil'
 
-function MyApp ({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
-    <RecoilRoot>
-    <Provider session={pageProps.session}>
-      <Component {...pageProps} />
-    </Provider>
-    </RecoilRoot>
+    <SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+    </SessionProvider>
   )
 }
 
