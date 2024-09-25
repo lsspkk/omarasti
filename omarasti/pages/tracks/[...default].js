@@ -16,6 +16,7 @@ import {
   InFinishPanel,
 } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
+import { BackConfirmation } from '../../components/BackConfirmation'
 
 const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
@@ -46,12 +47,12 @@ const Design = ({ mapUrl }) => {
     setTimer(() => `${minutes}m ${seconds}s`)
 
     // location
-    const previousLatlng = location.latlng.lat === -1 ? track.markers[0].latlng : location.latlng
+    const previousLatlng = location.latlng.lat === -1 ? track?.markers[0].latlng : location.latlng
     let latlng
     if (locationError === '' && accurrateLocation.lat !== 0) {
       latlng = { ...accurrateLocation }
     } else {
-      latlng = await getLocation(track.markers[run.targetMarker].latlng, previousLatlng)
+      latlng = await getLocation(track?.markers[run.targetMarker].latlng, previousLatlng)
     }
 
     const newRun = { ...run, currentLatlng: latlng }
@@ -61,7 +62,7 @@ const Design = ({ mapUrl }) => {
       newRun.routeMarkTime = now
     }
     setRun(newRun)
-    const d = distance(latlng, track.markers[run.targetMarker].latlng)
+    const d = distance(latlng, track?.markers[run.targetMarker].latlng)
     setLocation({ latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d })
   }
 
@@ -77,14 +78,14 @@ const Design = ({ mapUrl }) => {
   }, [run, timer])
 
   useEffect(() => {
-    if (track && track.markers.length > 0) {
-      setCoordinates(() => track.markers[track.markers.length - 1].latlng)
+    if (track && track?.markers.length > 0) {
+      setCoordinates(() => track?.markers[track?.markers.length - 1].latlng)
     }
   }, [track])
 
   useEffect(() => {
-    if (track && track.markers.length > 0) {
-      setCoordinates(() => track.markers[track.markers.length - 1].latlng)
+    if (track && track?.markers.length > 0) {
+      setCoordinates(() => track?.markers[track?.markers.length - 1].latlng)
       return
     }
     getCoordinates()
@@ -105,7 +106,7 @@ const Design = ({ mapUrl }) => {
   }
 
   const touchMarker = () => {
-    const d = distance(location.latlng, track.markers[run.targetMarker + 1].latlng)
+    const d = distance(location.latlng, track?.markers[run.targetMarker + 1].latlng)
     setLocation({ ...location, canSeeMarker: d < 100, canTouchMarker: d < 20, distance: d })
     setRun({ ...run, markerTimes: [...run.markerTimes, new Date()], targetMarker: run.targetMarker + 1 })
   }
@@ -119,7 +120,7 @@ const Design = ({ mapUrl }) => {
       end,
       markerTimes: [...run.markerTimes, end],
       totalTime: end.getTime() - run.start.getTime(),
-      route: [...run.route, { latlng: track.markers[run.targetMarker].latlng, timestamp: end.getTime() }],
+      route: [...run.route, { latlng: track?.markers[run.targetMarker].latlng, timestamp: end.getTime() }],
     })
     router.push('/tracks/run/stop')
   }
@@ -131,11 +132,13 @@ const Design = ({ mapUrl }) => {
     menu = <RunMenu stopRun={stopRun} timer={timer} run={run} />
   }
 
-  const isLastMarker = run?.targetMarker === track.markers.length - 1
+  const isLastMarker = run?.targetMarker === track?.markers.length - 1
   const mapCenter = coordinates
 
   return (
     <Layout map='true' menu={menu} hasRequiredData={track !== undefined}>
+      <BackConfirmation />
+
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} />
       {run !== undefined && (
         <>
@@ -146,12 +149,12 @@ const Design = ({ mapUrl }) => {
           {!isLastMarker && !location.canTouchMarker && location.canSeeMarker && (
             <SeeMarkerPanel
               location={location}
-              marker={track.markers[run.targetMarker]}
+              marker={track?.markers[run.targetMarker]}
               markerNumber={run.targetMarker}
             />
           )}
           {isLastMarker && !location.canTouchMarker && location.canSeeMarker && (
-            <SeeFinishPanel location={location} marker={track.markers[run.targetMarker]} />
+            <SeeFinishPanel location={location} marker={track?.markers[run.targetMarker]} />
           )}
           {isLastMarker && location.canTouchMarker && <InFinishPanel finishRun={finishRun} />}
 
