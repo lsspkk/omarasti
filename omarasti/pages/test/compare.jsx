@@ -7,6 +7,7 @@ import { INTERVALS } from '../../utils/location'
 import { demoResults, demoTrack } from '../../models/demodata'
 import { Button } from '../../components/Buttons'
 import { designModeState } from '../../components/DesignMenu'
+import { BackConfirmation } from '../../components/BackConfirmation'
 
 const DesignMap = dynamic(
   () => {
@@ -66,6 +67,8 @@ const DemoRoute = ({ mapUrl }) => {
 
   return (
     <div>
+      <BackConfirmation title='Testataan' message='Haluatko varmasti poistua sivulta?' />
+
       <div className='flex w-full justify-between items-center'>
         <div className='justify-self-start' onClick={() => router.push('/')}>
           <div className='2-10 flex-none w-16 sm:w-30 md:mr-8 '>

@@ -7,9 +7,8 @@ Käytössä kirjastot
 - Recoil - https://recoiljs.org/docs/
 - Mongoose - https://github.com/vercel/next.js/tree/canary/examples/with-mongodb-mongoose
 
-
-
 # TODO
+
 - Tulosvertailu jaetun radan katselussa, (ennen ja) jälkeen suunnistuksen.
 - Jos rataa muokataan, varoita radan tallennuksen yhteydessä,
   mikäli radalle on tallennettu tuloksia: Jos talletat, niin tulokset tyhjennetään.
@@ -22,12 +21,12 @@ Käytössä kirjastot
 - Päivitä tailwind 2:een
 - Päivitä uusimpaa next.js:ään
 
-
+- estä paluunappi paremmin
+  https://medium.com/@joaojbs199/page-exit-prevention-in-nextjs-14-7f42add43297
 
 # Radan jakaminen
 
 Kevyempi ratkaisu ryhmille.
-
 
 # Ryhmät
 
@@ -36,7 +35,6 @@ jotta kaveripiirejä, koululuokkia tms. voi olla useita.
 Esim. admin generoi salasanan, jolla voi liittyä ryhmään, ja jakaa sen
 täysin omarastin ulkopuolella.
 
-
 # Tulosten tallennus
 
 Tallenna ajat ja juoksijat.
@@ -44,20 +42,15 @@ Reittivertailuun tallenna vaikka enintään viisi reittiä,
 käyttäjän valinta on, tallentaako reitin.
 Reittivertailun katseluun voi valita haluamansa juoksijat.
 
-
-
 # vercel eikä netlify
 
-Koska mongoose:n yhteyden voi jättää päälle. 
+Koska mongoose:n yhteyden voi jättää päälle.
 netlifyyn tarviis toisen ratkaisun, tai sit välittää backend-kutsut eteenpäin ihan oikealle API:lle.
 
-
-
 # next-on-netlify
+
 Kirjastopa deprekoitui, uusi käytössä oleva on
 https://github.com/netlify/netlify-plugin-nextjs
-
-
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
