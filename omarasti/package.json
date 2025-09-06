@@ -8,11 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
+    "autoprefixer": "^10.4.21",
     "crypto": "^1.0.1",
     "eslint-config-next": "^14.2.13",
     "esm": "^3.2.25",
     "leaflet": "^1.9.4",
-    "mongoose": "^5.13.22",
+    "mongoose": "^8.18.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.13",
     "next-auth": "^4.24.7",
@@ -20,9 +22,10 @@
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "recoil": "^0.7.7",
-    "tailwindcss": "^1.9.6"
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
+    "@types/node": "24.3.1",
     "@types/react": "^18.3.8",
     "typescript": "^5.6.2"
   }
