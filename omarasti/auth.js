@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
-export const authOptions = {
+export const { auth, handlers, signIn, signOut } = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -18,6 +18,4 @@ export const authOptions = {
   session: {
     strategy: 'jwt',
   },
-}
-
-export default NextAuth(authOptions)
+})
