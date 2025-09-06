@@ -11,7 +11,9 @@ export async function getTracks(req, res) {
   try {
     const user = await User.findOne({ email: session.user.email })
     const query = { $or: [{ published: true }, { owner: user.id }] }
-    const tracks = await Track.find(query, { projection: { _id: 0 } }).populate('owner markers')
+    // MIGRATION NOTE: Mongoose 6+ - Using projection object instead of options
+    // The { projection: { _id: 0 } } syntax should be moved to select()
+    const tracks = await Track.find(query).select('-_id').populate('owner markers')
 
     return { success: true, data: tracks }
   } catch (error) {
@@ -49,15 +51,20 @@ export default async function handler(req, res) {
   }
 
   if (method === 'PUT') {
+    // MIGRATION NOTE: Mongoose 6+ - findByIdAndUpdate() works the same way
+    // The 'new' and 'runValidators' options are still supported
     await Track.findByIdAndUpdate(req.query.id, req.body, {
       new: true,
       runValidators: true,
     })
   } else if (method === 'DELETE') {
     try {
+      // MIGRATION NOTE: Mongoose 6+ - findByIdAndDelete() works the same way
+      // Note: In Mongoose 7+, findByIdAndRemove() was removed, use findByIdAndDelete() instead
       await Track.findByIdAndDelete(req.query.id)
       res.status(200).json({ success: true })
     } catch (error) {
+      console.log(error) // Log the error for debugging
       res.status(400).json({ success: false })
     }
   }

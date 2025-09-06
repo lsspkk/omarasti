@@ -15,6 +15,7 @@ export default async function handler(req, res) {
     const users = await User.find({ email: session.user.email })
     let user
     if (method === 'PUT') {
+      // MIGRATION NOTE: Mongoose 6+ - findByIdAndUpdate() works the same way
       // update user in database
       user = await User.findByIdAndUpdate(users[0]._id, req.body, {
         new: true,
@@ -28,6 +29,7 @@ export default async function handler(req, res) {
       }
       // user not in database, create new user
       else {
+        // MIGRATION NOTE: Mongoose 6+ - create() works the same way
         user = await User.create({ email: session.user.email, name: '', sub: session.user.sub })
       }
     }

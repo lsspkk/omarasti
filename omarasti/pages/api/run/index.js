@@ -15,6 +15,8 @@ export default async function handler(req, res) {
 
   try {
     const user = await User.findOne({ email: session.user.email })
+    // MIGRATION NOTE: Mongoose 6+ - find() and populate() work the same way
+    // sort() method remains unchanged
     const runs = await Run.find({ runner: user.id }).populate('track', '-modified -owner -markers').sort('start')
 
     if (method === 'GET') {
@@ -24,9 +26,11 @@ export default async function handler(req, res) {
     if (method === 'POST') {
       if (runs.length > 5) {
         // TODO: remove the earliest
+        // MIGRATION NOTE: Mongoose 6+ - findByIdAndDelete() works the same way
         await Run.findByIdAndDelete(runs[0].id)
       }
       const newRun = { ...req.body, runner: user.id }
+      // MIGRATION NOTE: Mongoose 6+ - create() works the same way
       const run = await Run.create(newRun)
       res.status(201).json({ success: true, data: run })
     }
