@@ -6,12 +6,20 @@ import { runState } from '../models/state'
 
 const ViewButton = ({ children, href }) => {
   const router = useRouter()
-  const pageActive = router.asPath === href
-  const bgColor = pageActive ? 'bg-green-600' : 'bg-green-300'
+  const isStartPage = router.asPath === '/tracks/run/start'
+  const variant = isStartPage ? 'primary' : 'green'
+  const buttonText = isStartPage ? 'Takaisin' : 'Suunnista'
+  const handleClick = () => {
+    if (isStartPage) {
+      router.push('/tracks/view')
+    } else {
+      router.push(href)
+    }
+  }
 
   return (
-    <Button className={`${bgColor}`} onClick={() => !pageActive && router.push(href)}>
-      {children}
+    <Button variant={variant} onClick={handleClick}>
+      {buttonText}
     </Button>
   )
 }
