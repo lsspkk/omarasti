@@ -67,7 +67,7 @@ const DemoRoute = ({ mapUrl }) => {
 
   return (
     <div>
-      <BackConfirmation title='Testataan' message='Haluatko varmasti poistua sivulta?' />
+      <BackConfirmation title='Huomautus' message='Haluatko varmasti poistua sivulta?' />
 
       <div className='flex w-full justify-between items-center'>
         <div className='justify-self-start' onClick={() => router.push('/')}>

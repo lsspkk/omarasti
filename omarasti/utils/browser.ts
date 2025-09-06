@@ -34,10 +34,10 @@
  */
 
 // Functions for browser environment checks (dynamic evaluation)
-export const isBrowser = (): boolean => typeof window !== 'undefined'
+export const isWindow = (): boolean => typeof window !== 'undefined'
 export const hasDocument = (): boolean => typeof document !== 'undefined'
 export const hasNavigator = (): boolean => typeof navigator !== 'undefined'
-export const canUseBrowser = (): boolean => isBrowser() && hasDocument()
+export const canUseBrowser = (): boolean => isWindow() && hasDocument()
 
 /**
  * Execute callback only if in browser environment

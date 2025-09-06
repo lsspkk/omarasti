@@ -114,7 +114,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
   const canSeeResults = runAmounts?.totalRuns > 1 && runAmounts?.myRuns > 0
 
   return (
-    <div className='border p-2'>
+    <div className='border-y border-orange-200 p-2 -mb-[2px]'>
       <div className='flex justify-between content-end' onClick={() => changeVisibility()}>
         <div className='select-none'>
           <div className={`inline-block ${color} bold text-xl `}>{track.name}</div>

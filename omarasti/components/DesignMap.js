@@ -10,7 +10,7 @@ import { runState, trackState, resultState, routeColors } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { angleInDegrees } from '../utils/location'
 import { RouteLines } from './RouteLines'
-import { isBrowser } from '../utils/browser'
+import { isWindow } from '../utils/browser'
 
 const TrackPoints = () => {
   const [mode] = useRecoilState(designModeState)
@@ -108,7 +108,7 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
   const [run] = useRecoilState(runState)
   const [results] = useRecoilState(resultState)
 
-  if (!isBrowser()) {
+  if (!isWindow()) {
     return null
   }
 
