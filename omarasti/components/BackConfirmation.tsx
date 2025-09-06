@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Button } from './Buttons'
 import { useRouter } from 'next/navigation'
+import { safePushState } from '../utils/browser'
 
 export const BackConfirmation = ({
   title = 'Varmistus',
@@ -19,17 +20,15 @@ export const BackConfirmation = ({
     // native dialog
   }
 
-  // Used to make popstate event trigger when back button is clicked.
-  // Without this, the popstate event will not fire because it needs there to be a href to return.
-  if (typeof window !== 'undefined') {
-    window.history.pushState(null, document.title, window.location.href)
-  }
-
   const browserBackHandler = (event: PopStateEvent) => {
     setShowConfirm(true)
-    window.history.pushState(null, document.title, window.location.href)
+    safePushState()
     event.preventDefault()
   }
+
+  useEffect(() => {
+    safePushState()
+  }, [])
 
   const onCancel = () => {
     setShowConfirm(false)

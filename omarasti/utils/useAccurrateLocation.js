@@ -11,7 +11,7 @@ const useAccurrateLocation = (accurracyWanted, accurracyWaitTime) => {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (navigator?.geolocation) {
       let timeout
       const geoId = navigator.geolocation.watchPosition(
         (position) => {
@@ -39,9 +39,11 @@ const useAccurrateLocation = (accurracyWanted, accurracyWaitTime) => {
         }, accurracyWaitTime * 1000)
       }
       return () => {
-        window.navigator.geolocation.clearWatch(geoId)
+        if (geoId) {
+          navigator?.geolocation.clearWatch(geoId)
+        }
         if (timeout) {
-          clearTimeout(timeout)
+          window?.clearTimeout(timeout)
         }
       }
     }
