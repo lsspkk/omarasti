@@ -6,6 +6,7 @@ import { Button } from '../../../components/Buttons'
 import { ViewMenu } from '../../../components/ViewMenu'
 import { runState, emptyRun, trackState } from '../../../models/state'
 import { useState } from 'react'
+import Checkbox from '../../../components/Checkbox'
 
 const StartRun = () => {
   const [, setRun] = useRecoilState(runState)
@@ -41,22 +42,19 @@ const StartRun = () => {
             <TrackDistance markers={track?.markers} />
           </div>
           <div className='flex my-5'>
-            <input
-              type='checkbox'
-              defaultChecked={showPersonMarker}
+            <Checkbox
+              id='show-person-marker'
+              checked={showPersonMarker}
               onChange={() => setShowPersonMarker(!showPersonMarker)}
               className='checked:bg-blue-600 checked:border-transparent'
+              label='Näytä sijainti'
             />
-            <label>Näytä sijainti</label>
           </div>
         </div>
       </div>
       <div className='select-none container flex justify-center'>
-        <Button className='m-8' onClick={() => router.push('/tracks/view')}>
-          Takaisin
-        </Button>
-        <Button className='m-8' onClick={() => start()}>
-          Aloita
+        <Button variant='green' className='m-8 p-2' onClick={() => start()}>
+          Aloita Suunnistus
         </Button>
       </div>
     </Layout>

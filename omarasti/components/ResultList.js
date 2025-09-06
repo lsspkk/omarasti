@@ -3,6 +3,7 @@ import { trackState, resultState, routeColors } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { Button } from './Buttons'
 import { totalDistance } from '../utils/location'
+import Checkbox from './Checkbox'
 
 const ResultList = () => {
   const [results] = useRecoilState(resultState)
@@ -74,25 +75,10 @@ const RunResult = ({ i, run }) => {
       <div className='w-1/6 mr-1'>{distance}km</div>
       <div className='w-1/6 mr-1'>{speed}km/h</div>
       <div className='w-1/6 flex justify-center'>
-        <label className='p-0 m-0'>
-          <input type='checkbox' onChange={() => changed()} checked={selected} />
-          {selected && <CustomCheckBox color={routeColors[index % routeColors.length]} />}
-        </label>
+        <Checkbox id={`checkbox-${run._id}`} checked={selected} onChange={() => changed()} />
       </div>
     </div>
   )
 }
-const CustomCheckBox = ({ color }) => {
-  return (
-    <svg
-      viewBox='20px 20px'
-      width='20px'
-      height='20px'
-      style={{ position: 'absolute', zIndex: '900', marginTop: '-24px' }}
-    >
-      <rect width='16px' height='16px' rx='3' x='1' y='1' fill={color} strokeWidth='1px' stroke='rgba(0,0,0,0.5)' />
-    </svg>
-  )
-}
 
-export { ResultList, CustomCheckBox }
+export { ResultList }
