@@ -40,7 +40,7 @@ const OneTrack = () => {
   }
 
   const onCopyClicked = () => {
-    navigator.clipboard.writeText(trackUrl)
+    navigator?.clipboard.writeText(trackUrl)
     if (copyClicked) {
       return
     }
@@ -70,8 +70,11 @@ const OneTrack = () => {
           <div className='container flex justify-between'>
             <div className='mb-4 xs:w-full'>
               <div className='flex my-1'>
-                <label className='w-20'>Nimi:</label>
+                <label htmlFor='track-name' className='w-20'>
+                  Nimi:
+                </label>
                 <input
+                  id='track-name'
                   className='w-40'
                   value={name}
                   disabled={track?.published}
@@ -80,8 +83,11 @@ const OneTrack = () => {
               </div>
 
               <div className='flex my-5'>
-                <label className='w-20'>Sijainti:</label>
+                <label htmlFor='track-location' className='w-20'>
+                  Sijainti:
+                </label>
                 <input
+                  id='track-location'
                   className='w-40'
                   value={location}
                   disabled={track?.published}
@@ -102,7 +108,7 @@ const OneTrack = () => {
                   <Button className={copyClicked ? 'bg-orange-600' : ''} onClick={() => onCopyClicked()}>
                     Kopioi
                   </Button>
-                  {navigator.share !== undefined && (
+                  {navigator?.share && (
                     <Button
                       onClick={async () =>
                         navigator.share({

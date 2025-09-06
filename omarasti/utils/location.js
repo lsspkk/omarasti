@@ -6,7 +6,11 @@ const options = {
 
 function getCoordinates() {
   return new Promise(function (resolve, reject) {
-    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+    if (navigator?.geolocation) {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options)
+    } else {
+      reject(new Error('Geolocation not available'))
+    }
   })
 }
 
