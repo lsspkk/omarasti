@@ -4,7 +4,7 @@ const options = {
   maximumAge: 0,
 }
 
-function getCoordinates() {
+function getCoordinates(): Promise<GeolocationPosition> {
   return new Promise(function (resolve, reject) {
     if (navigator?.geolocation) {
       navigator.geolocation.getCurrentPosition(resolve, reject, options)

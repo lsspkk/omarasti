@@ -1,17 +1,17 @@
 import dbConnect from '../../../../utils/dbConnect'
-import Run from '../../../../models/Run'
-import User from '../../../../models/User'
+import { RunModel } from '../../../../models/Run'
 import { getSession } from '../../auth'
+import UserModel from '../../../../models/User'
 
 export const getRunAmounts = async (trackId, req, res) => {
   const session = await getSession(req, res)
   if (!session) {
     throw new Error('no session')
   }
-  const user = await User.findOne({ email: session.user.email })
-  const totalRuns = await Run.count({ track: trackId })
-  const query = { $and: [{ track: trackId }, { runner: user.id }] }
-  const myRuns = await Run.count(query)
+  const user = await UserModel.findOne({ email: session.user.email })
+  const totalRuns = await RunModel.countDocuments({ track: trackId })
+  const query = { $and: [{ track: trackId }, { runner: user._id }] }
+  const myRuns = (await RunModel.countDocuments(query)) ?? 0
   return { totalRuns, myRuns }
 }
 
@@ -29,12 +29,12 @@ export default async function handler(req, res) {
       // /api/run/track/[trackid]/show
 
       const trackId = req.query.id[0]
-      const runAmounts = getRunAmounts(trackId, req, res)
+      const runAmounts = await getRunAmounts(trackId, req, res)
       res.status(200).json({ success: true, data: runAmounts })
     } else {
       // /api/run/track/[trackid]
 
-      const runs = await Run.find({ track: req.query.id }).sort('totalTime').populate('runner', '-email')
+      const runs = await RunModel.find({ track: req.query.id }).sort('totalTime').populate('runner', '-email')
       res.status(200).json({ success: true, data: runs })
     }
   } catch (error) {

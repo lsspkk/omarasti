@@ -3,18 +3,19 @@ import { trackState } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { Button } from './Buttons'
 import { useRouter } from 'next/router'
-import { designModeState } from './DesignMenu'
-import { TrackDistance } from '../components/Distance'
+import { designModeState, TrackViewMode } from './DesignMenu'
+import { TrackDistance } from './Distance'
 import { userState } from '../pages/settings'
+import { TrackPopulatedType } from '../models/Track'
 
-const TrackList = ({ tracks }) => {
+export const TrackList = ({ tracks }) => {
   const [, setMode] = useRecoilState(designModeState)
   const [, setTrack] = useRecoilState(trackState)
   const [sorted, setSorted] = useState({ column: 'name', ascending: true })
   const [message, setMessage] = useState('')
   const router = useRouter()
 
-  const toUrl = (track, url, mode) => {
+  const toUrl = (track: TrackPopulatedType, url: string, mode: TrackViewMode) => {
     setTrack(track)
     setMode(mode)
     router.push(url)
@@ -90,10 +91,18 @@ const SortIcon = ({ ascending, selected }) => {
   )
 }
 
-const TrackCard = ({ track, toUrl, remove }) => {
+const TrackCard = ({
+  track,
+  toUrl,
+  remove,
+}: {
+  track: TrackPopulatedType
+  toUrl: (track: TrackPopulatedType, url: string, mode: TrackViewMode) => void
+  remove: (id: string, name: string) => void
+}) => {
   const [user] = useRecoilState(userState)
   const [visible, setVisible] = useState(false)
-  const [runAmounts, setRunAmounts] = useState({})
+  const [runAmounts, setRunAmounts] = useState<{ totalRuns: number; myRuns: number }>({ totalRuns: 0, myRuns: 0 })
 
   const changeVisibility = async () => {
     if (!visible) {
@@ -108,7 +117,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
     setVisible(!visible)
   }
 
-  const options = { year: 'numeric', month: 'numeric', day: 'numeric' }
+  const options = { year: 'numeric', month: 'numeric', day: 'numeric' } as Intl.DateTimeFormatOptions
   const modified = new Date(track.modified).toLocaleDateString('fi-FI', options)
   const color = track.published ? 'text-orange-900' : 'text-gray-600'
   const canSeeResults = runAmounts?.totalRuns > 1 && runAmounts?.myRuns > 0
@@ -150,7 +159,7 @@ const TrackCard = ({ track, toUrl, remove }) => {
               <TrackDistance markers={track.markers} />
             </div>
             <div className='flex justify-end items-end'>
-              {track.owner._id === user.id && <Button onClick={() => remove(track._id, track.name)}>Poista</Button>}
+              {track.owner._id === user?.id && <Button onClick={() => remove(track._id, track.name)}>Poista</Button>}
 
               {!track.published && (
                 <Button className='self-end mr-4' onClick={() => toUrl(track, '/tracks/edit', 'move')}>
@@ -173,5 +182,3 @@ const TrackCard = ({ track, toUrl, remove }) => {
     </div>
   )
 }
-
-export { TrackList }

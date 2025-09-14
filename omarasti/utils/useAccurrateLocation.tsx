@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react'
  * it takes some time to get accurrate results.
  * accurracyWanted filters out results e.g. with 30meters variation
  */
-const useAccurrateLocation = (accurracyWanted, accurracyWaitTime) => {
+const useAccurrateLocation = (accurracyWanted, accurracyWaitTime): [{ lat: number; lng: number }, number, string] => {
   const [accuracy, setAccuracy] = useState(0)
-  const [location, setLocation] = useState({ lat: 0, lng: 0 })
+  const [location, setLocation] = useState<{ lat: number; lng: number }>({ lat: 0, lng: 0 })
   const [error, setError] = useState('')
 
   useEffect(() => {

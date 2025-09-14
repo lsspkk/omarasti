@@ -8,7 +8,7 @@ const Compass = ({
   orientation,
 }: {
   angle: number
-  cName: string
+  cName?: string
   closeToMarker?: boolean
   orientation?: { available: boolean; alpha: number }
 }) => {
@@ -32,10 +32,9 @@ const Compass = ({
     <svg
       width='258'
       height='265'
-      className={cName}
       viewBox='0 0 258 265'
       fill='none'
-      style={alignNorth}
+      className={`overflow-hidden ${cName}`}
       strokeWidth={closeToMarker ? 1 : 2}
     >
       <defs>
@@ -248,91 +247,101 @@ const Compass = ({
           <polygon points='0 0, 5 2.5, 0 5' fill='#000000' />
         </marker>
       </defs>
-      {closeToMarker === true && (
-        <g opacity='0.5'>
-          <rect x='30' y='35' width='200' height='200' fill='#FA923B' />
-          <path d='M214 51.5V221.5H44L214 51.5Z' fill='white' />
-        </g>
-      )}
-      <circle cx='129' cy='136' r='124.5' stroke='black' />
-      <circle cx='129' cy='136' r='119.5' stroke='black' />
-      <path d='M129 16V256' stroke='black' />
-      <path d='M249 136L8.99992 135.02' stroke='black' />
-      <g filter='url(#filter0_d)'>
-        <path d='M64.4542 199.16L44 220' stroke='black' />
-      </g>
-      <g filter='url(#filter1_d)'>
-        <path d='M192.759 72.2132L213.972 51' stroke='black' />
-      </g>
-      <g filter='url(#filter2_d)'>
-        <path d='M193 199.16L214.213 220.373' stroke='black' />
-      </g>
-      <g filter='url(#filter3_d)'>
-        <path d='M64.2132 72.2132L44 53' stroke='black' />
-      </g>
-      <g filter='url(#filter4_d)'>
-        <path d='M93.6657 219.07L91.0475 225.562' stroke='black' />
-      </g>
-      <g opacity='0.7' filter='url(#filter5_d)'>
-        <path d='M163.624 52.6861L166.302 46.219' stroke='black' />
-      </g>
-      <g filter='url(#filter6_d)'>
-        <path d='M212.427 169.877L218.894 172.556' stroke='black' />
-      </g>
-      <g filter='url(#filter7_d)'>
-        <path d='M44.8627 101.878L38.3297 99.3645' stroke='black' />
-      </g>
-      <g filter='url(#filter8_d)'>
-        <path d='M45.103 170.017L38.6611 172.756' stroke='black' />
-      </g>
-      <g opacity='0.7' filter='url(#filter9_d)'>
-        <path d='M212.222 101.834L218.689 99.1549' stroke='black' />
-      </g>
-      <g filter='url(#filter10_d)'>
-        <path d='M163.864 219.209L166.543 225.677' stroke='black' />
-      </g>
-      <g filter='url(#filter11_d)'>
-        <path d='M93.4607 52.6413L90.6188 46.2442' stroke='black' />
-      </g>
-      <path
-        d='M129 0L139.392 16.5H118.608L129 0Z'
-        fill='#B64949'
-        stroke='#B64949'
-        strokeWidth={closeToMarker ? 1 : 4}
-      />
-      <path
-        d='M-8.34742e-08 135L9.75 141.062L9.75 128.938L-8.34742e-08 135Z'
-        fill='#A09C9C'
-        stroke='#555555'
-        strokeWidth={closeToMarker ? 1 : 4}
-      />
-      <path
-        d='M258 136L248.25 129.938L248.25 142.062L258 136Z'
-        fill='#A09C9C'
-        stroke='#555555'
-        strokeWidth={closeToMarker ? 1 : 4}
-      />
-      <path
-        d='M129 265L135.062 255.25H122.938L129 265Z'
-        fill='#A09C9C'
-        stroke='#555555'
-        strokeWidth={closeToMarker ? 1 : 4}
-      />
 
-      {closeToMarker && (
-        <line
-          x1='129'
-          y1='136'
-          x2='136'
-          y2='30'
-          stroke='#000'
-          strokeWidth='5'
-          markerEnd='url(#arrowhead)'
-          transform={`rotate(${angle})`}
-          transform-origin='129 136'
+      {/* ---------------------------------- the compass */}
+      <g style={alignNorth}>
+        {closeToMarker === true && (
+          <g opacity='0.5'>
+            <rect x='30' y='35' width='200' height='200' fill='#FA923B' />
+            <path d='M214 51.5V221.5H44L214 51.5Z' fill='white' />
+          </g>
+        )}
+        <circle cx='129' cy='136' r='124.5' stroke='black' />
+        <circle cx='129' cy='136' r='119.5' stroke='black' />
+        <path d='M129 16V256' stroke='black' />
+        <path d='M249 136L8.99992 135.02' stroke='black' />
+        <g filter='url(#filter0_d)'>
+          <path d='M64.4542 199.16L44 220' stroke='black' />
+        </g>
+        <g filter='url(#filter1_d)'>
+          <path d='M192.759 72.2132L213.972 51' stroke='black' />
+        </g>
+        <g filter='url(#filter2_d)'>
+          <path d='M193 199.16L214.213 220.373' stroke='black' />
+        </g>
+        <g filter='url(#filter3_d)'>
+          <path d='M64.2132 72.2132L44 53' stroke='black' />
+        </g>
+        <g filter='url(#filter4_d)'>
+          <path d='M93.6657 219.07L91.0475 225.562' stroke='black' />
+        </g>
+        <g opacity='0.7' filter='url(#filter5_d)'>
+          <path d='M163.624 52.6861L166.302 46.219' stroke='black' />
+        </g>
+        <g filter='url(#filter6_d)'>
+          <path d='M212.427 169.877L218.894 172.556' stroke='black' />
+        </g>
+        <g filter='url(#filter7_d)'>
+          <path d='M44.8627 101.878L38.3297 99.3645' stroke='black' />
+        </g>
+        <g filter='url(#filter8_d)'>
+          <path d='M45.103 170.017L38.6611 172.756' stroke='black' />
+        </g>
+        <g opacity='0.7' filter='url(#filter9_d)'>
+          <path d='M212.222 101.834L218.689 99.1549' stroke='black' />
+        </g>
+        <g filter='url(#filter10_d)'>
+          <path d='M163.864 219.209L166.543 225.677' stroke='black' />
+        </g>
+        <g filter='url(#filter11_d)'>
+          <path d='M93.4607 52.6413L90.6188 46.2442' stroke='black' />
+        </g>
+        <path
+          d='M129 0L139.392 16.5H118.608L129 0Z'
+          fill='#B64949'
+          stroke='#B64949'
+          strokeWidth={closeToMarker ? 1 : 4}
         />
-      )}
-      <circle cx='129' cy='136' r='4' fill='grey' opacity='0.5' />
+        {/* Triple line beneath north arrow - twice the arrow length (16.5 * 2 = 33) */}
+        <line x1='129' y1='16.5' x2='129' y2='49.5' stroke='#000000' strokeWidth={closeToMarker ? 2 : 6} />
+        <line x1='129' y1='16.5' x2='129' y2='49.5' stroke='#FFFFFF' strokeWidth={closeToMarker ? 1 : 3} />
+        <path
+          d='M-8.34742e-08 135L9.75 141.062L9.75 128.938L-8.34742e-08 135Z'
+          fill='#A09C9C'
+          stroke='#555555'
+          strokeWidth={closeToMarker ? 1 : 4}
+        />
+        <path
+          d='M258 136L248.25 129.938L248.25 142.062L258 136Z'
+          fill='#A09C9C'
+          stroke='#555555'
+          strokeWidth={closeToMarker ? 1 : 4}
+        />
+
+        {/* south arrow */}
+        <path
+          d='M129 265L135.062 255.25H122.938L129 265Z'
+          fill='#DFDFAF'
+          stroke='#A5A5A5'
+          strokeWidth={closeToMarker ? 1 : 4}
+          transform='rotate(180 129 260)'
+        />
+
+        {closeToMarker && (
+          <line
+            x1='129'
+            y1='136'
+            x2='136'
+            y2='30'
+            stroke='#000'
+            strokeWidth='5'
+            markerEnd='url(#arrowhead)'
+            transform={`rotate(${angle})`}
+            transform-origin='129 136'
+          />
+        )}
+        <circle cx='129' cy='136' r='4' fill='grey' opacity='0.5' />
+      </g>
     </svg>
   )
 }

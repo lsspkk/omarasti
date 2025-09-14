@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { runState } from '../models/state'
 
-const Header = ({ menu }) => {
+export const Header = ({ menu }) => {
   const [run] = useRecoilState(runState)
   const { data: session } = useSession()
   const [user, setUser] = useRecoilState(userState)
@@ -16,7 +16,7 @@ const Header = ({ menu }) => {
 
   async function fetchUser() {
     // load/create additional user account to mongodb
-    if (session && Object.keys(user).length === 0) {
+    if (session && (!user || Object.keys(user).length === 0)) {
       setIsSigning(true)
       const res = await fetch('/api/user')
       if (res.ok) {
@@ -28,7 +28,7 @@ const Header = ({ menu }) => {
       }
       setIsSigning(false)
     } else if (!session) {
-      setUser({})
+      setUser(undefined)
     }
   }
 
@@ -41,7 +41,7 @@ const Header = ({ menu }) => {
   const showLogo = run === undefined || run?.start === undefined || run?.end !== undefined
 
   return (
-    <header>
+    <header className='w-full border-b border-gray-300 bg-white p-1 print:hidden'>
       <nav className='md:container mx-auto flex self-center'>
         {showLogo && (
           <Link href='/'>
@@ -77,5 +77,3 @@ const Header = ({ menu }) => {
     </header>
   )
 }
-
-export default Header

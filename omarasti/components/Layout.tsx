@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Header from './Header'
+import { Header } from './Header'
 import { ReactNode, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
@@ -46,9 +46,7 @@ const Layout = ({
       <div className='flex flex-col'>
         {((isPrivate && session && hasRequiredData) || (!isPrivate && hasRequiredData)) && (
           <>
-            <div className='flex-none'>
-              <Header menu={menu} />
-            </div>
+            <Header menu={menu} />
             <main className={`flex-grow md:container md:mx-auto ${margins}`}>
               {!isLoading && children}
               {isLoading && <div className='p-20'>Ladataan...</div>}

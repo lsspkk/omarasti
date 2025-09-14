@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { MapContainer, TileLayer, useMapEvents, Polyline } from 'react-leaflet'
+import { MapContainer, TileLayer, useMapEvents, Polyline, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { MARKER_SIZE, TrackMarker } from './TrackMarker'
 import { PersonMarker } from './PersonMarker'
 import L from 'leaflet'
+import type { LatLngTuple } from 'leaflet'
 
 import { designModeState } from './DesignMenu'
 import { runState, trackState, resultState, routeColors } from '../models/state'
@@ -61,7 +62,7 @@ const TrackPoints = () => {
         <Polyline
           key={'lp' + JSON.stringify(linePositions)}
           positions={linePositions}
-          pathOptions={{ color: '#fa4362', weight: '5' }}
+          pathOptions={{ color: '#fa4362', weight: 5 }}
         />
       ))}
     </>
@@ -104,7 +105,28 @@ const makeLines = (markers, map) => {
   return lines
 }
 
-const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
+// when Track loads
+function Recenter({ center, zoom }: { center: LatLngTuple; zoom: number }) {
+  const map = useMap()
+  useEffect(() => {
+    if (center) {
+      map.setView(center, zoom) // or map.flyTo(center, zoom)
+    }
+  }, [map, center?.[0], center?.[1], zoom])
+  return null
+}
+
+const DesignMap = ({
+  mapUrl,
+  mapCenter,
+  showRoute,
+  showRouteIndex,
+}: {
+  mapUrl: string
+  mapCenter: LatLngTuple
+  showRoute: boolean
+  showRouteIndex?: number
+}) => {
   const [run] = useRecoilState(runState)
   const [results] = useRecoilState(resultState)
 
@@ -112,20 +134,25 @@ const DesignMap = ({ mapUrl, mapCenter, showRoute, showRouteIndex }) => {
     return null
   }
 
-  let runs
+  let runs = undefined
   if (results?.selected?.length > 1) {
     runs = results.selected
   }
 
+  const minZoom = process.env.NEXT_PUBLIC_MINZOOM ? Number(process.env.NEXT_PUBLIC_MINZOOM) : undefined
+  const maxZoom = process.env.NEXT_PUBLIC_MAXZOOM ? Number(process.env.NEXT_PUBLIC_MAXZOOM) : undefined
+  const attribution = process.env.NEXT_PUBLIC_MAP_ATTRIBUTION ?? ''
+
   return (
     <MapContainer
       style={{ width: '100%', height: '90vh' }}
-      center={mapCenter}
+      center={mapCenter as unknown as L.LatLngExpression}
       zoom={14.5}
-      minZoom={process.env.NEXT_PUBLIC_MINZOOM}
-      maxZoom={process.env.NEXT_PUBLIC_MAXZOOM}
+      minZoom={minZoom}
+      maxZoom={maxZoom}
     >
-      <TileLayer url={mapUrl} attribution={process.env.NEXT_PUBLIC_MAP_ATTRIBUTION} />
+      <Recenter center={mapCenter} zoom={14.5} />
+      <TileLayer url={mapUrl} attribution={attribution} />
       <TrackPoints />
       {!showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
 

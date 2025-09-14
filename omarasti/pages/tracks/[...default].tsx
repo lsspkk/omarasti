@@ -1,3 +1,4 @@
+// use client
 import { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { DesignMenu } from '../../components/DesignMenu'
@@ -17,6 +18,7 @@ import {
 } from '../../components/Panels'
 import { useAccurrateLocation } from '../../utils/useAccurrateLocation'
 import { BackConfirmation } from '../../components/BackConfirmation'
+import type { LatLngTuple } from 'leaflet'
 
 const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
@@ -26,7 +28,7 @@ const emptyLocationState = {
   latlng: { lat: -1, lng: -1 },
   distance: -1,
 }
-const TAMPERE = [61.5107, 23.7616]
+const TAMPERE = [61.5107, 23.7616] as LatLngTuple
 const Design = ({ mapUrl }) => {
   const [run, setRun] = useRecoilState(runState)
   const [location, setLocation] = useState(emptyLocationState)
@@ -34,7 +36,7 @@ const Design = ({ mapUrl }) => {
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
   const [accurrateLocation, accurracy, locationError] = useAccurrateLocation(30, 2) // 30m, 2s
-  const [coordinates, setCoordinates] = useState(TAMPERE)
+  const [coordinates, setCoordinates] = useState<LatLngTuple>(TAMPERE)
 
   const router = useRouter()
 
@@ -79,23 +81,18 @@ const Design = ({ mapUrl }) => {
 
   useEffect(() => {
     if (track && track?.markers.length > 0) {
-      setCoordinates(() => track?.markers[track?.markers.length - 1].latlng)
+      const latlng = track?.markers[track?.markers.length - 1].latlng
+      setCoordinates(() => [latlng.lat, latlng.lng])
+    } else {
+      getCoordinates()
+        .then((position) => {
+          setCoordinates([position.coords.latitude, position.coords.longitude])
+        })
+        .catch((error) => {
+          console.log('No location:', error)
+        })
     }
   }, [track])
-
-  useEffect(() => {
-    if (track && track?.markers.length > 0) {
-      setCoordinates(() => track?.markers[track?.markers.length - 1].latlng)
-      return
-    }
-    getCoordinates()
-      .then((position) => {
-        setCoordinates([position.coords.latitude, position.coords.longitude])
-      })
-      .catch((error) => {
-        console.log('No location:', error)
-      })
-  }, [])
 
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
@@ -139,7 +136,7 @@ const Design = ({ mapUrl }) => {
     <Layout map='true' menu={menu} hasRequiredData={track !== undefined}>
       <BackConfirmation />
 
-      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} />
+      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} showRoute={run?.showPersonMarker} />
       {run !== undefined && (
         <>
           {!location.canTouchMarker && !location.canSeeMarker && <ShowOrientationPanel />}

@@ -21,7 +21,7 @@ const PersonSvg = ({ color }) => {
   )
 }
 
-export const PersonMarker = ({ latlng, color }) => {
+export const PersonMarker = ({ latlng, color }: { latlng: L.LatLngExpression; color?: string }) => {
   const iconMarkup = renderToStaticMarkup(<PersonSvg color={color} />)
   const customMarkerIcon = divIcon({ html: iconMarkup })
 

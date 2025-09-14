@@ -4,8 +4,9 @@ import { useRouter } from 'next/router'
 import { Layout } from '../components/Layout'
 import { atom, useRecoilState } from 'recoil'
 import { Button } from '../components/Buttons'
+import { User } from '../models/User'
 
-const userState = atom({ key: 'userState', default: {} })
+const userState = atom<User | undefined>({ key: 'userState', default: undefined })
 
 const Profile = () => {
   const { data: session } = useSession()

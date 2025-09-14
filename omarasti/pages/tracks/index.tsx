@@ -16,8 +16,9 @@ const TracksMenu = () => {
     const newTrack = {
       name: '',
       location: '',
-      owner: '',
-      modified: '',
+      shortId: '',
+      owner: undefined,
+      modified: new Date(),
       markers: [],
       published: false,
     }
