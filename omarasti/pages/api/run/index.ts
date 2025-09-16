@@ -1,6 +1,6 @@
 import dbConnect from '../../../utils/dbConnect'
 import User from '../../../models/User'
-import Run from '../../../models/Run'
+import { RunModel } from '../../../models/Run'
 import { getSession } from '../auth'
 
 export default async function handler(req, res) {
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const user = await User.findOne({ email: session.user.email })
     // MIGRATION NOTE: Mongoose 6+ - find() and populate() work the same way
     // sort() method remains unchanged
-    const runs = await Run.find({ runner: user.id }).populate('track', '-modified -owner -markers').sort('start')
+    const runs = await RunModel.find({ runner: user.id }).populate('track', '-modified -owner -markers').sort('start')
 
     if (method === 'GET') {
       res.status(201).json({ success: true, data: runs })
@@ -27,11 +27,11 @@ export default async function handler(req, res) {
       if (runs.length > 5) {
         // TODO: remove the earliest
         // MIGRATION NOTE: Mongoose 6+ - findByIdAndDelete() works the same way
-        await Run.findByIdAndDelete(runs[0].id)
+        await RunModel.findByIdAndDelete(runs[0].id)
       }
       const newRun = { ...req.body, runner: user.id }
       // MIGRATION NOTE: Mongoose 6+ - create() works the same way
-      const run = await Run.create(newRun)
+      const run = await RunModel.create(newRun)
       res.status(201).json({ success: true, data: run })
     }
   } catch (error) {

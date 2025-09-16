@@ -1,9 +1,11 @@
 import { atom } from 'recoil'
 import { TrackPopulatedType } from './Track'
 import L from 'leaflet'
+import { PopulatedRun } from './Run'
 
 const runState = atom<RunType | undefined>({ key: 'runState', default: undefined })
 
+// Type, when running
 export type RunType = {
   _id?: string
   totalTime: number
@@ -41,8 +43,8 @@ const emptyResults: ResultType = {
 }
 
 export type ResultType = {
-  trackRuns: RunType[]
-  selected: RunType[]
+  trackRuns: PopulatedRun[] // all
+  selected: (PopulatedRun & { place: number })[] // selected to be shown
 }
 
 const resultState = atom<ResultType>({ key: 'resultState', default: emptyResults })

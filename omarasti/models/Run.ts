@@ -14,6 +14,14 @@ export interface Run {
 
 export type RunDoc = HydratedDocument<Run>
 
+export type Populated<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: Exclude<T[P], mongoose.Types.ObjectId>
+}
+
+export type PopulatedRun = Populated<Run, 'runner' | 'track'> & {
+  _id: string
+}
+
 const RunSchema = new Schema<Run>({
   runner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   track: { type: Schema.Types.ObjectId, ref: 'Track', required: true },

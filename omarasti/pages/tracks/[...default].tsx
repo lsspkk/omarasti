@@ -85,7 +85,7 @@ const Design = ({ mapUrl }) => {
       setCoordinates(() => [latlng.lat, latlng.lng])
     } else {
       getCoordinates()
-        .then((position) => {
+        ?.then((position) => {
           setCoordinates([position.coords.latitude, position.coords.longitude])
         })
         .catch((error) => {
@@ -126,7 +126,9 @@ const Design = ({ mapUrl }) => {
   if (router.asPath === '/tracks/edit') {
     menu = <DesignMenu />
   } else if (run !== undefined) {
-    menu = <RunMenu stopRun={stopRun} timer={timer} run={run} />
+    menu = (
+      <RunMenu stopRun={stopRun} timer={timer} run={run} isLastMarker={run.targetMarker === track.markers.length - 1} />
+    )
   }
 
   const isLastMarker = run?.targetMarker === track?.markers.length - 1

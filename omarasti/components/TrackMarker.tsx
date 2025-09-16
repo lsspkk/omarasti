@@ -69,7 +69,19 @@ const StartMarker = ({ angle }) => {
   )
 }
 
-const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
+const TrackMarker = ({
+  marker,
+  published,
+  index,
+  isLastMarker,
+  angle,
+}: {
+  marker: { latlng: { lat: number; lng: number }; description: string }
+  published: boolean
+  index: number
+  isLastMarker: boolean
+  angle: number
+}) => {
   const [track, setTrack] = useRecoilState(trackState)
   const [mode] = useRecoilState(designModeState)
   const [description, setDescription] = useState(marker.description)
@@ -95,9 +107,9 @@ const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
       setTrack({ ...track, markers })
     }
   }
-  const onDragend = (e) => {
-    // console.log(position, e.target._latlng)
-    const newMarker = { ...marker, latlng: e.target._latlng }
+  const onDragend = (e: L.DragEndEvent) => {
+    const ll = (e.target as L.Marker).getLatLng()
+    const newMarker = { ...marker, latlng: { lat: ll.lat, lng: ll.lng } }
     updateMarkers(newMarker)
   }
   const updateMarkers = (newMarker) => {
@@ -108,22 +120,29 @@ const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
 
   const updateDescription = () => updateMarkers({ ...marker, description })
 
-  const initMarker = useRef()
+  const markerRef = useRef<L.Marker | null>(null)
+
   return (
     <Marker
       position={marker.latlng}
       icon={customMarkerIcon}
       draggable={mode === 'move'}
       eventHandlers={{ click: onClick, dragend: onDragend }}
-      ref={initMarker}
-      onClose={() => updateDescription()}
+      ref={markerRef}
     >
       {mode !== 'remove' && (
-        <Popup autoClose={false}>
+        <Popup
+          autoClose={false}
+          eventHandlers={{
+            popupclose: () => updateDescription(),
+          }}
+        >
           <div className='flex'>
-            <label>Rastikuvaus:</label>
+            <label htmlFor='description'>Rastikuvaus:</label>
             {published && <div>{marker.description}</div>}
-            {!published && <input value={description} onChange={(e) => setDescription(e.target.value)} />}
+            {!published && (
+              <input id='description' value={description} onChange={(e) => setDescription(e.target.value)} />
+            )}
           </div>
           <div className='flex'>
             <div>
@@ -131,7 +150,7 @@ const TrackMarker = ({ marker, published, index, isLastMarker, angle }) => {
               <br />
               <label>lng: {marker.latlng.lng}</label>
             </div>
-            <Button onClick={() => initMarker.current._map.closePopup()}>OK</Button>
+            <Button onClick={() => markerRef.current?.closePopup()}>OK</Button>
           </div>
         </Popup>
       )}

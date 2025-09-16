@@ -1,10 +1,21 @@
+import { PopulatedRun } from '../models/Run'
+import { RunType } from '../models/state'
 import { SignInButton } from './Buttons'
+import { runnerName } from './ResultList'
 
-const runner = (run) => (run.runner?.name !== undefined ? run.runner.name : 'tuntematon')
-
-const RunMenu = ({ run, stopRun, timer, compareRuns = [] }) => {
-  const isLastMarker = run?.targetMarker === run?.markers?.length - 1
-
+const RunMenu = ({
+  run,
+  stopRun,
+  timer,
+  isLastMarker,
+  compareRuns = [],
+}: {
+  run: RunType
+  stopRun: () => void
+  timer: string
+  isLastMarker: boolean
+  compareRuns?: (PopulatedRun & { place: number; color: string })[]
+}) => {
   return (
     <div className='flex justify-between text-sm items-center w-full'>
       <div className='w-1/2'>
@@ -20,7 +31,7 @@ const RunMenu = ({ run, stopRun, timer, compareRuns = [] }) => {
         <div>
           {compareRuns.map((r) => (
             <div key={`runmenurunners-${r._id}`} style={{ color: r.color }}>
-              {r.place} - {runner(r)}
+              {r.place} - {runnerName(r)}
             </div>
           ))}
         </div>

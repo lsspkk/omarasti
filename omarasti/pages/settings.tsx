@@ -44,7 +44,7 @@ const Profile = () => {
           Takaisin
         </Button>
       }
-      hasRequiredData={Object.keys(user).length > 0}
+      hasRequiredData={user && Object.keys(user).length > 0}
     >
       {message !== '' && <div className='text-center text-gray-600'>{message}</div>}
       <div className='container mx-auto'>

@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { trackState, resultState, routeColors } from '../models/state'
+import { trackState, resultState } from '../models/state'
 import { useRecoilState } from 'recoil'
 import { Button } from './Buttons'
 import { totalDistance } from '../utils/location'
 import Checkbox from './Checkbox'
+import { PopulatedRun } from '../models/Run'
 
 const ResultList = () => {
   const [results] = useRecoilState(resultState)
@@ -42,13 +43,13 @@ const ResultList = () => {
   )
 }
 
-const runner = (run) => (run.runner?.name !== undefined ? run.runner.name : 'tuntematon')
+export const runnerName = (run: PopulatedRun) => (run.runner?.name !== undefined ? run.runner.name : 'tuntematon')
 
-const RunResult = ({ i, run }) => {
+const RunResult = ({ i, run }: { i: number; run: PopulatedRun }) => {
   const [results, setResults] = useRecoilState(resultState)
 
   const distance = `${(totalDistance(run.route) / 1000).toFixed(2)}`
-  const speed = ((distance / run.totalTime) * 1000 * 3.6).toFixed(1)
+  const speed = ((Number(distance) / run.totalTime) * 1000 * 3.6).toFixed(1)
 
   const time = run.totalTime
   const minutes = Math.floor(time / 60000)
@@ -69,7 +70,7 @@ const RunResult = ({ i, run }) => {
   return (
     <div className='flex' key={`runrow${run._id}`}>
       <div className='w-3/4 mr-2 bold'>
-        {i + 1} {runner(run)}
+        {i + 1} {runnerName(run)}
       </div>
       <div className='w-1/8 mr-4'>{`${showMinutes} ${seconds}s`}</div>
       <div className='w-1/6 mr-1'>{distance}km</div>
