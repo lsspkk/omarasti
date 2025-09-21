@@ -81,7 +81,7 @@ const Design = ({ mapUrl }) => {
 
   useEffect(() => {
     if (track && track?.markers.length > 0) {
-      const latlng = track?.markers[track?.markers.length - 1].latlng
+      const latlng = track?.markers[0].latlng
       setCoordinates(() => [latlng.lat, latlng.lng])
     } else {
       getCoordinates()
@@ -138,7 +138,7 @@ const Design = ({ mapUrl }) => {
     <Layout map='true' menu={menu} hasRequiredData={track !== undefined}>
       <BackConfirmation />
 
-      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} showRoute={run?.showPersonMarker} />
+      <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} />
       {run !== undefined && (
         <>
           {!location.canTouchMarker && !location.canSeeMarker && <ShowOrientationPanel />}

@@ -49,7 +49,7 @@ const SeeMarkerPanel = ({ location, marker, markerNumber }) => {
 }
 
 const TouchMarkerPanel = ({ touchMarker, track, markerNumber }) => {
-  if (simulation) setTimeout(() => touchMarker(), 25000)
+  //if (simulation) setTimeout(() => touchMarker(), 2500)
   const marker = track.markers[markerNumber - 1]
   return (
     <>

@@ -119,13 +119,13 @@ function Recenter({ center, zoom }: { center: LatLngTuple; zoom: number }) {
 const DesignMap = ({
   mapUrl,
   mapCenter,
-  showRoute,
+  showRoute = false,
   showRouteIndex,
 }: {
   mapUrl: string
   mapCenter: LatLngTuple
-  showRoute: boolean
-  showRouteIndex?: number
+  showRoute?: boolean // true when showing route for one run
+  showRouteIndex?: number // index of the route point to show
 }) => {
   const [run] = useRecoilState(runState)
   const [results] = useRecoilState(resultState)
@@ -154,10 +154,14 @@ const DesignMap = ({
       <Recenter center={mapCenter} zoom={14.5} />
       <TileLayer url={mapUrl} attribution={attribution} />
       <TrackPoints />
+
+      {/* When running, if person markers was checked, show it */}
       {!showRoute && run && run?.showPersonMarker && <PersonMarker latlng={run.currentLatlng} />}
 
+      {/* When showing route for one run, show the route */}
       {showRoute && runs === undefined && <RouteLines showRouteIndex={showRouteIndex} run={run} color='blue' />}
 
+      {/* When showing route for multiple runs, show the route for each run */} 
       {showRoute &&
         runs !== undefined &&
         runs.map((runResult, i) => (
