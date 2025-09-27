@@ -20,22 +20,19 @@ const LoadingTrack = ({ loadedTrack, error }) => {
 
   useEffect(() => {
     if (error === null) {
-      setMessage(
-        'Onnistui',
-        setTimeout(() => setMessage(''), 4000)
-      )
+      setMessage('Onnistui')
+      setTimeout(() => setMessage(''), 4000)
 
       if (loadedTrack === null) {
         // reload/hydrate track after person has logged in
         router.replace(router.asPath)
       } else {
-        setTrack(loadedTrack).then(() => router.push('/tracks/view'))
+        setTrack(loadedTrack)
+        router.push('/tracks/view')
       }
     } else {
-      setMessage(
-        'Epaonnistui :' + error,
-        setTimeout(() => setMessage(''), 4000)
-      )
+      setMessage('Epaonnistui :' + error)
+      setTimeout(() => setMessage(''), 4000)
     }
   }, [loadedTrack, error, message])
 

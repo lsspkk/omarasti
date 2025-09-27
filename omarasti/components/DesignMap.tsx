@@ -70,8 +70,8 @@ const TrackPoints = () => {
 }
 
 // calculate map markers in points, then return polyline endpoints as latlng
-const makeLines = (markers, map) => {
-  const lines = []
+const makeLines = (markers: any[], map: any): LatLngTuple[][] => {
+  const lines: LatLngTuple[][] = []
   markers.forEach((marker, i) => {
     try {
       const start = map.latLngToLayerPoint(marker.latlng)
@@ -106,7 +106,7 @@ const makeLines = (markers, map) => {
 }
 
 // when Track loads
-function Recenter({ center, zoom }: { center: LatLngTuple; zoom: number }) {
+function Recenter({ center, zoom }: { center: L.LatLngExpression; zoom: number }) {
   const map = useMap()
   useEffect(() => {
     if (center) {
@@ -123,7 +123,7 @@ const DesignMap = ({
   showRouteIndex,
 }: {
   mapUrl: string
-  mapCenter: LatLngTuple
+  mapCenter: L.LatLngExpression
   showRoute?: boolean // true when showing route for one run
   showRouteIndex?: number // index of the route point to show
 }) => {
@@ -146,7 +146,7 @@ const DesignMap = ({
   return (
     <MapContainer
       style={{ width: '100%', height: '90vh' }}
-      center={mapCenter as unknown as L.LatLngExpression}
+      center={mapCenter}
       zoom={14.5}
       minZoom={minZoom}
       maxZoom={maxZoom}
@@ -161,7 +161,7 @@ const DesignMap = ({
       {/* When showing route for one run, show the route */}
       {showRoute && runs === undefined && <RouteLines showRouteIndex={showRouteIndex} run={run} color='blue' />}
 
-      {/* When showing route for multiple runs, show the route for each run */} 
+      {/* When showing route for multiple runs, show the route for each run */}
       {showRoute &&
         runs !== undefined &&
         runs.map((runResult, i) => (

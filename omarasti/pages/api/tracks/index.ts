@@ -1,10 +1,14 @@
 import dbConnect from '../../../utils/dbConnect'
-import Track from '../../../models/Track'
+import Track, { TrackListType } from '../../../models/Track'
 import User from '../../../models/User'
 import { nanoid } from 'nanoid'
 import { getSession } from '../auth'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export async function getTracks(req, res) {
+export async function getTracks(
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<{ success: boolean; data: TrackListType[] }> {
   const session = await getSession(req, res)
   if (!session) {
     return { success: false, data: [] }
@@ -12,10 +16,8 @@ export async function getTracks(req, res) {
   try {
     const user = await User.findOne({ email: session.user.email })
     const query = { $or: [{ published: true }, { owner: user.id }] }
-    // MIGRATION NOTE: Mongoose 6+ - populate() and select() work the same way
-    // The projection syntax in find() queries remains unchanged
     const tracks = await Track.find(query).populate('owner', '-email -__v').select('-markers._id -markers.latlng._id')
-    return { success: true, data: tracks }
+    return { success: true, data: tracks as unknown as TrackListType[] }
   } catch (error) {
     console.log(error)
     return { success: false, data: [] }
@@ -32,7 +34,7 @@ const generateUniqueId = async () => {
   return generateUniqueId()
 }
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req
   const session = await getSession(req, res)
   if (!session) {
@@ -43,7 +45,7 @@ export default async function handler(req, res) {
   await dbConnect()
 
   if (method === 'GET') {
-    const response = getTracks(req)
+    const response = await getTracks(req, res)
     res.status(response.success ? 200 : 400).json(response)
   } else if (method === 'POST') {
     try {
@@ -51,8 +53,6 @@ export default async function handler(req, res) {
       const shortId = await generateUniqueId()
       const newTrack = { ...req.body, owner: user, shortId }
 
-      // MIGRATION NOTE: Mongoose 6+ - create() works the same way
-      // Note: create([]) now returns [] instead of undefined in v6+
       const track = await Track.create(newTrack)
       res.status(201).json({ success: true, data: track })
     } catch (error) {

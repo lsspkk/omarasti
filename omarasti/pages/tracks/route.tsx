@@ -33,7 +33,7 @@ const Route = ({ mapUrl }) => {
   }, [run])
 
   useEffect(() => {
-    if (run && run.route && showRouteIndex < run.route.length - 1) {
+    if (run?.route && showRouteIndex < run.route.length - 1) {
       const timeout = window.setTimeout(() => updateRoute(), INTERVALS.drawRoute)
       setMyTimeout(timeout)
       return () => clearTimeout(timeout)
@@ -47,7 +47,9 @@ const Route = ({ mapUrl }) => {
     router.push('/tracks/run/stop')
   }
 
-  const menu = <RunMenu stopRun={stopRun} timer={timer} />
+  const isLastMarker = run.targetMarker === track.markers.length - 1
+
+  const menu = <RunMenu run={run} stopRun={stopRun} timer={timer} isLastMarker={isLastMarker} />
   const mapCenter = track?.markers[run?.targetMarker - 1].latlng
 
   return (

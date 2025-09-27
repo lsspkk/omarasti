@@ -7,6 +7,7 @@ import { runState, trackState, resultState } from '../../../models/state'
 import { userState } from '../../settings'
 import { totalDistance } from '../../../utils/location'
 import { TrackDistance, RunDistance } from '../../../components/Distance'
+import { PopulatedRun } from '../../../models/Run'
 
 function showTime(start, end) {
   if (!start || !end) return ''
@@ -36,7 +37,7 @@ const MarkerResult = ({ i, markerTime, run }) => {
 }
 
 const OldestResult = ({ run }) => {
-  const options = { year: 'numeric', month: 'numeric', day: 'numeric' }
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric' }
   const timestamp = new Date(run.start).toLocaleDateString('fi-FI', options)
   // todo show trackname, date, and totaltime
   return (
@@ -74,8 +75,8 @@ const StopRun = () => {
         })
         .then((json) => {
           if (!json) return
-          const trackRuns = json.data
-          setResults({ trackRuns })
+          const trackRuns = json.data as PopulatedRun[]
+          setResults({ trackRuns, selected: [] })
         })
 
       fetch('/api/run')

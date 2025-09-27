@@ -45,7 +45,7 @@ const Results = () => {
 
   return (
     <Layout menu={<ResultsMenu />}>
-      <ResultList selectedRun={run} />
+      <ResultList />
     </Layout>
   )
 }

@@ -10,7 +10,7 @@ const RunMenu = ({
   isLastMarker,
   compareRuns = [],
 }: {
-  run: RunType
+  run: { end?: Date; targetMarker?: number }
   stopRun: () => void
   timer: string
   isLastMarker: boolean

@@ -1,6 +1,13 @@
-const Compass = ({ angle, cName }) => {
+import React from 'react'
+
+interface CompassProps {
+  angle: number
+  cName: string
+}
+
+const Compass: React.FC<CompassProps> = ({ angle, cName }) => {
   return (
-    <svg viewbox='0 0 744 744' className={cName} width='744' height='744' version='1.0'>
+    <svg viewBox='0 0 744 744' className={cName} width='744' height='744' version='1.0'>
       <g transform='translate(2232.4 1830.4)'>
         <g transform='matrix(.74466 0 0 .74466 -570.03 -276.86)'>
           <path
@@ -1756,7 +1763,8 @@ const Compass = ({ angle, cName }) => {
             strokeLinejoin='round'
             strokeDashoffset='61.122'
             stroke='#000000'
-            strokeLinecap='round;stroke-dasharray:35.43307114, 35.43307114'
+            strokeLinecap='round'
+            strokeDasharray='35.43307114, 35.43307114'
             strokeWidth='8.8583'
             fill='#ffffff'
             transform='matrix(.17568 0 0 .17643 -1805.6 -1710.2)'
@@ -1777,7 +1785,7 @@ const Compass = ({ angle, cName }) => {
         strokeWidth='8'
         markerEnd='url(#arrowhead)'
         transform={`rotate(${angle})`}
-        transform-origin='50% 50%'
+        transformOrigin='50% 50%'
       />
     </svg>
   )
