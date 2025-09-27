@@ -112,8 +112,8 @@ const TrackMarker = ({
     const newMarker = { ...marker, latlng: { lat: ll.lat, lng: ll.lng } }
     updateMarkers(newMarker)
   }
-  const updateMarkers = (newMarker) => {
-    const i = track.markers.findIndex((p) => p.latlng === marker.latlng)
+  const updateMarkers = (newMarker: typeof marker) => {
+    const i = track.markers.findIndex((p) => p.latlng.lat === marker.latlng.lat && p.latlng.lng === marker.latlng.lng)
     const markers = [...track.markers.slice(0, i), newMarker, ...track.markers.slice(i + 1)]
     setTrack({ ...track, markers })
   }

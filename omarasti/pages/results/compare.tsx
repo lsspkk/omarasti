@@ -6,13 +6,14 @@ import { RunMenu } from '../../components/RunMenu'
 import { useRecoilState } from 'recoil'
 import { resultState, routeColors, trackState } from '../../models/state'
 import { INTERVALS } from '../../utils/location'
+import type { PopulatedRun } from '../../models/Run'
 
 const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
 const Route = ({ mapUrl }) => {
   const [results] = useRecoilState(resultState)
   const [showRouteIndex, setShowRouteIndex] = useState(0)
-  const [longestRun, setLongestRun] = useState({})
+  const [longestRun, setLongestRun] = useState<PopulatedRun | null>(null)
   const [track] = useRecoilState(trackState)
   const [myTimeout, setMyTimeout] = useState(-1)
   const [timer, setTimer] = useState('')
@@ -20,6 +21,7 @@ const Route = ({ mapUrl }) => {
   const router = useRouter()
 
   async function updateRoute() {
+    if (!longestRun?.route) return
     const point = longestRun.route[showRouteIndex]
     setShowRouteIndex(showRouteIndex + 1)
 
@@ -56,7 +58,7 @@ const Route = ({ mapUrl }) => {
 
   const stopRun = () => {
     if (myTimeout !== -1) clearTimeout(myTimeout)
-    setLongestRun({})
+    setLongestRun(null)
     setMyTimeout(-1)
     setTimer('')
     router.push('/results')
@@ -69,7 +71,9 @@ const Route = ({ mapUrl }) => {
     return a.totalTime < b.totalTime ? -1 : 1
   })
 
-  const menu = <RunMenu stopRun={stopRun} timer={timer} run={longestRun} compareRuns={compareRuns} />
+  const menu = !longestRun ? null : (
+    <RunMenu stopRun={stopRun} timer={timer} run={longestRun} isLastMarker={false} compareRuns={compareRuns} />
+  )
   const mapCenter = track?.markers[0].latlng
 
   return (

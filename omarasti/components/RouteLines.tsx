@@ -1,13 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { Polyline } from 'react-leaflet'
 import { PersonMarker } from './PersonMarker'
+import type { RunType } from '../models/state'
+import type { PopulatedRun } from '../models/Run'
+import { LatLngTuple } from 'leaflet'
 
-const RouteLines = ({ showRouteIndex, run, color }: { showRouteIndex: number; run: any; color: string }) => {
+interface RoutePoint {
+  latlng: { lat: number; lng: number }
+  timestamp: number
+}
+
+interface RouteRun {
+  _id?: string
+  route: RoutePoint[]
+}
+
+interface RouteLineProps {
+  showRouteIndex: number
+  run: RunType | PopulatedRun | RouteRun
+  color: string
+}
+
+const RouteLines: React.FC<RouteLineProps> = ({ showRouteIndex, run, color }) => {
   // max 10 lines per row
   // then React.memo to prevent rerendering rows that were not changed
-  const [lineRows, setLineRows] = useState([])
+  const [lineRows, setLineRows] = useState<[number, number][][][]>([])
 
-  const makeRouteLine = (start, end) => {
+  const makeRouteLine = (
+    start: { lat: number; lng: number },
+    end: { lat: number; lng: number }
+  ): [number, number][] => {
     return [
       [start.lat, start.lng],
       [end.lat, end.lng],
@@ -16,11 +38,11 @@ const RouteLines = ({ showRouteIndex, run, color }: { showRouteIndex: number; ru
 
   useEffect(() => {
     if (run?.route && showRouteIndex >= 1 && run.route.length >= 2) {
-      const lines = []
+      const lines: [number, number][][] = []
       // Build all lines from start up to current showRouteIndex
       for (let i = 1; i <= Math.min(showRouteIndex, run.route.length - 1); i++) {
-        const start = run.route[i - 1].latlng
-        const end = run.route[i].latlng
+        const start = run.route[i - 1].latlng as { lat: number; lng: number }
+        const end = run.route[i].latlng as { lat: number; lng: number }
         const line = makeRouteLine(start, end)
         lines.push(line)
       }
@@ -58,7 +80,14 @@ const RouteLines = ({ showRouteIndex, run, color }: { showRouteIndex: number; ru
   )
 }
 
-const DecalineMemo = ({ linePositions, runId, color, i }) => {
+interface DecaLineProps {
+  linePositions: LatLngTuple[][]
+  runId?: string
+  color: string
+  i: number
+}
+
+const DecalineMemo: React.FC<DecaLineProps> = ({ linePositions, runId, color, i }) => {
   return (
     <>
       {linePositions.map((positions, j) => (
@@ -67,7 +96,8 @@ const DecalineMemo = ({ linePositions, runId, color, i }) => {
     </>
   )
 }
-const propsAreEqual = (prevProps, nextProps) => {
+
+const propsAreEqual = (prevProps: DecaLineProps, nextProps: DecaLineProps): boolean => {
   return prevProps.i === nextProps.i && prevProps.linePositions.length === nextProps.linePositions.length
 }
 const DecaLine = React.memo(DecalineMemo, propsAreEqual)

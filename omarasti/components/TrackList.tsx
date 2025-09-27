@@ -6,17 +6,21 @@ import { useRouter } from 'next/router'
 import { designModeState, TrackViewMode } from './DesignMenu'
 import { TrackDistance } from './Distance'
 import { userState } from '../pages/settings'
-import { TrackPopulatedType } from '../models/Track'
+import { TrackPopulatedType, TrackListType } from '../models/Track'
 
-export const TrackList = ({ tracks }) => {
+interface TrackListProps {
+  tracks: TrackListType[]
+}
+
+export const TrackList = ({ tracks }: TrackListProps) => {
   const [, setMode] = useRecoilState(designModeState)
   const [, setTrack] = useRecoilState(trackState)
   const [sorted, setSorted] = useState({ column: 'name', ascending: true })
   const [message, setMessage] = useState('')
   const router = useRouter()
 
-  const toUrl = (track: TrackPopulatedType, url: string, mode: TrackViewMode) => {
-    setTrack(track)
+  const toUrl = (track: TrackListType, url: string, mode: TrackViewMode) => {
+    setTrack(track as TrackPopulatedType) // Type assertion since trackState expects TrackPopulatedType
     setMode(mode)
     router.push(url)
   }
@@ -96,8 +100,8 @@ const TrackCard = ({
   toUrl,
   remove,
 }: {
-  track: TrackPopulatedType
-  toUrl: (track: TrackPopulatedType, url: string, mode: TrackViewMode) => void
+  track: TrackListType
+  toUrl: (track: TrackListType, url: string, mode: TrackViewMode) => void
   remove: (id: string, name: string) => void
 }) => {
   const [user] = useRecoilState(userState)

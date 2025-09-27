@@ -17,6 +17,12 @@ export interface TrackPopulatedType extends Omit<Track, 'owner'> {
   owner?: User
 }
 
+// Type for tracks returned by Track.find().populate('owner', '-email -__v').select('-markers._id -markers.latlng._id')
+export interface TrackListType extends Omit<Track, 'owner'> {
+  owner?: Omit<User, 'email' | '__v'>
+  markers: { description: string; latlng: { lat: number; lng: number } }[] // without _id fields
+}
+
 export type TrackType = Track & Document
 
 const TrackSchema = new Schema<TrackType>({

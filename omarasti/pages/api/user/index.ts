@@ -1,8 +1,9 @@
 import dbConnect from '../../../utils/dbConnect'
 import User from '../../../models/User'
 import { getSession } from '../auth'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession(req, res)
   const { method } = req
   if (!session) {
@@ -15,7 +16,6 @@ export default async function handler(req, res) {
     const users = await User.find({ email: session.user.email })
     let user
     if (method === 'PUT') {
-      // MIGRATION NOTE: Mongoose 6+ - findByIdAndUpdate() works the same way
       // update user in database
       user = await User.findByIdAndUpdate(users[0]._id, req.body, {
         new: true,
@@ -29,8 +29,7 @@ export default async function handler(req, res) {
       }
       // user not in database, create new user
       else {
-        // MIGRATION NOTE: Mongoose 6+ - create() works the same way
-        user = await User.create({ email: session.user.email, name: '', sub: session.user.sub })
+        user = await User.create({ email: session.user.email, name: '', sub: (session.user as any).sub })
       }
     }
 

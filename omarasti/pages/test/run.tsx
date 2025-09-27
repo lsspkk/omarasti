@@ -1,7 +1,7 @@
 // visual test for panels
+import React from 'react'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { Layout } from '../../components/Layout'
 import dynamic from 'next/dynamic'
 import { SeeMarkerPanel, TouchMarkerPanel, ShowOrientationPanel } from '../../components/Panels'
@@ -10,8 +10,8 @@ import { Button } from '../../components/Buttons'
 const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
 const SlowCompass = () => {
-  const makeStyle = (angle) => ({
-    transformBox: 'fill-box',
+  const makeStyle = (angle: number): React.CSSProperties => ({
+    transformBox: 'fill-box' as const,
     transformOrigin: '0 50%',
     transform: `rotate(${Math.round(angle)}deg)`,
   })
@@ -54,7 +54,6 @@ const SlowCompass = () => {
 }
 
 const Test2 = ({ mapUrl }) => {
-  const [, loading] = useSession()
   const [angle, setAngle] = useState(0)
 
   useEffect(() => {
@@ -64,8 +63,6 @@ const Test2 = ({ mapUrl }) => {
 
   const [what, setWhat] = useState('orientation')
 
-  if (status === 'loading') return <div>loading...</div>
-
   const track = {
     markers: [{ latlng: { lat: 61.500721, lng: 23.805561 }, description: 'hello' }],
   }
@@ -74,7 +71,7 @@ const Test2 = ({ mapUrl }) => {
     <Layout map='true' menu={<div />}>
       <SlowCompass />
 
-      <DesignMap mapUrl={mapUrl} mapCenter={[61.500721, 23.805561]} />
+      <DesignMap mapUrl={mapUrl} mapCenter={[61.500721, 23.805561]} showRoute={false} />
 
       {what === 'orientation' && <ShowOrientationPanel />}
 
@@ -95,8 +92,7 @@ const Test2 = ({ mapUrl }) => {
 
         <Button
           onClick={() => {
-            setMessage('Hello')
-            window.setTimeout(() => setMessage(''))
+            window.alert('hello')
           }}
         >
           Hello
