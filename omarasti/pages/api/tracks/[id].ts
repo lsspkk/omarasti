@@ -49,19 +49,22 @@ export default async function handler(req, res) {
     return
   }
 
-  if (method === 'PUT') {
-    await Track.findByIdAndUpdate(req.query.id, req.body, {
-      new: true,
-      runValidators: true,
-    })
-  } else if (method === 'DELETE') {
-    try {
+  try {
+
+    if (method === 'PUT') {
+      const updatedTrack = await Track.findByIdAndUpdate(req.query.id, req.body, {
+        new: true,
+        runValidators: true,
+      })
+      res.status(200).json({ success: true, data: updatedTrack })
+    } else if (method === 'DELETE') {
       await Track.findByIdAndDelete(req.query.id)
       res.status(200).json({ success: true })
-    } catch (error) {
-      console.log(error) // Log the error for debugging
-      res.status(400).json({ success: false })
     }
+    
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ success: false })
   }
 }
 

@@ -15,7 +15,7 @@ const ResultList = () => {
   return (
     <div className='container'>
       <h1 className='my-4'>Rata {track.name} tulokset</h1>
-      <div className='ml-5 md:ml-20 mr-5 text-sm md:text-1l'>
+      <div className='md:ml-20 text-sm md:text-1l'>
         <div className='flex'>
           <div className='w-3/4 mr-2 bold' />
           <div className='w-1/6 mr-2' />
@@ -29,7 +29,7 @@ const ResultList = () => {
         ))}
       </div>
 
-      <div className='w-full m-4 mt-8 text-right justify-end pr-10 '>
+      <div className='relative right-4 text-right mt-4 md:mt-10'>
         <div>Valitse suunnistajat reittivertailuun</div>
         {results.selected?.length > 1 && (
           <div className='my-2'>
@@ -68,13 +68,12 @@ const RunResult = ({ i, run }: { i: number; run: PopulatedRun }) => {
   const index = results.selected.findIndex((r) => r._id === run._id)
 
   return (
-    <div className='flex' key={`runrow${run._id}`}>
-      <div className='w-3/4 mr-2 bold'>
+    <div className='flex w-full justify-between items-center' key={`runrow${run._id}`}>
+      <div className='w-2/4 mr-2 bold'>
         {i + 1} {runnerName(run)}
       </div>
-      <div className='w-1/8 mr-4'>{`${showMinutes} ${seconds}s`}</div>
-      <div className='w-1/6 mr-1'>{distance}km</div>
-      <div className='w-1/6 mr-1'>{speed}km/h</div>
+      <div className='mr-2'>{`${showMinutes} ${seconds}s`}</div>
+      <div className='w-1/6 mr-1'>{distance}km<br/>{speed}km/h</div>
       <div className='w-1/6 flex justify-center'>
         <Checkbox id={`checkbox-${run._id}`} checked={selected} onChange={() => changed()} />
       </div>

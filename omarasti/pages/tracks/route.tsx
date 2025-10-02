@@ -47,10 +47,14 @@ const Route = ({ mapUrl }) => {
     router.push('/tracks/run/stop')
   }
 
-  const isLastMarker = run.targetMarker === track.markers.length - 1
+  const isLastMarker = run?.targetMarker === track?.markers?.length - 1
 
   const menu = <RunMenu run={run} stopRun={stopRun} timer={timer} isLastMarker={isLastMarker} />
-  const mapCenter = track?.markers[run?.targetMarker - 1].latlng
+  
+  const targetIndex = run?.targetMarker ? run.targetMarker - 1 : 0;
+  const target = track?.markers?.[targetIndex];
+  const first = track?.markers?.[0];
+  const mapCenter = target?.latlng ?? first?.latlng;
 
   return (
     <Layout map='true' menu={menu}>

@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { runState } from '../models/state'
 
-export const Header = ({ menu }) => {
+export const Header = ({ menu }: { menu: React.ReactNode }) => {
   const [run] = useRecoilState(runState)
   const { data: session } = useSession()
   const [user, setUser] = useRecoilState(userState)
@@ -56,7 +56,7 @@ export const Header = ({ menu }) => {
           </Link>
         )}
 
-        <div className='container flex justify-end'>{session && { ...menu }}</div>
+        <div className='container flex justify-end'>{session && menu}</div>
 
         <div className='flex-end flex-3 flex text-sm'>
           {isSigning && <div>...</div>}
