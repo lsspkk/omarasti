@@ -22,7 +22,7 @@ const TrackPoints = () => {
     click(e) {
       if (!track) return
       if (mode === 'add') {
-        const markers = [...track.markers, { latlng: e.latlng, description: '' }]
+        const markers = [...track.markers, { latlng: e.latlng, description: '', visibility: 50 }]
         // console.log(markers)
         setTrack({ ...track, markers })
       }

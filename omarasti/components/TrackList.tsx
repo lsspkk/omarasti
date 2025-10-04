@@ -20,7 +20,7 @@ export const TrackList = ({ tracks }: TrackListProps) => {
   const router = useRouter()
 
   const toUrl = (track: TrackListType, url: string, mode: TrackViewMode) => {
-    setTrack(track as TrackPopulatedType) // Type assertion since trackState expects TrackPopulatedType
+    setTrack(track as TrackPopulatedType)
     setMode(mode)
     router.push(url)
   }

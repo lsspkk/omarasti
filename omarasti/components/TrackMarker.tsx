@@ -5,7 +5,7 @@ import { divIcon } from 'leaflet'
 import { designModeState } from './DesignMenu'
 import { useRecoilState } from 'recoil'
 import { trackState } from '../models/state'
-import { Button } from './Buttons'
+import MarkerPopup from './MarkerPopup'
 
 const MARKER_SIZE = 50
 
@@ -76,7 +76,7 @@ const TrackMarker = ({
   isLastMarker,
   angle,
 }: {
-  marker: { latlng: { lat: number; lng: number }; description: string }
+  marker: { latlng: { lat: number; lng: number }; description: string; visibility?: number }
   published: boolean
   index: number
   isLastMarker: boolean
@@ -85,6 +85,7 @@ const TrackMarker = ({
   const [track, setTrack] = useRecoilState(trackState)
   const [mode] = useRecoilState(designModeState)
   const [description, setDescription] = useState(marker.description)
+  const [visibility, setVisibility] = useState(marker.visibility ?? 50)
 
   const startIcon = renderToStaticMarkup(<StartMarker angle={angle} />)
   const startHtml = `<span style="">${startIcon}</span>`
@@ -118,7 +119,9 @@ const TrackMarker = ({
     setTrack({ ...track, markers })
   }
 
-  const updateDescription = () => updateMarkers({ ...marker, description })
+  const updateMarkerData = () => {
+    updateMarkers({ ...marker, description, visibility })
+  }
 
   const markerRef = useRef<L.Marker | null>(null)
 
@@ -134,24 +137,19 @@ const TrackMarker = ({
         <Popup
           autoClose={false}
           eventHandlers={{
-            popupclose: () => updateDescription(),
+            popupclose: () => updateMarkerData(),
           }}
         >
-          <div className='flex'>
-            <label htmlFor='description'>Rastikuvaus:</label>
-            {published && <div>{marker.description}</div>}
-            {!published && (
-              <input id='description' value={description} onChange={(e) => setDescription(e.target.value)} />
-            )}
-          </div>
-          <div className='flex'>
-            <div>
-              <label>lat: {marker.latlng.lat}</label>
-              <br />
-              <label>lng: {marker.latlng.lng}</label>
-            </div>
-            <Button onClick={() => markerRef.current?.closePopup()}>OK</Button>
-          </div>
+          <MarkerPopup
+            description={description}
+            visibility={visibility}
+            latlng={marker.latlng}
+            published={published}
+            onDescriptionChange={setDescription}
+            onVisibilityChange={setVisibility}
+            onClose={() => markerRef.current?.closePopup()}
+            markerIndex={index}
+          />
         </Popup>
       )}
     </Marker>

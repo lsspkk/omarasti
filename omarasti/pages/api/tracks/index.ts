@@ -17,7 +17,21 @@ export async function getTracks(
     const user = await User.findOne({ email: session.user.email })
     const query = { $or: [{ published: true }, { owner: user.id }] }
     const tracks = await Track.find(query).populate('owner', '-email -__v').select('-markers._id -markers.latlng._id')
-    return { success: true, data: tracks as unknown as TrackListType[] }
+    
+    // FIX: Convert Mongoose documents to plain objects before spreading
+    // Spreading Mongoose documents directly doesn't work - we need .toObject() first
+    const data = tracks.map(track => {
+      const trackObj = track.toObject()
+      return {
+        ...trackObj,
+        markers: trackObj.markers.map((marker) => ({
+          ...marker,
+          visibility: marker.visibility ?? 50
+        }))
+      }
+    })
+    
+    return { success: true, data: data as unknown as TrackListType[] }
   } catch (error) {
     console.log(error)
     return { success: false, data: [] }

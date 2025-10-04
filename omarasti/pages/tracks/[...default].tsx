@@ -22,6 +22,19 @@ import type { LatLngTuple } from 'leaflet'
 
 const DesignMap = dynamic(() => import('../../components/DesignMap'), { ssr: false })
 
+function getVisibilityThresholds(visibility: number) {
+  const canSeeThreshold = visibility
+
+  // Map visibility to touch threshold: 10 -> 7, 25 -> 10, default -> 25
+  const touchThresholdMap: { [key: number]: number } = {
+    10: 7,
+    25: 10,
+  }
+  const canTouchThreshold = touchThresholdMap[visibility] ?? 25
+
+  return { canSeeThreshold, canTouchThreshold }
+}
+
 const emptyLocationState = {
   canSeeMarker: false,
   canTouchMarker: false,
@@ -64,8 +77,15 @@ const Design = ({ mapUrl }) => {
       newRun.routeMarkTime = now
     }
     setRun(newRun)
-    const d = distance(latlng, track?.markers[run.targetMarker].latlng)
-    setLocation({ latlng, canSeeMarker: d < 100, canTouchMarker: d < 25, distance: d })
+    const targetMarker = track?.markers[run.targetMarker]
+    const d = distance(latlng, targetMarker.latlng)
+    const { canSeeThreshold, canTouchThreshold } = getVisibilityThresholds(targetMarker.visibility ?? 50)
+    setLocation({
+      latlng,
+      canSeeMarker: d < canSeeThreshold,
+      canTouchMarker: d < canTouchThreshold,
+      distance: d,
+    })
   }
 
   useEffect(() => {
@@ -103,8 +123,15 @@ const Design = ({ mapUrl }) => {
   }
 
   const touchMarker = () => {
-    const d = distance(location.latlng, track?.markers[run.targetMarker + 1].latlng)
-    setLocation({ ...location, canSeeMarker: d < 100, canTouchMarker: d < 20, distance: d })
+    const nextMarker = track?.markers[run.targetMarker + 1]
+    const d = distance(location.latlng, nextMarker.latlng)
+    const { canSeeThreshold, canTouchThreshold } = getVisibilityThresholds(nextMarker.visibility ?? 50)
+    setLocation({
+      ...location,
+      canSeeMarker: d < canSeeThreshold,
+      canTouchMarker: d < canTouchThreshold,
+      distance: d,
+    })
     setRun({ ...run, markerTimes: [...run.markerTimes, new Date()], targetMarker: run.targetMarker + 1 })
   }
 

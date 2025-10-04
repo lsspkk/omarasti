@@ -13,7 +13,15 @@ export async function getTracks(req, res) {
     const query = { $or: [{ published: true }, { owner: user.id }] }
     const tracks = await Track.find(query).select('-_id').populate('owner markers')
 
-    return { success: true, data: tracks }
+    const data = tracks.map(track => ({
+      ...track,
+      markers: track.markers.map((marker) => ({
+        ...marker,
+        visibility: marker.visibility ?? 50
+      }))
+    }))
+
+    return { success: true, data }
   } catch (error) {
     console.log(error)
     return { success: false, data: [] }
@@ -28,7 +36,18 @@ export async function getTrack(shortId, req, res) {
   const tracks = await Track.find({ shortId: shortId })
     .populate('owner', '-email -__v')
     .select('-markers._id -markers.latlng._id')
-  return tracks.length === 0 ? null : tracks[0]
+  
+  if (tracks.length === 0) return null
+  
+  // FIX: Convert Mongoose document to plain object before manipulating
+  // Spreading marker properties directly on Mongoose subdocuments can cause issues
+  const trackObj = tracks[0].toObject()
+  trackObj.markers = trackObj.markers.map((marker) => ({
+    ...marker,
+    visibility: marker.visibility ?? 50
+  }))
+  
+  return trackObj
 }
 
 export default async function handler(req, res) {

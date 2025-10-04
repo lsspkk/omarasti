@@ -8,7 +8,7 @@ export interface Track {
   published: boolean
   modified: Date
   owner: mongoose.Types.ObjectId
-  markers: { description: string; latlng: { lat: number; lng: number } }[]
+  markers: { description: string; latlng: { lat: number; lng: number }; visibility?: number }[]
   _id?: string
   id?: string
 }
@@ -20,7 +20,7 @@ export interface TrackPopulatedType extends Omit<Track, 'owner'> {
 // Type for tracks returned by Track.find().populate('owner', '-email -__v').select('-markers._id -markers.latlng._id')
 export interface TrackListType extends Omit<Track, 'owner'> {
   owner?: Omit<User, 'email' | '__v'>
-  markers: { description: string; latlng: { lat: number; lng: number } }[] // without _id fields
+  markers: { description: string; latlng: { lat: number; lng: number }; visibility?: number }[] // without _id fields
 }
 
 export type TrackType = Track & Document
@@ -36,6 +36,7 @@ const TrackSchema = new Schema<TrackType>({
     {
       description: String,
       latlng: { lat: Number, lng: Number },
+      visibility: { type: Number, default: 50 }, // Default 50m visibility
     },
   ],
 })

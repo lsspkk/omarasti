@@ -8,7 +8,6 @@ Add configurable visibility settings to track markers that determine when runner
 ### Default Visibility
 - All markers have a default visibility of **50 meters**
 - When loading tracks without visibility data, API must populate default 50m visibility for all markers
-- **Special rule: The last marker (finish) always has 100m visibility** when loading tracks, regardless of saved value
 
 ### Visibility Options
 Markers can have one of four visibility settings:
@@ -72,15 +71,13 @@ markers: {
 #### Changes:
 - When retrieving tracks, check each marker for visibility field
 - If `visibility` is undefined/null, set it to 50 (default)
-- **Always set the last marker (finish) to 100m visibility**
 - Apply this logic in `getTrack()` function
 
 ```typescript
 // Pseudo-code
-markers: track.markers.map((marker, index) => ({
+markers: track.markers.map((marker) => ({
   ...marker,
-  // Last marker always has 100m visibility, others default to 50m
-  visibility: index === track.markers.length - 1 ? 100 : (marker.visibility ?? 50)
+  visibility: marker.visibility ?? 50
 }))
 ```
 
@@ -88,8 +85,7 @@ markers: track.markers.map((marker, index) => ({
 
 #### Changes:
 - Same default visibility logic when returning track lists
-- Last marker always gets 100m visibility
-- Other markers default to 50m if not set
+- Default to 50m if not set
 
 ---
 
@@ -104,25 +100,11 @@ markers: track.markers.map((marker, index) => ({
 - Modify `updateDescription()` to also save visibility: `updateMarkers({ ...marker, description, visibility })`
 
 #### New UI Elements in Popup:
-```jsx
-<div className='flex flex-col'>
-  <label>Näkyvyys:</label>
-  {published ? (
-    <div>{marker.visibility ?? 50}m</div>
-  ) : (
-    <div className='flex gap-2'>
-      <label><input type="radio" name={`visibility-${index}`} value="100" 
-        checked={visibility === 100} onChange={(e) => setVisibility(100)} />100m</label>
-      <label><input type="radio" name={`visibility-${index}`} value="50" 
-        checked={visibility === 50} onChange={(e) => setVisibility(50)} />50m</label>
-      <label><input type="radio" name={`visibility-${index}`} value="25" 
-        checked={visibility === 25} onChange={(e) => setVisibility(25)} />25m</label>
-      <label><input type="radio" name={`visibility-${index}`} value="10" 
-        checked={visibility === 10} onChange={(e) => setVisibility(10)} />10m</label>
-    </div>
-  )}
-</div>
-```
+Uses the `MarkerPopup` component which includes:
+- Description input field
+- Visibility radio group (100m, 50m, 25m, 10m)
+- Coordinates display
+- OK button to close popup
 
 #### TypeScript Interface Update:
 Change marker prop type from:
@@ -283,27 +265,26 @@ These files may need updates if they directly handle markers:
 
 ### Scenario 1: Existing Track (No Visibility Data)
 - **Setup:** Load a track created before this feature
-- **Expected:** Regular markers should have 50m visibility, finish marker should have 100m visibility
-- **Verify:** Runner sees regular markers at 50m/can mark at 25m, sees finish at 100m/can mark at 25m
+- **Expected:** All markers should have 50m visibility (default)
+- **Verify:** Runner sees markers at 50m, can mark at 25m
 
 ### Scenario 2: Create Track with Mixed Visibility
 - **Setup:** Create track with markers having different visibility settings
   - Marker 1 (start): 100m
   - Marker 2: 25m  
-  - Marker 3 (finish): User sets to 10m in editor
-- **Expected:** Start uses 100m, middle uses 25m, but finish will always load as 100m (override rule)
+  - Marker 3 (finish): 10m
+- **Expected:** Each marker uses its configured visibility
 
 ### Scenario 3: Edit Existing Track
 - **Setup:** Edit an old track and change marker visibility
-- **Expected:** New visibility should be saved and used during runs (except finish marker which always loads as 100m)
+- **Expected:** New visibility should be saved and used during runs
 
 ### Scenario 4: Running with Different Visibility
-Test each visibility setting (note: finish marker always uses 100m):
+Test each visibility setting:
 - **100m:** See at 100m, mark at 25m
 - **50m:** See at 50m, mark at 25m
 - **25m:** See at 25m, mark at 10m
 - **10m:** See at 10m, mark at 7m
-- **Finish (always 100m):** See at 100m, mark at 25m
 
 ---
 
@@ -312,9 +293,7 @@ Test each visibility setting (note: finish marker always uses 100m):
 1. **Backward Compatibility:** Existing tracks without visibility must default to 50m
 2. **Database Migration:** No migration needed - defaults applied at read time
 3. **Invalid Visibility Values:** API should validate only accepts [10, 25, 50, 100]
-4. **Finish Marker Override:** The last marker (finish) ALWAYS has 100m visibility when loading tracks, regardless of what's saved in DB. This ensures runners can always see the finish from a reasonable distance.
-5. **Start Marker:** Start marker follows normal visibility rules (default 50m, configurable)
-6. **Published Tracks:** Visibility is read-only for published tracks (matches description behavior), but finish marker 100m rule still applies
+4. **Published Tracks:** Visibility is read-only for published tracks (matches description behavior)
 
 ---
 
