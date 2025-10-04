@@ -1,6 +1,8 @@
 import React from 'react'
 import { Button } from './Buttons'
 import RadioGroup from './RadioGroup'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { designModeState } from './DesignMenu'
 
 interface MarkerPopupProps {
   description: string
@@ -30,6 +32,11 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({
   onClose,
   markerIndex,
 }) => {
+
+
+    const [mode] = useRecoilState(designModeState)
+    const isViewMode = mode === 'view'
+
   return (
     <div className='flex flex-col gap-2'>
 
@@ -37,7 +44,7 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({
         <label htmlFor={`description-${markerIndex}`} className='font-semibold mb-1'>
           Rastikuvaus:
         </label>
-        {published ? (
+        {published || isViewMode ? (
           <div>{description}</div>
         ) : (
           <input
@@ -55,6 +62,7 @@ const MarkerPopup: React.FC<MarkerPopupProps> = ({
           <div>{visibility}m</div>
         ) : (
           <RadioGroup
+            disabled={isViewMode}
             name={`visibility-${markerIndex}`}
             options={VISIBILITY_OPTIONS}
             value={visibility}

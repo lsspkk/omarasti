@@ -136,9 +136,6 @@ const TrackMarker = ({
       {mode !== 'remove' && (
         <Popup
           autoClose={false}
-          eventHandlers={{
-            popupclose: () => updateMarkerData(),
-          }}
         >
           <MarkerPopup
             description={description}
@@ -147,7 +144,7 @@ const TrackMarker = ({
             published={published}
             onDescriptionChange={setDescription}
             onVisibilityChange={setVisibility}
-            onClose={() => markerRef.current?.closePopup()}
+            onClose={() => {markerRef.current?.closePopup(); updateMarkerData()}}
             markerIndex={index}
           />
         </Popup>
