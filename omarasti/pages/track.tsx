@@ -68,7 +68,7 @@ const OneTrack = () => {
         <div>
           <h1 className='mb-4'>Radan tiedot</h1>
           <div className='container flex justify-between'>
-            <div className='mb-4 xs:w-full'>
+            <div className='mb-4 w-full md:ml-8'>
               <div className='flex my-1'>
                 <label htmlFor='track-name' className='w-20'>
                   Nimi:
@@ -95,32 +95,35 @@ const OneTrack = () => {
                 />
               </div>
 
-              <div className='flex mt-5 mb-8 ml-3'>
+              <div className='flex mt-5 mb-8'>
                 <TrackDistance markers={track?.markers} />
               </div>
 
               {trackUrl !== undefined && (
-                <div className='flex mt-5 mb-8 items-center'>
+                <div className='flex md:flex-row flex-col mt-5 mb-8 items-left md:items-center'>
                   <label htmlFor='tracklink' className='w-20'>
                     Linkki:
                   </label>
                   <input id='tracklink' className='w-full' disabled value={trackUrl} />
-                  <Button className={copyClicked ? 'bg-orange-600' : ''} onClick={() => onCopyClicked()}>
-                    Kopioi
-                  </Button>
-                  {navigator?.share && (
-                    <Button
-                      onClick={async () =>
-                        navigator.share({
-                          title: 'Suunnistusrata jaettu sinulle',
-                          text: `OmaRasti sovelluksen rata: ${track?.name}, pituus: ${distance(track?.markers)}`,
-                          url: trackUrl,
-                        })
-                      }
-                    >
-                      Jaa
+                  <div className='w-full flex justify-end md:w-auto px-2'>
+                    <Button className={copyClicked ? 'bg-orange-600 w-14' : 'w-14'} onClick={() => onCopyClicked()}>
+                      Kopioi
                     </Button>
-                  )}
+
+                    {navigator?.share && (
+                      <Button
+                        onClick={async () =>
+                          navigator.share({
+                            title: 'Suunnistusrata jaettu sinulle',
+                            text: `OmaRasti sovelluksen rata: ${track?.name}, pituus: ${distance(track?.markers)}`,
+                            url: trackUrl,
+                          })
+                        }
+                      >
+                        Jaa
+                      </Button>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -130,23 +133,15 @@ const OneTrack = () => {
             <div className='block float-left'>
               <div className='container px-2 w-full flex justify-end items-center'>
                 <div className='mr-2 w-full '>
-                  Tallennettu rata näkyy vain sinulle ratalistassa.
-                  <br />
-                  Voit muokata sitä ja suunnistaa sen.
-                  <br />
-                  Jos jaat rataan linkin, kaverisi voivat myös
-                  <br />
-                  suunnistaa radan ja voitte vertailla tuloksia.
+                  Tallennettu rata näkyy vain sinulle ratalistassa. Voit muokata sitä ja suunnistaa sen. Jos jaat rataan
+                  linkin, kaverisi voivat myös suunnistaa radan ja voitte vertailla tuloksia.
                 </div>
                 <Button onClick={() => save({ published: false })}>Tallenna</Button>
               </div>
               <div className='mt-12 container px-2 w-full flex justify-end items-center'>
                 <div className='mr-2 w-full '>
-                  Julkaistu rata näkyy kaikille ratalistassa.
-                  <br />
-                  Sitä ei voi muokata, mutta voit poistaa sen.
-                  <br />
-                  Kaikki voivat suunnistaa radan ja vertailla tuloksia.
+                  Julkaistu rata näkyy kaikille ratalistassa. Sitä ei voi muokata, mutta voit poistaa sen. Kaikki voivat
+                  suunnistaa radan ja vertailla tuloksia.
                 </div>
                 <Button onClick={() => save({ published: true })}>Julkaise</Button>
               </div>

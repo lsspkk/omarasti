@@ -4,7 +4,6 @@ import { SignInButton } from './Buttons'
 import { userState } from '../pages/settings'
 import { useRecoilState } from 'recoil'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
 import { runState } from '../models/state'
 
 export const Header = ({ menu }: { menu: React.ReactNode }) => {
@@ -12,7 +11,6 @@ export const Header = ({ menu }: { menu: React.ReactNode }) => {
   const { data: session } = useSession()
   const [user, setUser] = useRecoilState(userState)
   const [isSigning, setIsSigning] = useState(false)
-  const router = useRouter()
 
   async function fetchUser() {
     // load/create additional user account to mongodb
@@ -36,9 +34,8 @@ export const Header = ({ menu }: { menu: React.ReactNode }) => {
     fetchUser()
   }, [session])
 
-  const showSignOut = ['/', '/profile'].includes(router.asPath)
   // jos juoksu käynnissä, älä näytä rasti-ikonia
-  const showLogo = run === undefined || run?.start === undefined || run?.end !== undefined
+  const showLogo = run?.start === undefined || run?.end !== undefined
 
   return (
     <header className='w-full border-b border-gray-300 bg-white p-1 print:hidden'>

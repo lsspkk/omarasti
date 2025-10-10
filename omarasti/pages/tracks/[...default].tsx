@@ -1,7 +1,7 @@
 // use client
 import { useEffect, useState } from 'react'
 import { Layout } from '../../components/Layout'
-import { DesignMenu } from '../../components/DesignMenu'
+import { DesignBottomMenu, DesignMenu } from '../../components/DesignMenu'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { ViewMenu } from '../../components/ViewMenu'
@@ -149,20 +149,20 @@ const Design = ({ mapUrl }) => {
     router.push('/tracks/run/stop')
   }
 
-  let menu = <ViewMenu />
-  if (router.asPath === '/tracks/edit') {
-    menu = <DesignMenu />
-  } else if (run !== undefined) {
-    menu = (
-      <RunMenu stopRun={stopRun} timer={timer} run={run} isLastMarker={run.targetMarker === track.markers.length - 1} />
-    )
-  }
-
   const isLastMarker = run?.targetMarker === track?.markers.length - 1
   const mapCenter = coordinates
 
+  let menu = <ViewMenu />
+  let bottomMenu = undefined
+  if (router.asPath === '/tracks/edit') {
+    menu = <DesignMenu />
+    bottomMenu = <DesignBottomMenu />
+  } else if (run !== undefined) {
+    menu = <RunMenu stopRun={stopRun} timer={timer} run={run} isLastMarker={isLastMarker} />
+  }
+
   return (
-    <Layout map='true' menu={menu} hasRequiredData={track !== undefined}>
+    <Layout map='true' menu={menu} hasRequiredData={track !== undefined} bottomMenu={bottomMenu}>
       <BackConfirmation />
 
       <DesignMap mapUrl={mapUrl} mapCenter={mapCenter} />
@@ -184,10 +184,7 @@ const Design = ({ mapUrl }) => {
           )}
           {isLastMarker && location.canTouchMarker && <InFinishPanel finishRun={finishRun} />}
 
-          <div
-            className='fixed bottom-0 left-0 p-1  bg-white xs:ml-10 md:ml-20'
-            style={{ zIndex: '1000', fontSize: '0.5em' }}
-          >
+          <div className='fixed bottom-0 left-0 p-1  bg-white xs:ml-10 md:ml-20 z-50'>
             GPS tarkkuus: {accurracy !== undefined ? Math.trunc(accurracy) : '-'}
             <br />
             Sijainti: {run.currentLatlng.lat} - {run.currentLatlng.lng}

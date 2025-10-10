@@ -1,5 +1,4 @@
 import { PopulatedRun } from '../models/Run'
-import { RunType } from '../models/state'
 import { SignInButton } from './Buttons'
 import { runnerName } from './ResultList'
 
@@ -23,9 +22,7 @@ const RunMenu = ({
           <div>Suunnistusaika: </div>
           <div className='text-2l ml-1'>{timer}</div>
         </div>
-        {run !== undefined && run.end === undefined && (
-          <div>Seuraava: {isLastMarker ? 'maali' : `rasti ${run?.targetMarker}`}</div>
-        )}
+        {run?.end && <div>Seuraava: {isLastMarker ? 'maali' : `rasti ${run?.targetMarker}`}</div>}
       </div>
       {compareRuns.length > 0 && (
         <div>

@@ -7,6 +7,8 @@ import { designModeState, TrackViewMode } from './DesignMenu'
 import { TrackDistance } from './Distance'
 import { userState } from '../pages/settings'
 import { TrackPopulatedType, TrackListType } from '../models/Track'
+import { ConfirmationDialog } from './ConfirmationDialog'
+import { Trash2, Edit, BarChart3, Play } from 'lucide-react'
 
 interface TrackListProps {
   tracks: TrackListType[]
@@ -17,6 +19,11 @@ export const TrackList = ({ tracks }: TrackListProps) => {
   const [, setTrack] = useRecoilState(trackState)
   const [sorted, setSorted] = useState({ column: 'name', ascending: true })
   const [message, setMessage] = useState('')
+  const [confirmDialog, setConfirmDialog] = useState<{ isOpen: boolean; trackId: string; trackName: string }>({
+    isOpen: false,
+    trackId: '',
+    trackName: '',
+  })
   const router = useRouter()
 
   const toUrl = (track: TrackListType, url: string, mode: TrackViewMode) => {
@@ -24,14 +31,24 @@ export const TrackList = ({ tracks }: TrackListProps) => {
     setMode(mode)
     router.push(url)
   }
-  const remove = async (id, name) => {
-    const url = `/api/tracks/${id}`
+
+  const showRemoveConfirmation = (id: string, name: string) => {
+    setConfirmDialog({ isOpen: true, trackId: id, trackName: name })
+  }
+
+  const closeConfirmDialog = () => {
+    setConfirmDialog({ isOpen: false, trackId: '', trackName: '' })
+  }
+
+  const confirmRemove = async () => {
+    const { trackId, trackName } = confirmDialog
+    const url = `/api/tracks/${trackId}`
     const res = await fetch(url, {
       method: 'DELETE',
       headers: { Accept: 'application/json' },
     })
 
-    setMessage(`Rata ${name} ${res.ok ? 'poistettu.' : 'Poistaminen epäonnistui'}`)
+    setMessage(`Rata ${trackName} ${res.ok ? 'poistettu.' : 'Poistaminen epäonnistui'}`)
     setTimeout(() => setMessage(''), 3000)
     if (res.ok) {
       router.replace(router.asPath)
@@ -55,9 +72,18 @@ export const TrackList = ({ tracks }: TrackListProps) => {
       <SortMenu changeSorted={changeSorted} sorted={sorted} />
       {sortedTracks.map((track) => (
         <div key={track._id}>
-          <TrackCard track={track} toUrl={toUrl} remove={remove} />
+          <TrackCard track={track} toUrl={toUrl} remove={showRemoveConfirmation} />
         </div>
       ))}
+      <ConfirmationDialog
+        isOpen={confirmDialog.isOpen}
+        onClose={closeConfirmDialog}
+        onConfirm={confirmRemove}
+        title='Poista rata'
+        message={`Oletko varma että haluat poistaa radan "${confirmDialog.trackName}"?`}
+        confirmText='Kyllä'
+        cancelText='Ei'
+      />
     </>
   )
 }
@@ -162,17 +188,27 @@ const TrackCard = ({
             <div>
               <TrackDistance markers={track.markers} />
             </div>
-            <div className='flex justify-end items-end'>
-              {track.owner._id === user?.id && <Button onClick={() => remove(track._id, track.name)}>Poista</Button>}
+            <div className='flex justify-end items-end gap-2 md:gap-8'>
+              {track.owner._id === user?.id && (
+                <Button
+                  className='mr-2 md:mr-4'
+                  onClick={() => remove(track._id, track.name)}
+                  icon={Trash2}
+                  iconOnly={true}
+                  variant='secondary'
+                >
+                  Poista
+                </Button>
+              )}
 
               {!track.published && (
-                <Button className='self-end mr-4' onClick={() => toUrl(track, '/tracks/edit', 'move')}>
+                <Button onClick={() => toUrl(track, '/tracks/edit', 'move')} icon={Edit} iconOnly>
                   Muokkaa
                 </Button>
               )}
 
               {canSeeResults && (
-                <Button className='self-end ' onClick={() => toUrl(track, '/results', 'view')}>
+                <Button className='self-end' onClick={() => toUrl(track, '/results', 'view')} icon={BarChart3} iconOnly>
                   Tulokset
                 </Button>
               )}

@@ -14,6 +14,7 @@
     "eslint-config-next": "^14.2.13",
     "esm": "^3.2.25",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.545.0",
     "mongoose": "^8.18.0",
     "nanoid": "^5.0.7",
     "next": "^14.2.13",

@@ -10,12 +10,14 @@ const Layout = ({
   map,
   isPrivate = true,
   hasRequiredData = true,
+  bottomMenu,
 }: {
   menu: ReactNode
   children: ReactNode
   map?: string
   isPrivate?: boolean
   hasRequiredData?: boolean
+  bottomMenu?: ReactNode
 }) => {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -53,6 +55,7 @@ const Layout = ({
             </main>
           </>
         )}
+        {bottomMenu}
       </div>
     </>
   )
