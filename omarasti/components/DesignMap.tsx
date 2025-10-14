@@ -150,9 +150,15 @@ const DesignMap = ({
       zoom={14.5}
       minZoom={minZoom}
       maxZoom={maxZoom}
+      zoomSnap={1}
+      zoomDelta={1}
+      scrollWheelZoom={false}
     >
       <Recenter center={mapCenter} zoom={14.5} />
-      <TileLayer url={mapUrl} attribution={attribution} />
+      <TileLayer url={mapUrl} attribution={attribution} 
+        referrerPolicy="no-referrer"
+        crossOrigin=""
+      />
       <TrackPoints />
 
       {/* When running, if person markers was checked, show it */}
