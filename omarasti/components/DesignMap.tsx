@@ -157,7 +157,6 @@ const DesignMap = ({
       <Recenter center={mapCenter} zoom={14.5} />
       <TileLayer url={mapUrl} attribution={attribution} 
         referrerPolicy="no-referrer"
-        crossOrigin=""
       />
       <TrackPoints />
 
