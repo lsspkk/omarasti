@@ -59,11 +59,7 @@ const TrackPoints = () => {
       ))}
 
       {lines.map((linePositions) => (
-        <Polyline
-          key={'lp' + JSON.stringify(linePositions)}
-          positions={linePositions}
-          pathOptions={{ color: '#fa4362', weight: 5 }}
-        />
+        <Polyline key={'lp' + JSON.stringify(linePositions)} positions={linePositions} pathOptions={{ color: '#fa4362', weight: 5 }} />
       ))}
     </>
   )
@@ -84,14 +80,8 @@ const makeLines = (markers: any[], map: any): LatLngTuple[][] => {
       if (distance < MARKER_SIZE) {
         return
       }
-      const lineStart = [
-        start.x + (MARKER_SIZE / 2 / distance) * (end.x - start.x),
-        start.y + (MARKER_SIZE / 2 / distance) * (end.y - start.y),
-      ]
-      const lineEnd = [
-        end.x + (MARKER_SIZE / 2 / distance) * (start.x - end.x),
-        end.y + (MARKER_SIZE / 2 / distance) * (start.y - end.y),
-      ]
+      const lineStart = [start.x + (MARKER_SIZE / 2 / distance) * (end.x - start.x), start.y + (MARKER_SIZE / 2 / distance) * (end.y - start.y)]
+      const lineEnd = [end.x + (MARKER_SIZE / 2 / distance) * (start.x - end.x), end.y + (MARKER_SIZE / 2 / distance) * (start.y - end.y)]
       const s = map.layerPointToLatLng(lineStart)
       const e = map.layerPointToLatLng(lineEnd)
       lines.push([
@@ -144,20 +134,10 @@ const DesignMap = ({
   const attribution = process.env.NEXT_PUBLIC_MAP_ATTRIBUTION ?? ''
 
   return (
-    <MapContainer
-      style={{ width: '100%', height: '90vh' }}
-      center={mapCenter}
-      zoom={14.5}
-      minZoom={minZoom}
-      maxZoom={maxZoom}
-      zoomSnap={1}
-      zoomDelta={1}
-      scrollWheelZoom={false}
-    >
+    <MapContainer style={{ width: '100%', height: '90vh' }} center={mapCenter} zoom={14.5} minZoom={minZoom} maxZoom={17}>
       <Recenter center={mapCenter} zoom={14.5} />
-      <TileLayer url={mapUrl} attribution={attribution} 
-        referrerPolicy="no-referrer"
-      />
+      <TileLayer url={mapUrl} attribution={attribution} tms={false} maxNativeZoom={maxZoom} />
+
       <TrackPoints />
 
       {/* When running, if person markers was checked, show it */}
@@ -170,12 +150,7 @@ const DesignMap = ({
       {showRoute &&
         runs !== undefined &&
         runs.map((runResult, i) => (
-          <RouteLines
-            key={`routelines${runResult._id}`}
-            showRouteIndex={showRouteIndex}
-            run={runResult}
-            color={routeColors[i % routeColors.length]}
-          />
+          <RouteLines key={`routelines${runResult._id}`} showRouteIndex={showRouteIndex} run={runResult} color={routeColors[i % routeColors.length]} />
         ))}
     </MapContainer>
   )

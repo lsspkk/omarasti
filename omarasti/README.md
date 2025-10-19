@@ -24,6 +24,13 @@ Käytössä kirjastot
 - estä paluunappi paremmin
   https://medium.com/@joaojbs199/page-exit-prevention-in-nextjs-14-7f42add43297
 
+# Kartat
+
+Käytössä oli https://wmts.mapant.fi/wmts_EPSG3857.php?z={z}&x={x}&y={y}
+Johon sain luvan joskus 2020, mutta nykyään kartat on vanhentuneita,
+ja niiden käyttö on estetty CORS-säännöillä.
+
+
 # Radan jakaminen
 
 Kevyempi ratkaisu ryhmille.
