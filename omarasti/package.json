@@ -11,7 +11,7 @@
     "@tailwindcss/postcss": "^4.1.13",
     "autoprefixer": "^10.4.21",
     "crypto": "^1.0.1",
-    "eslint-config-next": "^14.2.13",
+    "eslint-config-next": "^16.0.3",
     "esm": "^3.2.25",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.545.0",
